@@ -1,0 +1,20 @@
+textarea {
+  display: block;
+  margin: auto;
+  width: 90vw;
+  height: 20vh;
+  font-size: 65px;
+}
+.text {
+  margin: 0 auto;
+  width: 600px;
+  font-size: 65px;
+}
+.current {
+  background-color: #007172;
+  color: #ffff;
+}
+.container {
+  justify-content: center;
+  height: 100hv;
+}

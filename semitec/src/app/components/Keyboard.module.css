@@ -1,0 +1,19 @@
+.row {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.key {
+  display: flex;
+  min-width: 76px;
+  height: 76px;
+  margin: 3px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  font-size: 65px;
+}
