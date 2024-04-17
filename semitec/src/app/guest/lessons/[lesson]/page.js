@@ -1,3 +1,4 @@
+'use client';
 import Keyboard from "@/app/components/keyboard";
 import { Atkinson_Hyperlegible, Atkinson_Hyperlegible } from "next/font/google";
 const atkinson_Hyperlegible = Atkinson_Hyperlegible({
@@ -6,8 +7,11 @@ const atkinson_Hyperlegible = Atkinson_Hyperlegible({
 });
 import styles from "./Lesson.module.css";
 export default function Lesson() {
+  const handleKeyDown = event => {
+    console.log('pressed: ', event.key);
+  }
   return (
-    <div className={styles.container}>
+    <div tabIndex={0}className={styles.container} onKeyDown={handleKeyDown}>
       <div className={styles.text}>
         <span className={styles.done}>asdf jklñ a</span>
         <span className={styles.current}>s</span>

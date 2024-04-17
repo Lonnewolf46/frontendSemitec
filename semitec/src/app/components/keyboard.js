@@ -1,17 +1,35 @@
 import KeyboardRow from "./keyboard-row";
+import data from "../lib/keyboard";
+import styles from './Keyboard.module.css'
+import Key from "./key";
 export default function Keyboard() {
   return (
+    <div className={styles.keyboardContainer}>
     <div>
-      <KeyboardRow keyList={['', '1', '2', '3', '4', '5', '6', 
-                        '7', '8', '9', '0', '', '', 'Supr']} />
-      <KeyboardRow keyList={['Tab', 'q', 'w', 'e', 'r', 't', 'y', 
-                        'u', 'i', 'o', 'p', '', '', '']} />
-      <KeyboardRow keyList={['Bloq', 'a', 's', 'd', 'f', 'g', 'h', 
-                        'j', 'k', 'l', 'ñ', '', 'Enter']} />
-      <KeyboardRow keyList={['Mayús', 'z', 'x', 'c', 'v', 'b', 'n', 
-                        'm', '', '', '', 'Mayús']} />
-      <KeyboardRow keyList={['Ctrl', '', '', 'Alt', 'espacio', 'Alt', '', 
-                        '', 'Ctrl' ]}/>
+      <div className={styles.functionKeys}> { /*
+        <KeyboardRow keyList={['Esc']}/><KeyboardRow keyList={['', '', '', '']}/>
+        <KeyboardRow keyList={['', '', '', '']}/>
+  <KeyboardRow keyList={['', '', '','']}/> */}
+      </div>
+      <div className={styles.alphaKeys}>
+        <KeyboardRow keyList={data.keyboard.firstAlphaRow} />
+        <KeyboardRow keyList={data.keyboard.secondAlphaRow} />
+        <KeyboardRow keyList={data.keyboard.thirdAlphaRow} />
+        <KeyboardRow keyList={data.keyboard.thirdAlphaRow} />
+        <KeyboardRow keyList={data.keyboard.fifthAlphaRow} />
+      </div>
     </div>
+    <div className={styles.control}> { /*
+      <KeyboardRow keyList={['','','']} />
+      <div>
+      <KeyboardRow keyList={['','','']} />
+      <KeyboardRow keyList={['','','']} />
+      </div>
+      <div>
+      <KeyboardRow keyList={['↑']}/>
+      <KeyboardRow keyList={['←','↓','→']} />
+    </div> */}
+    </div>
+  </div>
   );
 }
