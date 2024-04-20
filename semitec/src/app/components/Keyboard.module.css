@@ -7,48 +7,40 @@
 
 .key {
   display: flex;
-  min-width: 76px;
-  height: 76px;
+  flex-grow: 1;
+  min-width: 5vw;
+  min-height: 5vw;
   margin: 3px;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   border-radius: 5px;
-  font-size: 65px;
+  font-size: 3vw;
 }
-.keyboardContainer {
-  width: 1500px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  border: 2px solid black;
 
+.keyboardContainer {
+  margin: 0 16px;
+  display: flex;
 }
 .functionKeys {
-  border: 2px solid black; 
+  justify-content: space-between;
+  margin-bottom: 20px;
   display: flex;
 }
-.alphaKeys{
-  border: 2px solid black; 
-}
+
 .control {
+  width: 17%;
   margin: 0 0 0 20px;
-  border: 2px solid black; 
 }
 
-/* key colors */
-.thumb, .index {
-  background-color: #1A000000;
+.leftContainer {
+  width: 81%;
 }
 
-.middle {
-  background-color: #00E700;
+.firstControlRow {
+  margin-bottom: 20px;
 }
 
-.ring {
-  background-color: #489EF2;
-}
-
-.pinky {
-  background-color: #FDC900;
+.arrows {
+  margin-bottom: 0;
 }

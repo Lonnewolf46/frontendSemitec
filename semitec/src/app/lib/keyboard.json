@@ -7,6 +7,25 @@
     "pinky": "#489EF2"
   },
   "keyboard": {
+    "firstFunCol": [{ "color": "#e6e6e6", "value": "Esc" }],
+    "secondFunCol": [
+      { "color": "#e6e6e6", "value": "F1" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" }
+    ],
+    "thirdFunCol": [
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" }
+    ],
+    "fourthFunCol": [
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" }
+    ],
     "firstAlphaRow": [
       {
         "color": "#FDC900",
@@ -177,7 +196,7 @@
         "value": "Enter"
       }
     ],
-       "fourthAlphaRow": [
+    "fourthAlphaRow": [
       {
         "color": "#FDC900",
         "value": "Mayús"
@@ -227,7 +246,7 @@
         "value": "Mayús"
       }
     ],
-       "fifthAlphaRow": [
+    "fifthAlphaRow": [
       {
         "color": "#FDC900",
         "value": "ctrl"
@@ -264,6 +283,17 @@
         "color": "#FDC900",
         "value": "Ctrl"
       }
+    ],
+     "firstControlRow": [
+      { "color": "#e6e6e6", "value": " in" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" }
+    ],
+    "firstArrowRow": [{ "color": "#00E700", "value": "↑" }],
+    "secondArrowRow": [
+      { "color": "#e6e6e6", "value": "←" },
+      { "color": "#00E700", "value": "↓" },
+      { "color": "#489EF2", "value": "→" }
     ]
   }
 }

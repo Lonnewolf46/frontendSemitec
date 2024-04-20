@@ -1,20 +1,26 @@
-textarea {
-  display: block;
-  margin: auto;
-  width: 90vw;
-  height: 20vh;
-  font-size: 65px;
-}
 .text {
+  letter-spacing: 0.7vw;
   margin: 0 auto;
   width: 600px;
-  font-size: 65px;
+  font-size: 6vw;
 }
 .current {
   background-color: #007172;
   color: #ffff;
 }
+.mistake {
+  color: red;
+}
 .container {
   justify-content: center;
   height: 100hv;
+}
+.typingArea {
+  letter-spacing: 0.7vw;
+  min-height: 5vw;
+  margin: 20px 16px;
+  text-align: center;
+  font-size: 5vw;
+  border: solid #e6e6e6 2px;
+  border-radius: 3px;
 }
