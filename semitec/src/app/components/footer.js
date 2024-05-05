@@ -1,7 +1,8 @@
+import styles from "./Footer.module.css";
 export function Footer() {
   return (
     <footer>
-      <div>© 2024 SEMITEC</div>
+      <div className={styles.footerContainer}>© 2024 SEMITEC</div>
     </footer>
   );
 }
