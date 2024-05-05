@@ -1,0 +1,9 @@
+.footerContainer {
+    border-top: solid 3px #979797;
+    width: 80vw;
+    margin: auto;
+    color: #555555;
+    text-align: center;
+    font-weight: bold;
+    padding-top: 10px;
+}
