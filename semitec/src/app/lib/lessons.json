@@ -1,0 +1,9 @@
+{
+  "level": "intermedio",
+  "words": "asdf jklñ",
+  "iterations": 5,
+  "min_time": 20,
+  "min_mistakes": 2,
+  "name": "Leccion 1",
+  "description": "Esta es una leccion de prueba"
+}

@@ -1,0 +1,299 @@
+{
+  "color": {
+    "thumb": "#1A000000",
+    "index": "#1A000000",
+    "middle": "#00E700",
+    "ring": "#489EF2",
+    "pinky": "#489EF2"
+  },
+  "keyboard": {
+    "firstFunCol": [{ "color": "#e6e6e6", "value": "Esc" }],
+    "secondFunCol": [
+      { "color": "#e6e6e6", "value": "F1" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" }
+    ],
+    "thirdFunCol": [
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" }
+    ],
+    "fourthFunCol": [
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" }
+    ],
+    "firstAlphaRow": [
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#FDC900",
+        "value": "1"
+      },
+      {
+        "color": "#489EF2",
+        "value": "2"
+      },
+      {
+        "color": "#00E700",
+        "value": "3"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "4"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "5"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "6"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "7"
+      },
+      {
+        "color": "#00E700",
+        "value": "8"
+      },
+      {
+        "color": "#489EF2",
+        "value": "9"
+      },
+      {
+        "color": "#FDC900",
+        "value": "0"
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#FDC900",
+        "value": "Supr"
+      }
+    ],
+    "secondAlphaRow": [
+      {
+        "color": "#FDC900",
+        "value": "Tab"
+      },
+      {
+        "color": "#FDC900",
+        "value": "q"
+      },
+      {
+        "color": "#489EF2",
+        "value": "w"
+      },
+      {
+        "color": "#00E700",
+        "value": "e"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "r"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "t"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "y"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "u"
+      },
+      {
+        "color": "#00E700",
+        "value": "i"
+      },
+      {
+        "color": "#489EF2",
+        "value": "o"
+      },
+      {
+        "color": "#FDC900",
+        "value": "p"
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      }
+    ],
+    "thirdAlphaRow": [
+      {
+        "color": "#FDC900",
+        "value": "Bloq"
+      },
+      {
+        "color": "#FDC900",
+        "value": "a"
+      },
+      {
+        "color": "#489EF2",
+        "value": "s"
+      },
+      {
+        "color": "#00E700",
+        "value": "d"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "f"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "g"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "h"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "j"
+      },
+      {
+        "color": "#FDC900",
+        "value": "k"
+      },
+      {
+        "color": "#489EF2",
+        "value": "l"
+      },
+      {
+        "color": "#FDC900",
+        "value": "ñ"
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#FDC900",
+        "value": "Enter"
+      }
+    ],
+    "fourthAlphaRow": [
+      {
+        "color": "#FDC900",
+        "value": "Mayús"
+      },
+      {
+        "color": "#FDC900",
+        "value": "z"
+      },
+      {
+        "color": "#489EF2",
+        "value": "x"
+      },
+      {
+        "color": "#00E700",
+        "value": "c"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "v"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "b"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "n"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "m"
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#489EF2",
+        "value": ""
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#FDC900",
+        "value": "Mayús"
+      }
+    ],
+    "fifthAlphaRow": [
+      {
+        "color": "#FDC900",
+        "value": "ctrl"
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#489EF2",
+        "value": ""
+      },
+      {
+        "color": "#00E700",
+        "value": "Alt"
+      },
+      {
+        "color": "#e6e6e6",
+        "value": "espacio"
+      },
+      {
+        "color": "#489EF2",
+        "value": "Alt"
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#FDC900",
+        "value": ""
+      },
+      {
+        "color": "#FDC900",
+        "value": "Ctrl"
+      }
+    ],
+     "firstControlRow": [
+      { "color": "#e6e6e6", "value": " in" },
+      { "color": "#e6e6e6" },
+      { "color": "#e6e6e6" }
+    ],
+    "firstArrowRow": [{ "color": "#00E700", "value": "↑" }],
+    "secondArrowRow": [
+      { "color": "#e6e6e6", "value": "←" },
+      { "color": "#00E700", "value": "↓" },
+      { "color": "#489EF2", "value": "→" }
+    ]
+  }
+}
