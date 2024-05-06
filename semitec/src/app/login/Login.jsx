@@ -1,13 +1,14 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './Login.css';
+import loginimg from '/resources/Semitec_logosuite/semitec_logo_300px_color.png';
 
 const Login = () => {
     return  <div className='flex-container'>
                 <div className='bg-size' alt="Imagen azul decorativa en el fondo"/>
                 <div className='login-size'>
-                    <img className='logo-size' src={'/resources/Semitec_logosuite/semitec_logo_300px_color.png'} alt="Logo de SEMITEC" />
-                    <text className='login-header'>Iniciar sesión</text> 
+                    <img className='logo-size' src={loginimg} alt="Logo de SEMITEC" />
+                    <text className='login-header'>Iniciar sesión!</text> 
                 
                     <Formik
                         initialValues={{ email: '', password: '' }}

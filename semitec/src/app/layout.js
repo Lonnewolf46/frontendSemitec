@@ -1,4 +1,5 @@
 import { Atkinson_Hyperlegible, Atkinson_Hyperlegible } from "next/font/google";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Footer } from "./components/footer";
 const atkinson_Hyperlegible = Atkinson_Hyperlegible({ subsets: ["latin"], weight:'400' });
 
