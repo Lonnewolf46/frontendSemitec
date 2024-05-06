@@ -1,3 +1,4 @@
+import { AccessibilityBar } from "./components/accessibility-bar";
 import { Footer } from "./components/footer";
 import { Atkinson_Hyperlegible, Atkinson_Hyperlegible } from "next/font/google";
 const atkinson_Hyperlegible = Atkinson_Hyperlegible({
@@ -13,7 +14,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body className={atkinson_Hyperlegible.className}>
+      <body className={atkinson_Hyperlegible.className} style={ {margin: "0px"}}>
+        <AccessibilityBar />
         {children}
         {<Footer />}
       </body>
