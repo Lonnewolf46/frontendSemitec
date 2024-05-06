@@ -1,0 +1,26 @@
+.navItem {
+    color: white;
+    text-decoration: none;
+}
+
+.navItem:hover {
+    font-weight: 600;
+}
+
+.active {
+    font-weight: 600;
+}
+
+.navBar {
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    background-color: #007172;
+}
+
+.navMenu {
+    margin-left: 30px;
+    display: flex;
+    column-gap: 2.22vw;
+    font-size: 1.3vw;
+}

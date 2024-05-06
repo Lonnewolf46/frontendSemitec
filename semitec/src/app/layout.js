@@ -15,7 +15,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <body className={atkinson_Hyperlegible.className} style={ {margin: "0px"}}>
-        <AccessibilityBar />
         {children}
         {<Footer />}
       </body>
