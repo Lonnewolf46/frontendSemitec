@@ -1,0 +1,51 @@
+.flex-container{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.logo-size {
+    display: inherit;
+    padding: 0 25%;
+    height: auto;
+    align-self: center;
+    width: 50%;
+}
+
+.bg-size {
+    display: inherit;
+    width: 65%;
+    height: 100vh;
+    background-image: url('../../assets/bg_images/login_bg.png');
+    background-size: 100% 100%;
+}
+
+.login-size{
+    display: inherit;
+    width: 40%;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: auto;
+}
+
+p, text {
+    font-family: Atkinson_Hyperlegible;
+}
+
+.login-header {
+    display: inherit;
+    flex-wrap: wrap;
+    font-size: 175%;
+    font-weight: bolder;
+    padding: 0 30%;
+}
+
+.login-text {
+    display: inherit;
+    font-size: 0.9vw;
+    font-weight: 100;
+}
+
+.field-error{
+    font-size: 0.9vw;
+    font-weight: 100;
+}
