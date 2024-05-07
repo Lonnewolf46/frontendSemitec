@@ -61,10 +61,10 @@ export default function Login() {
                                     <div className='anchor-and-text-container'> 
                                         <text className='reg-text'>¿Aún no tiene cuenta? </text> 
                                         <text className='reg-text'>  </text> 
-                                        <a href="">Registrarse</a>
+                                        <a href={'/signup'}>Registrarse</a>
                                     </div>
                                     <div className='anchor-container'>
-                                        <a href="">Ingresar como invitado</a>
+                                        <a href={'/guest'}> Ingresar como invitado</a>
                                     </div>
                                 </Form>
                             )}
