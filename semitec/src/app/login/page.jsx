@@ -7,7 +7,15 @@ import '../components/button/button.css'
 export default function Login() { 
     console.log()
     return  <div className='flex-container'>
-                <div className='bg-size' alt="Imagen azul decorativa en el fondo"/>
+                <div className='bg-size' alt="Imagen azul decorativa en el fondo">
+                    <div className='details-container'>
+                        <text className='login-left-side-header'>SEMITEC</text>
+                        <text className='login-left-side-text'>Sistema de enseñanza de la mecanografía</text>
+                        <text className='login-left-side-text'>para personas con discapacidad visual. </text>
+                        <text className='login-left-side-text'>Con excelencia en mente, del TEC para </text>
+                        <text className='login-left-side-text'>Costa Rica. </text>
+                    </div>
+                </div>
                 <div className='login-size'>
                     <div className='logo-img'/>
                     <div className='login-right-side'>
@@ -42,14 +50,22 @@ export default function Login() {
                                 <Form>
                                     <text className='login-text'>Correo</text>
                                     <Field className='form-control' type="email" name="email" placeholder="Ingrese su correo."/>
-                                    <ErrorMessage name="email" component="div" className='field-error'/> 
+                                    <ErrorMessage className='error-message' name="email" component="div"/> 
                                     <text className='login-text'>Contraseña</text>
                                     <Field className='form-control' type="password" name="password" placeholder="Ingrese su contraseña."/>
-                                    <ErrorMessage name="password" component="div" className='field-error'/>
+                                    <ErrorMessage className='error-message' name="password" component="div"/>
                                     <br></br>
                                     <button type="submit" className="button" disabled={isSubmitting}>
                                         Iniciar Sesión
                                     </button>
+                                    <div className='anchor-and-text-container'> 
+                                        <text className='reg-text'>¿Aún no tiene cuenta? </text> 
+                                        <text className='reg-text'>  </text> 
+                                        <a href="">Registrarse</a>
+                                    </div>
+                                    <div className='anchor-container'>
+                                        <a href="">Ingresar como invitado</a>
+                                    </div>
                                 </Form>
                             )}
                         </Formik>
