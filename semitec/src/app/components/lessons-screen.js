@@ -8,7 +8,6 @@ import LessonInfo from "./lesson-info";
 export default function LeesonsScreen() {
   const [lessons, setLessons] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
-
   const getLessons = async () => {
     try {
       const response = await fetch("http://localhost:5000/lessons");
@@ -29,7 +28,8 @@ export default function LeesonsScreen() {
         <div className={styles.lessonListContainer}>
           <ul className={styles.lessonList}>
             {lessons.map((lesson, index) => (
-              <li tabIndex={index}
+              <li
+                tabIndex={index}
                 key={index}
                 onClick={() => {
                   setActiveIndex(index);

@@ -1,6 +1,15 @@
+"use client";
 import styles from "./LessonInfo.module.css";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function LessonInfo({ lesson }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleClick = () => {
+    router.push(`${pathname}/lesson`);
+  };
+
   return (
     <>
       <div className={styles.wrapper}>
@@ -12,7 +21,9 @@ export default function LessonInfo({ lesson }) {
         <p>{lesson.description}</p>
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.startButton}>Iniciar Lección</button>
+        <button onClick={handleClick} className={styles.startButton}>
+          Iniciar Lección
+        </button>
       </div>
     </>
   );
