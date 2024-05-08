@@ -1,0 +1,39 @@
+.rightContainer, .leftContainer {
+    padding: 32px 0 0 32px;
+    width: 46vw;
+    margin: auto;
+    height: 76vh;
+    border-radius: 10px;
+    border: solid 1px #e6e6e6;
+}
+
+.lessonsMainContainer {
+    margin: 20px auto;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    display: flex;
+}
+
+.lessonListContainer {
+    max-height: 85%;
+    overflow-y: auto;
+}
+
+
+.lessonList {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+.lessonList li {
+    margin: 10px 0;
+}
+
+.lessonList li:first-child {
+    margin-top: 0;
+}
+.lessonList li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
