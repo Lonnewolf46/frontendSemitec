@@ -4,7 +4,22 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './Login.css';
 import '../components/button/button.css'
 
-export default function Login() { 
+export default function Login({ setToken }) { 
+
+    const login = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(credentials)
+              })
+              const headers = response.headers
+        } catch (error){
+            console.log(error)
+        }
+    }
 
     return  <div className='flex-container'>
                 <div className='bg-size' alt="Imagen azul decorativa en el fondo">
@@ -21,7 +36,7 @@ export default function Login() {
                     <div className='login-right-side'>
                         <text className='login-header'>Iniciar sesión</text> 
                         <Formik
-                            initialValues={{ email: '', password: '' }}
+                            initialValues={{password: '', email: '' }}
                             validate={values => {
                                 const errors = {};
                                 if (!values.email) {
