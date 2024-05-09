@@ -15,7 +15,10 @@ export default function Login({ setToken }) {
                 },
                 body: JSON.stringify(credentials)
               })
-              console.log(response)
+              const data = response.json()
+              console.log(data)
+              const headers = response.headers
+              console.log(headers)
         } catch (error){
             console.log(error)
         }
