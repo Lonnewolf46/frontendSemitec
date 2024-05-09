@@ -1,7 +1,10 @@
-import { Atkinson_Hyperlegible, Atkinson_Hyperlegible } from "next/font/google";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { AccessibilityBar } from "./components/accessibility-bar";
 import { Footer } from "./components/footer";
-const atkinson_Hyperlegible = Atkinson_Hyperlegible({ subsets: ["latin"], weight:'400' });
+import { Atkinson_Hyperlegible, Atkinson_Hyperlegible } from "next/font/google";
+const atkinson_Hyperlegible = Atkinson_Hyperlegible({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export const metadata = {
   title: "SEMITEC",
@@ -11,8 +14,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body className={atkinson_Hyperlegible.className}>{children}
-      {<Footer/>}
+      <body className={atkinson_Hyperlegible.className} style={ {margin: "0px"}}>
+        {children}
+        {<Footer />}
       </body>
     </html>
   );

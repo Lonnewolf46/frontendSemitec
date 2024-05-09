@@ -1,0 +1,28 @@
+.lessonCardContainer {
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid #e6e6e6;
+}
+
+.itemInfo {
+    padding: 20px 10px 20px 20px;
+    width: 100%;
+}
+
+.active {
+    border: 2px solid #F29325;
+}
+
+.medium {
+    font-weight:600;
+}
+
+.medium, .middle {
+    height: 40%;
+}
+
+.details {
+    font-weight:600;
+    display: flex;
+    direction: rtl;
+}

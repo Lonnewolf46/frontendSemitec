@@ -1,7 +1,8 @@
+import LessonsScreen from "../../components/lessons-screen";
 export default function StudentLessons() {
   return (
     <main>
-      <h1>Student Lessons</h1>
+      <LessonsScreen />
     </main>
   );
 }
