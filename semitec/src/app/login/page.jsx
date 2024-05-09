@@ -6,16 +6,17 @@ import '../components/button/button.css'
 
 export default function Login({ setToken }) { 
 
-    const login = async () => {
+    const login = async (credentials) => {
         try {
-            const response = await fetch('http://localhost:5000/login', {
+            const data = await fetch('http://localhost:5000/login', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(credentials)
               })
-              const headers = response.headers
+              console.log(data)
+              
         } catch (error){
             console.log(error)
         }
@@ -59,6 +60,7 @@ export default function Login({ setToken }) {
                                 alert(JSON.stringify(values, null, 2));
                                 setSubmitting(false);
                                 }, 400);
+                                login(values)
                             }}
                             >
                             {({ isSubmitting }) => (
