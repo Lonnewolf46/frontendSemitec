@@ -10,8 +10,8 @@ export default function TeacherHome() {
         <div className={styles.leftContainer}>
           <div style={{justifyContent: "space-between", display:"flex", backgroundColor: "#ebebeb", borderRadius: "25px", padding: "10px"}}>
             <div>
-              <h1>!Hola Jesus!</h1>
-              <p>Que bueno verte de nuevo.</p>
+              <h1>¡Hola Jesús!</h1>
+              <p>Qué bueno verte de nuevo.</p>
             </div>
             <div>
               <Image src={kirbi} alt="Kirbi dandote la bienvenida!" />

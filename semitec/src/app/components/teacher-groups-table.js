@@ -8,11 +8,10 @@ export default function TeacherGroupsTable() {
   const getGroups = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/teacher/groups?teacher_id=11"
+        "http://localhost:5000/teacher/groups?teacher_id=14"
       );
       const data = await response.json();
       setGroups(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
