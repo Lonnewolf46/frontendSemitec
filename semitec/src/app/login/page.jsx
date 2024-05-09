@@ -5,7 +5,7 @@ import './Login.css';
 import '../components/button/button.css'
 
 export default function Login() { 
-    console.log()
+
     return  <div className='flex-container'>
                 <div className='bg-size' alt="Imagen azul decorativa en el fondo">
                     <div className='details-container'>
@@ -63,6 +63,7 @@ export default function Login() {
                                         <text className='reg-text'>  </text> 
                                         <a href={'/signup'}>Registrarse</a>
                                     </div>
+                                    
                                     <div className='anchor-container'>
                                         <a href={'/guest'}> Ingresar como invitado</a>
                                     </div>

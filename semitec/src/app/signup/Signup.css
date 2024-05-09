@@ -1,0 +1,83 @@
+.personal{
+    visibility: visible;
+    display: inherit;
+}
+
+.location{
+    visibility: visible;
+    display: inherit;
+}
+
+.welcome{
+    visibility: visible;
+    display: inherit;
+}
+
+.hidden {
+    visibility: hidden;
+    height: 0;
+    width: 0;   
+}
+
+.error-message{
+    color: #D94F04;
+}
+
+body {
+    margin: 0;
+}
+
+.reg-text{
+    display: inherit;
+    flex-wrap: nowrap;
+    font-size: 0.9vw;
+    font-weight: 100;
+}
+
+.logo-img{
+    display: inherit;
+    background-image: url('../../assets/Semitec_logoSuite/semitec_logo_300px_color.png');
+    background-size: contain;
+    width: 100%;
+    height: 160px;
+    flex-grow: 4;
+    background-repeat: no-repeat;
+    margin: 30% 10% 1% 0;
+}
+
+.signup-header {
+    display: inherit;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-self: flex-end;
+    font-size: 25px;
+    font-weight: bolder;
+    width: 100%;
+    padding-bottom: 5%;
+}
+
+.signup{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    align-content: center;
+    justify-content: center;
+}
+
+.field-error{
+    font-size: 0.9vw;
+    font-weight: 100;
+}
+
+.buttons-container{
+    display: flex;
+}
+
+.bg-size {
+    display: inherit;
+
+}
+
+.bg-image {
+    background-image: url('../../assets/bg_images/signup_img.png');
+}
