@@ -6,12 +6,6 @@ export default function Keyboard() {
   return (
     <div className={styles.keyboardContainer}>
       <div className={styles.leftContainer}>
-        <div className={styles.functionKeys}>
-          <KeyboardRow keyList={data.keyboard.firstFunCol} />
-          <KeyboardRow keyList={data.keyboard.secondFunCol} />
-          <KeyboardRow keyList={data.keyboard.thirdFunCol} />
-          <KeyboardRow keyList={data.keyboard.fourthFunCol} />
-        </div>
         <div className={styles.alphaKeys}>
           <KeyboardRow keyList={data.keyboard.firstAlphaRow} />
           <KeyboardRow keyList={data.keyboard.secondAlphaRow} />
@@ -21,9 +15,6 @@ export default function Keyboard() {
         </div>
       </div>
       <div className={styles.control}>
-        <div className={styles.firstControlRow}>
-          <KeyboardRow keyList={data.keyboard.firstControlRow} />
-        </div>
         <div>
           <KeyboardRow keyList={data.keyboard.firstControlRow} />
           <KeyboardRow keyList={data.keyboard.firstControlRow} />

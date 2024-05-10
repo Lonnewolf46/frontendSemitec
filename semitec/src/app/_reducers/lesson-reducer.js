@@ -1,4 +1,5 @@
 import lesson from "@/app/lib/lessons";
+
 const initialState = () => ({
     done: "",
     current: lesson.words.charAt(0),
