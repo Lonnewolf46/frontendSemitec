@@ -9,7 +9,7 @@
   display: flex;
   flex-grow: 1;
   min-width: 5vw;
-  min-height: 5.5vw;
+  min-height: 5vw;
   margin: 3px;
   justify-content: center;
   flex-direction: column;

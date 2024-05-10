@@ -37,7 +37,7 @@
 .container {
   justify-content: center;
   width: 100vw;
-  height: 90vh;
+  padding-bottom: 20px;
 }
 .typingArea {
   display: flex;
