@@ -2,14 +2,23 @@ import lesson from "@/app/lib/lessons";
 
 const initialState = () => ({
     done: "",
-    current: lesson.words.charAt(0),
-    next: lesson.words.slice(1) + (" " + lesson.words).repeat(2),
+    current: "",
+    next: "",
     typed: "",
     mistake: "",
 });
 
 export const lessonReducer = (state = initialState(), action = {}) => {
     switch (action.type) {
+        case 'set_data' : {
+            return {
+                done: "",
+                current: action.words.charAt(0),
+                next: action.words.slice(1) + (" " + action.words).repeat(action.iterations),
+                typed: "",
+                mistake: "",
+            }
+        }
         case 'update_done': {
             return { ...state,
                 done: state.done + state.current,

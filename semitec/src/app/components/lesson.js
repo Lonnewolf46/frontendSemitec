@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useReducer } from "react";
+import { useSearchParams } from "next/navigation";
 import Keyboard from "@/app/components/keyboard";
 import styles from "@/app/_styles/Lesson.module.css";
 import { lessonReducer } from "@/app/_reducers/lesson-reducer";
@@ -16,6 +17,23 @@ export default function Lesson() {
   );
   const [start, setStart] = useState(false);
   const [showMetrics, setShowMetrics] = useState(false);
+  const searchParams = useSearchParams()
+
+  const getLesson = async (lesson_id) => {
+    try {
+    const res = await fetch(`http://localhost:5000/lesson?lesson_id=${lesson_id}`)
+    const data = await res.json()
+    
+    distpatchLessonProps({ type:'set_data', words:data.words, iterations:data.iterations})
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    console.log(searchParams.get('lesson_id'))
+    getLesson(searchParams.get('lesson_id'))
+  }, [])
 
   // chronometer
   useEffect(() => {

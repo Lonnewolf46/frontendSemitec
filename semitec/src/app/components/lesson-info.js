@@ -7,7 +7,7 @@ export default function LessonInfo({ lesson }) {
   const pathname = usePathname();
 
   const handleClick = () => {
-    router.push(`${pathname}/lesson`);
+    router.push(`${pathname}/lesson?lesson_id=${lesson.lesson_id}`);
   };
 
   return (
