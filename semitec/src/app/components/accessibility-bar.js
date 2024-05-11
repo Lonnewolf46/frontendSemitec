@@ -9,19 +9,20 @@ import contrast from "../ui/contrast.svg";
 export function AccessibilityBar() {
   return (
     <div className={styles.bar}>
-      <button>
+      <button aria-label="Disminuir tamaño de letra">
+
         <Image src={smaller} alt="" />
       </button>
-      <button>
+      <button aria-label="Aumentar tamaño de letra">
         <Image src={bigger} alt="" />
       </button>
-      <button>
+      <button aria-label="Seleccionar tipografía">
         <Image src={typography} alt="" />
       </button>
-      <button>
+      <button aria-label="Seleccionar velocidad de voz">
         <Image src={voiceSpeed} alt="" />
       </button>
-      <button style={{ marginRight: "16px" }}>
+      <button aria-label="Selecionar tema de contraste" style={{ marginRight: "16px" }}>
         <Image src={contrast} sizes="(max-width: 24px) 1.6vw, 2.2vw" alt="" />
       </button>
     </div>
