@@ -115,6 +115,7 @@ export default function SignUp() {
                                       }, 400); 
                                       
                                       setSignUpStage(stage+1)
+                                      href='/login'
                                   }}
               >
               
@@ -226,7 +227,7 @@ export default function SignUp() {
                   </div>
 
                   <div className={stage === 3 ? 'personal' : 'hidden'}>
-                      Welcome!
+                      ¡Ya sos parte de SEMITEC!
                       <a className="anchor-button" href={'/login'}> Continuar </a>
                   </div>
                 </Form>

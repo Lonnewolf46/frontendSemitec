@@ -4,21 +4,27 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './Login.css';
 import '../components/button/button.css'
 
-export default function Login({ setToken }) { 
+export default function Login({ }) { 
 
     const login = async (credentials) => {
         try {
-            const response = await fetch('http://localhost:3000/login', {
+            const response = await fetch('http://25.37.76.172:5000/login', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(credentials)
               })
-              const data = response.json()
+              const data = await response.json()
               console.log(data)
               const headers = response.headers
-              console.log(headers)
+              console.log(response.headers.get('auth-token'))
+
+              header, payload, signature = jwt_token.split('.')
+              decoded_payload = jwt.decode(payload, algorithms=['HS256'])
+              console.log(decoded_payload)
+
+
         } catch (error){
             console.log(error)
         }
