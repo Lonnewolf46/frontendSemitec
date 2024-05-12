@@ -19,6 +19,24 @@ export default function SignUp() {
       setUserTypeOptions(userTypes)
   } , [])
 
+  const signup = async (credentials) => {
+    try {
+        const response = await fetch('http://25.37.76.172:5000/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+          })
+          const data = await response.json()
+          console.log(data)
+          const headers = response.headers
+          console.log(response.headers.get('auth-token'))
+    } catch (error){
+        console.log(error)
+    }
+  }
+
   const getCountries = async() => {
     try {
       const response = await fetch("http://localhost:5000/countries");
@@ -66,9 +84,9 @@ export default function SignUp() {
             <div className='logo-img'/>
 
             <Formik 
-              initialValues={{ name: '', email: '', password: '', user_type: '', country:'', province:'', canton:'', institution:''}}
+              initialValues={{ email: '', password: '', user_type: '', country:'', province:'', canton:'', institution:'', name: ''}}
               validate={values => {
-                const errors = {};
+                const errors = {}; 
                 if (!values.email) {
                     errors.email = 'Correo requerido.';
                     } else if (
@@ -114,8 +132,7 @@ export default function SignUp() {
                                       setSubmitting(false);
                                       }, 400); 
                                       
-                                      setSignUpStage(stage+1)
-                                      href='/login'
+                                      signup(values)
                                   }}
               >
               
@@ -220,7 +237,7 @@ export default function SignUp() {
                     <br></br>
                     <div className='buttons-container'>
                       <button className="button" onClick={() => setSignUpStage(stage-1)}> Volver </button>
-                      <button className="button" disabled={isSubmitting}>
+                      <button className="button" type="submit" disabled={isSubmitting}>
                                                 Registrarme
                       </button>
                     </div>
