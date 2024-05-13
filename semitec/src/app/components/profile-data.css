@@ -1,0 +1,71 @@
+.flex-container{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+.data-container{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgba(0, 0, 0, 0.08); 
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: left;
+    font-size: 16px;
+    width: 25%;
+    border-radius: 25px;
+    height: min-content;
+    margin: 5%;
+}
+
+.header-format{
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 100%;
+}
+
+.body-format{
+    display: flex;
+    flex-wrap: wrap;
+    display: inherit;
+    padding-bottom: 5%;
+    width: 100%;
+}
+
+.name-format{
+    display: inherit;
+    font-weight: bolder;
+    font-size: 5vh;
+    width: 100%;
+    justify-content: center;
+}
+
+.institution-format{
+    display: inherit;
+    font-weight: normal;
+    font-size: 3vh;
+    width: 100%;
+    justify-content: center;
+}
+
+.id-format{
+    display: inherit;
+    font-size: 2.5vh;
+    color: darkgrey;
+    width: 100%;
+    justify-content: center;
+}
+
+.data{
+    display: inherit;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.error{
+    background-color: red;
+}
