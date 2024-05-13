@@ -20,13 +20,18 @@ export default function SignUp() {
   } , [])
 
   const signup = async (credentials) => {
+    let { country, province, canton, institution_id, user_type_id,...updated_data } = credentials;
+    updated_data.user_type_id = 1;
+    updated_data.institution_id = 1;
+    updated_data.district_id = 1;
+    console.log(updated_data)
     try {
         const response = await fetch('http://25.37.76.172:5000/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(credentials)
+            body: JSON.stringify(updated_data)
           })
           const data = await response.json()
           console.log(data)
@@ -125,12 +130,6 @@ export default function SignUp() {
                 return errors;
               }}
               onSubmit={(values, { setSubmitting }) => {
-                                      setTimeout(() => {
-                                        console.log(values)
-                                      alert(JSON.stringify(values, null, 2));
-                                      setSubmitting(false);
-                                      }, 400); 
-                                      
                                       signup(values)
                                   }}
               >
