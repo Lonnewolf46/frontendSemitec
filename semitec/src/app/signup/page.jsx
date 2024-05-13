@@ -19,7 +19,7 @@ export default function SignUp() {
   } , [])
 
   const signup = async (credentials) => {
-    let { country, province, canton, institution_id,...updated_data } = credentials;
+    let { country, province, canton,...updated_data } = credentials;
     updated_data.district_id = 1;
     console.log(updated_data)
     try {
