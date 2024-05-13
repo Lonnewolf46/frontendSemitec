@@ -12,7 +12,7 @@ export default function NavBar({ menuList }) {
   return (
     <header>
       <nav className={styles.navBar}>
-        <Link href={menuList[0].href}>
+        <Link href={'/login'}>
           <Image
             src={Logo}
             width={75}

@@ -1,0 +1,7 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #ebebeb;
+    border-radius: 25px;
+    padding: 10px;
+}
