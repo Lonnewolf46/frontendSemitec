@@ -10,6 +10,7 @@ body {
 a {
     color: #025259;
     align-self: center;
+    font-size: 2.3vh;
   }
 
 .anchor-and-text-container{
@@ -27,7 +28,7 @@ a {
 .reg-text{
     display: inherit;
     flex-wrap: nowrap;
-    font-size: 0.9vw;
+    font-size: 2.3vh;
     font-weight: 100;
 }
 
@@ -113,11 +114,11 @@ a {
 
 .login-text {
     display: inherit;
-    font-size: 0.9vw;
+    font-size: 1.3vw;
     font-weight: 100;
 }
 
 .field-error{
-    font-size: 0.9vw;
+    font-size: 1vw;
     font-weight: 100;
 }
