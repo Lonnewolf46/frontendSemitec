@@ -131,6 +131,7 @@ export default function SignUp() {
               }}
               onSubmit={(values, { setSubmitting }) => {
                                       signup(values)
+                                      setSignUpStage(stage+1)
                                   }}
               >
               
