@@ -1,0 +1,10 @@
+.wave-img{
+    display: inherit;
+    background-image: url('../../assets/bg_images/4bWGjBbhQpmQVu1Tzs.webp');
+    background-size: contain;
+    width: 100%;
+    height: 160px;
+    flex-grow: 4;
+    background-repeat: no-repeat;
+    margin: 30% 10% 1% 0;
+}
