@@ -7,7 +7,7 @@ import '../components/button/button.css'
 
 export default function SignUp() {
 
-  const [stage, setSignUpStage] = useState(1)
+  const [stage, setSignUpStage] = useState(3)
   const test = true
 
   const [userTypeOptions, setUserTypeOptions] = useState([])
@@ -233,7 +233,7 @@ export default function SignUp() {
                   <div className={stage === 3 ? 'personal' : 'hidden'}>
                       <div className='welcome-header'>¡Ahora sos parte de SEMITEC!</div>
                       <div className='welcome-text'>Iniciá sesión para empezar a aprender</div>
-                      <div className='wave-img'/>
+                      <div className='wave-img' aria-description='Imagen de un perro saludando.'/>
                       <a className="final-anchor-button" href={'/login'}> Continuar </a>
                   </div>
                 </Form>

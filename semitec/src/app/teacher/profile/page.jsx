@@ -1,6 +1,6 @@
 import Profile from "@/app/components/profile-data"
 
-export default function profile_student() {
+export default function profile_teacher(){
     return (
       <main>
         <Profile />
