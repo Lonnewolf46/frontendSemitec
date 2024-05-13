@@ -20,18 +20,20 @@ export default function SignUp() {
   } , [])
 
   const signup = async (credentials) => {
+
+    let { country, province, canton, ...data } = credentials;
+    data.district_id = 1;
+
     try {
         const response = await fetch('http://25.37.76.172:5000/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(credentials)
+            body: JSON.stringify(data)
           })
           const data = await response.json()
           console.log(data)
-          const headers = response.headers
-          console.log(response.headers.get('auth-token'))
     } catch (error){
         console.log(error)
     }
@@ -84,7 +86,7 @@ export default function SignUp() {
             <div className='logo-img'/>
 
             <Formik 
-              initialValues={{ email: '', password: '', user_type: '', country:'', province:'', canton:'', institution:'', name: ''}}
+              initialValues={{ email: '', password: '', user_type_id: '', country:'', province:'', canton:'', institution_id:'', name: ''}}
               validate={values => {
                 const errors = {}; 
                 if (!values.email) {
@@ -160,7 +162,7 @@ export default function SignUp() {
                         <br></br>
                         <text className='login-text'>Soy</text>
                         <br></br>
-                        <Field as="select" className='form-control' type="user_type" name="user_type">
+                        <Field as="select" className='form-control' type="user_type_id" name="user_type">
                           {
                             userTypeOptions && 
                             userTypeOptions.map( (userType) => {
@@ -223,7 +225,7 @@ export default function SignUp() {
                     <br></br>
                     <br></br>
                     <text className='login-text'>Institución</text>
-                    <Field as="select" className='form-control' type="institution" name="institution">
+                    <Field as="select" className='form-control' type="institution_id" name="institution_id">
                       <option>Seleccione una institución.</option>
                       <option value="1">Escuela Padre Peralta</option>
                       <option value="2">Escuela de los Angeles</option>
