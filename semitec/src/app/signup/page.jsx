@@ -7,7 +7,7 @@ import '../components/button/button.css'
 
 export default function SignUp() {
 
-  const [stage, setSignUpStage] = useState(3)
+  const [stage, setSignUpStage] = useState(1)
   const test = true
 
   const [userTypeOptions, setUserTypeOptions] = useState([])
