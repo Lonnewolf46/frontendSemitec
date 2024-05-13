@@ -54,6 +54,7 @@ export default function CreateGroup() {
       <div style={ {marginBottom: "15px"}}>
         <label style={{display: "block", marginBottom: "5px"}} htmlFor="correo">Nombre: </label>
         <input value={name}
+        maxLength={16}
         onChange={handleChangeName}type="text" id="groupName" />
 </div>
         {groupCode ? <p><strong>{groupCode}</strong></p>: <></>}
