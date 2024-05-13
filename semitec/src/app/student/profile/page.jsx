@@ -21,7 +21,9 @@ export default function profile_student() {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);}
+        console.log(data[0]);}
+        setUsername(data.username);
+        console.log(username)
     } catch (error) {
       console.log(error);
     }
