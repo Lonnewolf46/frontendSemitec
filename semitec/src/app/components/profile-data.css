@@ -64,6 +64,7 @@
     display: inherit;
     flex-wrap: wrap;
     width: 100%;
+    font-size: 2.5vh;
 }
 
 .error{

@@ -1,30 +1,30 @@
 import "./profile-data.css"
 
-export default function Profile() {
+export default function Profile({username,institution,user_code,user_type,email,country,province,canton,district}) {
     return (
         <div className="flex-container">
             <div className={"data-container"}> 
                 <div className="header-format">
                     <div className="name-format">
-                        Name
+                        {username}
                     </div>
                     <div className="institution-format">
-                        Institution
+                        {institution}
                     </div>
                     <div className="id-format">
-                        ID number
+                        #{user_code}
                     </div>
                 </div>
             
                 <div className="body-format">
                     <div className="data">
-                        type
+                        {user_type}
                     </div>
                     <div className="data">
-                        email
+                        {email}
                     </div>
                     <div className="data">
-                    location
+                        {country}, {province}, {canton}, {district}
                     </div>
                 </div>
             </div>
