@@ -5,7 +5,6 @@ import { customSelectSchema } from "../schemas";
 import './Signup.css';
 import '../components/button/button.css'
 
-
 export default function SignUp() {
 
   const [stage, setSignUpStage] = useState(1)
@@ -18,6 +17,26 @@ export default function SignUp() {
       const userTypes = [{user_type_id: 0, name:"Tipo de usuario"}, {user_type_id: 1, name:"Estudiante"}, {user_type_id: 2, name:"Tutor"}]
       setUserTypeOptions(userTypes)
   } , [])
+
+  const signup = async (credentials) => {
+    let { country, province, canton,...updated_data } = credentials;
+    updated_data.district_id = 1;
+    console.log(updated_data)
+    try {
+        const response = await fetch('http://25.37.76.172:5000/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updated_data)
+          })
+          const data = await response.json()
+          console.log(data)
+
+    } catch (error){
+        console.log(error)
+    }
+  }
 
   const getCountries = async() => {
     try {
@@ -66,9 +85,9 @@ export default function SignUp() {
             <div className='logo-img'/>
 
             <Formik 
-              initialValues={{ name: '', email: '', password: '', user_type: '', country:'', province:'', canton:'', institution:''}}
+              initialValues={{ email: '', password: '', user_type_id: '', country:'', province:'', canton:'', institution_id:'', name: ''}}
               validate={values => {
-                const errors = {};
+                const errors = {}; 
                 if (!values.email) {
                     errors.email = 'Correo requerido.';
                     } else if (
@@ -85,8 +104,8 @@ export default function SignUp() {
                   errors.name = 'Nombre requerido.';
                 } 
 
-                if (!values.user_type) {
-                  errors.user_type = 'Tipo de usuario requerido.';
+                if (!values.user_type_id) {
+                  errors.user_type_id = 'Tipo de usuario requerido.';
                 } 
 
                 if (!values.country) {
@@ -101,21 +120,15 @@ export default function SignUp() {
                   errors.canton = 'Cantón requerido.';
                 } 
 
-                if (!values.institution) {
-                  errors.institution = 'Institución requerida.';
+                if (!values.institution_id) {
+                  errors.institution_id = 'Institución requerida.';
                 } 
                 
                 return errors;
               }}
               onSubmit={(values, { setSubmitting }) => {
-                                      setTimeout(() => {
-                                        console.log(values)
-                                      alert(JSON.stringify(values, null, 2));
-                                      setSubmitting(false);
-                                      }, 400); 
-                                      
+                                      signup(values)
                                       setSignUpStage(stage+1)
-                                      href='/login'
                                   }}
               >
               
@@ -143,21 +156,12 @@ export default function SignUp() {
                         <br></br>
                         <text className='login-text'>Soy</text>
                         <br></br>
-                        <Field as="select" className='form-control' type="user_type" name="user_type">
-                          {
-                            userTypeOptions && 
-                            userTypeOptions.map( (userType) => {
-                                  return <option 
-                                          value={userType.user_type_id} 
-                                          label={userType.name}>
-                                              {userType.name}
-                                            
-                                        </option>
-                            } )
-                          }
+                        <Field as="select" className='form-control' type="user_type_id" name="user_type_id">
+                          <option>Seleccione un tipo de usuario.</option>
+                          <option value="1">Estudiante</option>
+                          <option value="2">Tutor</option>
                         </Field>
-                        
-                        <ErrorMessage className='error-message' name="user_type" component="div"/>
+                        <ErrorMessage className='error-message' name="user_type_id" component="div"/>
                         <br></br>
                         <br></br>
                         <div className='buttons-container'>
@@ -206,7 +210,7 @@ export default function SignUp() {
                     <br></br>
                     <br></br>
                     <text className='login-text'>Institución</text>
-                    <Field as="select" className='form-control' type="institution" name="institution">
+                    <Field as="select" className='form-control' type="institution_id" name="institution_id">
                       <option>Seleccione una institución.</option>
                       <option value="1">Escuela Padre Peralta</option>
                       <option value="2">Escuela de los Angeles</option>
@@ -215,20 +219,22 @@ export default function SignUp() {
                       <option value="5">Escuela el Bosque</option>
                       <option value="6">Colegio San Luis Gonzaga</option>
                     </Field>
-                    <ErrorMessage className='error-message' name="canton" component="div"/>
+                    <ErrorMessage className='error-message' name="institution_id" component="div"/>
                     <br></br>
                     <br></br>
                     <div className='buttons-container'>
                       <button className="button" onClick={() => setSignUpStage(stage-1)}> Volver </button>
-                      <button className="button" disabled={isSubmitting}>
+                      <button className="button" type="submit" disabled={isSubmitting}>
                                                 Registrarme
                       </button>
                     </div>
                   </div>
 
                   <div className={stage === 3 ? 'personal' : 'hidden'}>
-                      ¡Ya sos parte de SEMITEC!
-                      <a className="anchor-button" href={'/login'}> Continuar </a>
+                      <div className='welcome-header'>¡Ahora sos parte de SEMITEC!</div>
+                      <div className='welcome-text'>Iniciá sesión para empezar a aprender</div>
+                      <div className='wave-img'/>
+                      <a className="final-anchor-button" href={'/login'}> Continuar </a>
                   </div>
                 </Form>
               )}
