@@ -26,9 +26,11 @@ export default function Lesson() {
   const getLesson = async (lesson_id) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/lesson?lesson_id=${lesson_id}`
+        `http://25.37.76.172:5000/lesson?lesson_id=${lesson_id}`
       );
       const data = await res.json();
+      if (res.ok) {
+        console.log(data)
 
       distpatchLessonProps({
         type: "set_data",
@@ -37,6 +39,7 @@ export default function Lesson() {
         min_time: data.min_time,
         min_mistakes: data.min_mistakes,
       });
+    }
     } catch (error) {
       console.log(error);
     }

@@ -12,7 +12,7 @@ export default function ListCard({
     <div
       className={`${styles.lessonCardContainer} ${active ? styles.active : ""}`}
     >
-      <Image src={imagePath} alt="" />
+      <Image src={imagePath} alt="" priority={true} />
       <div className={styles.itemInfo}>
         <div className={styles.medium}>{lessonName}</div>
         <div className={styles.middle}>{middleInfo}</div>

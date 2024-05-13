@@ -8,10 +8,17 @@ export default function TeacherGroupsTable() {
   const getGroups = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/teacher/groups?teacher_id=14"
+        "http://25.37.76.172:5000/teacher/groups", {
+          headers: {
+            'auth-token': localStorage.getItem('auth-token')
+          }
+        }
       );
       const data = await response.json();
+      if (response.ok) {
+      console.log(data)
       setGroups(data);
+    }
     } catch (error) {
       console.log(error);
     }
@@ -20,6 +27,10 @@ export default function TeacherGroupsTable() {
   const handleEdit = () => {
     console.log("editar");
   };
+
+  const handleRead = () => {
+    console.log("read")
+  }
 
   useEffect(() => {
     getGroups();
@@ -46,6 +57,9 @@ export default function TeacherGroupsTable() {
               <td>{group.total_students}</td>
               <td>
                 <button onClick={handleEdit}>Editar</button>
+              </td>
+              <td>
+                <button onClick={handleEdit}>Ver</button>
               </td>
             </tr>
           ))}
