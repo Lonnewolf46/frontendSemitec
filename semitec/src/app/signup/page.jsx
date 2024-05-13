@@ -5,7 +5,6 @@ import { customSelectSchema } from "../schemas";
 import './Signup.css';
 import '../components/button/button.css'
 
-
 export default function SignUp() {
 
   const [stage, setSignUpStage] = useState(1)
@@ -20,9 +19,7 @@ export default function SignUp() {
   } , [])
 
   const signup = async (credentials) => {
-    let { country, province, canton, institution_id, user_type_id,...updated_data } = credentials;
-    updated_data.user_type_id = 1;
-    updated_data.institution_id = 1;
+    let { country, province, canton, institution_id,...updated_data } = credentials;
     updated_data.district_id = 1;
     console.log(updated_data)
     try {
@@ -234,8 +231,10 @@ export default function SignUp() {
                   </div>
 
                   <div className={stage === 3 ? 'personal' : 'hidden'}>
-                      ¡Ya sos parte de SEMITEC!
-                      <a className="anchor-button" href={'/login'}> Continuar </a>
+                      <div className='welcome-header'>¡Ahora sos parte de SEMITEC!</div>
+                      <div className='welcome-text'>Iniciá sesión para empezar a aprender</div>
+                      <div className='wave-img'/>
+                      <a className="final-anchor-button" href={'/login'}> Continuar </a>
                   </div>
                 </Form>
               )}

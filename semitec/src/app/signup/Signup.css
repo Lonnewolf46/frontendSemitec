@@ -35,14 +35,16 @@ body {
 }
 
 .logo-img{
-    display: inherit;
+    display: flex;
+    justify-content: center;
     background-image: url('../../assets/Semitec_logoSuite/semitec_logo_300px_color.png');
     background-size: contain;
     width: 100%;
     height: 160px;
     flex-grow: 4;
     background-repeat: no-repeat;
-    margin: 30% 10% 1% 0;
+    margin-top: 30%;
+    margin-left: 25%;
 }
 
 .signup-header {
@@ -81,3 +83,54 @@ body {
 .bg-image {
     background-image: url('../../assets/bg_images/signup_img.png');
 }
+
+.wave-img{
+    display: inherit;
+    background-image: url('../../assets/bg_images/4bWGjBbhQpmQVu1Tzs.webp');
+    background-size: contain;
+    width: 100%;
+    height: 160px;
+    flex-grow: 4;
+    background-repeat: no-repeat;
+    margin-left: 75%;
+}
+
+
+.welcome-header{
+    display: inherit;
+    flex-wrap: wrap;
+    font-size: 48px;
+    font-weight: 950;
+    width: 100%;
+    padding-top: 15%;
+    color: #555555;
+}
+
+.welcome-text{
+    display: flex;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 950;
+    width: 100%;
+    color: #555555;
+}
+
+.final-anchor-button{
+    display: flex;
+      background-color: #F29325; 
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      width: fit-content;
+      border-radius: 5px;
+      height: min-content;
+      margin-bottom: 5%;
+      margin-left: auto;
+  }
+  
+  .final-anchor-button:hover {
+    background-color: #D94F04;
+  }
