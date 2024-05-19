@@ -4,7 +4,7 @@ import styles from "./Keyboard.module.css";
 import Key from "./key";
 export default function Keyboard() {
   return (
-    <div className={styles.keyboardContainer}>
+    <div aria-hidden="true" className={styles.keyboardContainer}>
       <div className={styles.leftContainer}>
         <div className={styles.alphaKeys}>
           <KeyboardRow keyList={data.keyboard.firstAlphaRow} />

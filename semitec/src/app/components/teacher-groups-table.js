@@ -41,7 +41,7 @@ export default function TeacherGroupsTable() {
       <table>
         <thead>
           <tr>
-            <th>#</th>
+            <th>Código</th>
             <th>Nombre</th>
             <th>Progreso</th>
             <th>Estudiantes </th>
@@ -51,7 +51,7 @@ export default function TeacherGroupsTable() {
         <tbody>
           {groups.map((group, index) => (
             <tr key={index}>
-              <td>{group.group_id}</td>
+              <td>{group.group_code}</td>
               <td>{group.name}</td>
               <td>{group.progress}</td>
               <td>{group.total_students}</td>

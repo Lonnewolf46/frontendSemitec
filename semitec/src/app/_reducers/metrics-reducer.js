@@ -9,6 +9,16 @@ const initialState = () => ({
 
 export const metricsReducer = (state = initialState(), action = {}) => {
   switch (action.type) {
+    case "restart" : {
+      return {
+        time_taken: 0,
+        mistakes: 0,
+        accuracy_rate: 100,
+        pulsation_per_minute: 0,
+        valid_keystrokes: 0,
+        is_complete: 0,
+      }
+    }
     case "update_time_taken": {
       return { ...state, time_taken: state.time_taken + 1 };
     }
