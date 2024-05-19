@@ -37,7 +37,7 @@ export const lessonReducer = (state = initialState(), action = {}) => {
         mistake: "",
         words: action.words,
         min_time: action.min_time,
-        min_time: action.min_mistakes,
+        min_mistakes: action.min_mistakes,
       };
     }
     case "update_done": {
