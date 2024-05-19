@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import WelcomeCard from "@/app/components/welcome-card";
 import containers from "@/app/_styles/Containers.module.css";
+import ProgressCard from "@/app/components/progressCard";
 
 export default function StudentHome() {
   const [username, setUsername] = useState('');
@@ -31,8 +32,16 @@ export default function StudentHome() {
       <div className={containers.fullScreenContainer}>
         <div className={containers.halfScreenContainer}>
           <WelcomeCard username={username}/>
+          <div>Ultimas 10 lecciones</div>
         </div>
-        <div className={containers.halfScreenContainer}></div>
+        <div className={containers.halfScreenContainer}>
+          <div style={{ display: "flex",justifyContent: "space-between" }}>
+            <ProgressCard amount={5} text={"lecciones completadas"}/>
+            <ProgressCard amount={6} text={"lecciones pendientes"}/>
+          </div>
+          <div>Stasts</div>
+          <div>next lesson</div>
+        </div>
       </div>
     </main>
   );
