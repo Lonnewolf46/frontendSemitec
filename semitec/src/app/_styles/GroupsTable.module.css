@@ -10,6 +10,11 @@
 
 .container thead {
     border-bottom: 2px solid black;
+    font-size: 1.3vw;
+}
+
+.container tbody {
+    font-size: 1.2vw;
 }
 .container th, .container td {
     text-align:left;
