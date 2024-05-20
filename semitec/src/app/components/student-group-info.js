@@ -1,5 +1,5 @@
 import styles from "./LessonInfo.module.css";
-import StudentsTable from "./students-table";
+import StudentsTable from "./group-members-table";
 export default function StudentGroupInfo({ group }) {
   const handleClick = () => {
     console.log("clicked");
@@ -15,7 +15,7 @@ export default function StudentGroupInfo({ group }) {
         <p>{group.teacher_name}</p>
         <h4>Estudiantes</h4>
       </div>
-      <StudentsTable />
+      <StudentsTable group_id={group.group_id}/>
     </>
   );
 }

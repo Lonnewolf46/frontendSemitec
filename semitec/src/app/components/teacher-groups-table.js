@@ -1,4 +1,6 @@
 "use client";
+import Image from "next/image";
+import view from '@/app/ui/see.svg'
 import { useEffect, useState } from "react";
 import styles from "./GroupsTable.module.css";
 
@@ -56,10 +58,10 @@ export default function TeacherGroupsTable() {
               <td>{group.progress}</td>
               <td>{group.total_students}</td>
               <td>
-                <button onClick={handleEdit}>Editar</button>
-              </td>
-              <td>
-                <button onClick={handleEdit}>Ver</button>
+                {/*<button onClick={handleEdit}>Editar</button>*/}
+                <button aria-label={`Ver grupo ${group.name}`} onClick={handleEdit}>
+                  <Image src={view} alt=""/>
+                </button>
               </td>
             </tr>
           ))}
