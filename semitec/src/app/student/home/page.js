@@ -10,6 +10,7 @@ import NextLessonCard from "@/app/components/next-lesson-card";
 
 export default function StudentHome() {
   const [username, setUsername] = useState("");
+  const [stats, setStats] = useState('')
 
   const options = {
     title: {
@@ -39,8 +40,26 @@ export default function StudentHome() {
     }
   };
 
+  const getStats = async () => {
+    try{
+      const res = await fetch("http://25.37.76.172:5000/student/lessons/stats", {
+        headers: {
+          "auth-token": localStorage.getItem("auth-token"),
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(data);
+        setStats(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     getUsername();
+    getStats();
   }, []);
 
   return (
@@ -61,8 +80,8 @@ export default function StudentHome() {
               paddingBottom: "50px",
             }}
           >
-            <ProgressCard amount={5} text={"lecciones completadas"} />
-            <ProgressCard amount={6} text={"lecciones pendientes"} />
+            <ProgressCard amount={stats.avg_mistakes} text={"errores promedio"} />
+            <ProgressCard amount={`${stats.avg_time_taken}`} text={"tiempo promedio"} />
           </section>
           <section>
             <div
@@ -75,8 +94,8 @@ export default function StudentHome() {
               Estadísticas
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <StatsCard value={"58.4"} name={"PPM"} />
-              <StatsCard value={"97%"} name={"Precisión"} />
+              <StatsCard value={stats.avg_pulsation_per_minute} name={"PPM"} />
+              <StatsCard value={`${stats.avg_accuracy_rate}%`} name={"Precisión"} />
             </div>
           </section>
           <NextLessonCard />
