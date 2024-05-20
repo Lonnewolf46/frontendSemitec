@@ -33,9 +33,10 @@ export default function TeacherHome() {
         <div className={styles.leftContainer}>
           <WelcomeCard username={username} />
         </div>
-        <div className={styles.rightContainer}>
+        <section className={styles.rightContainer}>
+          <h1 style={{ fontSize: "2.7vw"}}>Mis grupos</h1>
           <TeacherGroupsTable />
-        </div>
+        </section>
       </div>
     </main>
   );

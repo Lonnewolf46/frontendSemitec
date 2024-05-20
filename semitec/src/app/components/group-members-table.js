@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import styles from "./GroupsTable.module.css";
+import styles from "@/app/_styles/GroupsTable.module.css";
 
 export default function StudentsTable({ group_id }) {
   const pathname = usePathname()

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import WelcomeCard from "@/app/components/welcome-card";
@@ -11,6 +12,9 @@ import NextLessonCard from "@/app/components/next-lesson-card";
 export default function StudentHome() {
   const [username, setUsername] = useState("");
   const [stats, setStats] = useState('')
+  const [accuracyHistory, setAccuracyHistory] = useState([])
+  const [nextLessonId, setNextLessonId] = useState(1)
+  const router = useRouter();
 
   const options = {
     title: {
@@ -18,7 +22,9 @@ export default function StudentHome() {
     },
     series: [
       {
-        data: [10, 9, 5, 20, 30, 25, 29, 33, 32, 40],
+        data: accuracyHistory.map((value) => {
+          return value.accuracy_rate
+        }),
       },
     ],
   };
@@ -57,9 +63,48 @@ export default function StudentHome() {
     }
   }
 
+  const getAccuracyHistory = async () => {
+    try{
+      const res = await fetch("http://25.37.76.172:5000/student/lessons/accuracy-history", {
+        headers: {
+          "auth-token": localStorage.getItem("auth-token"),
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(data);
+        setAccuracyHistory(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getNextLesson = async () => {
+    try{
+      const res = await fetch("http://25.37.76.172:5000/student/lessons/next-lesson", {
+        headers: {
+          "auth-token": localStorage.getItem("auth-token"),
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(data);
+        setNextLessonId(data.max_lesson_id)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleStart = () => {
+    router.push(`/student/lessons/lesson?lesson_id=${nextLessonId}`)
+  }
   useEffect(() => {
     getUsername();
     getStats();
+    getAccuracyHistory();
+    getNextLesson()
   }, []);
 
   return (
@@ -98,7 +143,7 @@ export default function StudentHome() {
               <StatsCard value={`${stats.avg_accuracy_rate}%`} name={"Precisión"} />
             </div>
           </section>
-          <NextLessonCard />
+          <NextLessonCard handleStart={handleStart} lesson_id={nextLessonId}/>
         </div>
       </div>
     </main>

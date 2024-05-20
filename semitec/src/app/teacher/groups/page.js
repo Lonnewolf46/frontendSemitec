@@ -14,7 +14,7 @@ export default function TeacherGroups() {
   }
   return (
     <main style={{ width: "90vw", margin: "30px auto ", height: "70vh"}}>
-      <h1>Mis grupos</h1>
+      <h1 style={{ fontSize: "2.7vw"}}>Mis grupos</h1>
       <TeacherGroupsTable />
       <div className={containers.alignLeft}>
         <button className={buttons.primary} onClick={ handleClick }>Nuevo Grupo</button>
