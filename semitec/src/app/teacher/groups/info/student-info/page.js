@@ -8,7 +8,7 @@ import StatsCard from "@/app/components/statsCard";
 export default function StudentInfo() {
     const searchParams = useSearchParams()
   const [profile, setProfile] = useState("");
-  const [stats, setStats] = useState("");
+  const [stats, setStats] = useState({avg_time_taken: 0, avg_mistakes: 0, avg_accuracy_rate: 0, avg_pulsation_per_minute:0 });
 
     const getStats = async () => {
     try{
@@ -18,7 +18,7 @@ export default function StudentInfo() {
         },
       });
       const data = await res.json();
-      if (res.ok) {
+      if (res.ok && data.avg_accuracy_rate !== null) {
         console.log(data);
         setStats(data)
       }
