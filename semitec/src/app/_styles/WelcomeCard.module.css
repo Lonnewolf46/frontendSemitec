@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ebebeb;
+    border-radius: 25px;
+    padding: 10px;
+}
+
+.name {
+    font-size: 4vw;
+    margin-bottom: 0.1em;
+    margin-top: 0;
+}
+
+.message {
+    font-size: 2vw;
+    margin: 0;
+}

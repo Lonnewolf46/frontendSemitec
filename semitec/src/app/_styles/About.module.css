@@ -1,0 +1,20 @@
+.containerParagraph{
+    padding: 20px;
+    margin-left: 10vw;
+    width: 80vw ;
+    font-size: 1.4vw;
+}
+.containerTitle{
+    padding-top: 20px;
+    padding-left: 20px;
+    margin-left: 5.5vw;
+    padding-bottom: 2px;
+    font-size: 1.5vw;
+    border-bottom: solid 15px #007172;
+    display: inline-block;
+}
+.containerImage{
+    text-align: right;
+    margin-right: 4.8vw;
+    margin-bottom: 1vw;
+}

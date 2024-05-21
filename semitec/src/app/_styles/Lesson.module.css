@@ -1,0 +1,59 @@
+.text {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  overflow: hidden;
+  letter-spacing: 0.7vw;
+  margin: 0 auto;
+  font-size: 7vw;
+}
+
+.done {
+  direction: rtl;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: right;
+  display: inline;
+  width: 48vw;
+  margin-right: auto; /* Empujar el span "done" hacia la izquierda */
+}
+
+.next {
+  white-space: nowrap;
+  text-align: left;
+  overflow: hidden;
+  width: 48vw;
+  margin-left: auto; /* Empujar el span "next" hacia la derecha */
+}
+.current {
+  width: 4vw;
+  margin: 0 auto;
+  background-color: #007172;
+  color: #ffff;
+}
+.mistake {
+  color: red;
+}
+.container {
+  justify-content: center;
+  width: 100vw;
+  padding-bottom: 20px;
+}
+.typingArea {
+  display: flex;
+  overflow: hidden;
+  letter-spacing: 0.7vw;
+  min-height: 5vw;
+  margin: 20px 16px;
+  text-align: center;
+  font-size: 5vw;
+  border: solid #e6e6e6 2px;
+  border-radius: 3px;
+}
+.typed {
+  direction: rtl;
+  overflow: hidden;
+  text-align: right;
+  white-space: nowrap;
+  width: 48vw;
+}

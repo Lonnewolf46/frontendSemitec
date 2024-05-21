@@ -1,0 +1,36 @@
+.container {
+    height: 63.6vh;
+    width: 34.7vw;
+    border-radius: 50px;
+    background-color: #ebebeb;
+    padding-top: 2%;
+    text-align: center; 
+    margin: 10vh auto 10vh auto;
+}
+
+.wrapper {
+    margin: 0 12.8%;
+}
+
+.title {
+    font-size: 2.7vw;
+}
+
+.formContainer{
+    margin-bottom: 15px;
+    text-align: left;
+    font-size: 1.3vw;
+}
+
+.formContainer label {
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+.formContainer input {
+    width: 100%;
+    font-size: 1.1vw;
+    border-radius: 4px;
+    border: solid 1px #ebebeb;
+    padding: 0.3em;
+}

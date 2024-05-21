@@ -1,0 +1,46 @@
+.row {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.key {
+  display: flex;
+  flex-grow: 1;
+  min-width: 5vw;
+  min-height: 5vw;
+  margin: 3px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 3vw;
+}
+
+.keyboardContainer {
+  margin: 0 16px;
+  display: flex;
+}
+.functionKeys {
+  justify-content: space-between;
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.control {
+  width: 17%;
+  margin: 0 0 0 20px;
+}
+
+.leftContainer {
+  width: 81%;
+}
+
+.firstControlRow {
+  margin-bottom: 20px;
+}
+
+.arrows {
+  margin-bottom: 0;
+}
