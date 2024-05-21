@@ -13,10 +13,10 @@ export default function LessonInfo({ lesson }) {
   return (
     <>
       <div className={styles.wrapper}>
-        <h2>{lesson.name}</h2>
-        <p>Palabras: {lesson.words}</p>
+        <h1>{lesson.name}</h1>
+        <p style={{fontSize: "1.3vw"}}>Palabras: {lesson.words}</p>
       </div>
-      <div className={styles.wrapper}>
+      <div style={{fontSize: "1.3vw"}} className={styles.wrapper}>
         <h3>Descripción</h3>
         <p>{lesson.description}</p>
       </div>

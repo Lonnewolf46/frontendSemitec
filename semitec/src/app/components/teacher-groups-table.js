@@ -64,7 +64,7 @@ export default function TeacherGroupsTable() {
                 <button
                   aria-label={`Ver grupo ${group.name}`}
                   onClick={() => {
-                    router.push(`${pathname}/info?group_id=${group.group_id}`);
+                    router.push(`/teacher/groups/info?group_id=${group.group_id}`);
                   }}
                 >
                   <Image src={view} alt="" />

@@ -10,15 +10,16 @@ import { useState } from "react";
 
 export default function NavBar({ menuList }) {
   const [activeId, setActiveId] = useState(0);
-  const pathname = usePathname()
-  const router = useRouter()
+  const pathname = usePathname();
+  const router = useRouter();
 
   const handleProfileClick = () => {
-    let path = pathname.split('/')
-    path[2] = 'profile'
-    path = path.join('/')
-    router.push(path)
-  }
+    if (pathname.includes("/teacher")) {
+      router.push("/teacher/profile");
+    } else {
+      router.push("/student/profile");
+    }
+  };
 
   return (
     <header>
@@ -30,7 +31,7 @@ export default function NavBar({ menuList }) {
             width: "100%",
           }}
         >
-          <div style={{display: "flex", alignItems: "center"}}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             {" "}
             <Link href={"/login"}>
               <Image
@@ -57,14 +58,19 @@ export default function NavBar({ menuList }) {
               ))}
             </div>
           </div>
-          <div> { pathname.includes("teacher") || pathname.includes("student") ?
-            <button
-              aria-label="Ver perfil de usuario"
-              style={{ borderRadius: "100px", padding: "0", border: "0" }}
-              onClick={handleProfileClick}
-            >
-              <Image src={avatar} alt="" />
-            </button> : <></> }
+          <div>
+            {" "}
+            {pathname.includes("teacher") || pathname.includes("student") ? (
+              <button
+                aria-label="Ver perfil de usuario"
+                style={{ borderRadius: "100px", padding: "0", border: "0" }}
+                onClick={handleProfileClick}
+              >
+                <Image src={avatar} alt="" />
+              </button>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </nav>

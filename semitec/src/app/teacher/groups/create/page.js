@@ -35,23 +35,19 @@ export default function CreateGroup() {
   const handleChangeName = (event) => {
     setName(event.target.value);
   };
-  const handleClick = () => {
+  const handleClick = (event) => {
+    event.preventDefault();
     createGroup();
-    console.log(name);
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.wrapper}>
+      <form className={styles.wrapper} onSubmit={handleClick}>
         <h1 className={styles.title}>Crear Grupo</h1>
-        <div style={{ marginBottom: "15px", textAlign: "left", fontSize: "1.3vw", }}>
-          <label
-            style={{ display: "block", marginBottom: "0.5em" }}
-            htmlFor="correo"
-          >
-            Nombre
-          </label>
-          <input style={{width: "100%", fontSize: "1.1vw", borderRadius: "4px", border: "solid 1px #ebebeb", padding: "0.3em" }}
+        <div className={styles.formContainer}>
+          <label htmlFor="groupName">Nombre</label>
+          <input
+            required
             value={name}
             maxLength={16}
             onChange={handleChangeName}
@@ -60,26 +56,29 @@ export default function CreateGroup() {
           />
         </div>
         {groupCode ? (
-          <p>
+          <p className={styles.code}>
             <strong>{groupCode}</strong>
           </p>
         ) : (
           <></>
         )}
-        {!groupCode ? (
-          <button onClick={handleClick} className={buttonStyles.primary}>
-            Generar código
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              router.push("/teacher/groups");
-            }}
-          >
-            Continuar
-          </button>
-        )}
-      </div>
+        <button
+          hidden={groupCode !== ""}
+          type="submit"
+          className={buttonStyles.primary}
+        >
+          Generar código
+        </button>
+      </form>
+      <button
+        hidden={groupCode === ""}
+        className={buttonStyles.primary}
+        onClick={() => {
+          router.push("/teacher/groups");
+        }}
+      >
+        Continuar
+      </button>
     </div>
   );
 }
