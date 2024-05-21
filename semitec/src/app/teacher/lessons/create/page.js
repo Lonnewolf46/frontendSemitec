@@ -86,15 +86,16 @@ export default function CreatLesson() {
           >
             Nivel
           </label>
-          <input style={{width: "100%", fontSize: "1.3vw", borderRadius: "4px", border: "solid 1px #ebebeb", padding: "0.3em" }}
-            value={level_id}
-            minLength={1}
-            maxLength={16}
-            onChange={handleChangeLevel}
-            type="number" 
-            required min="1"
-            id="level_id"
-          />
+
+          <input name="level_id" list="level_id" style={{width: "100%", fontSize: "1.3vw", borderRadius: "4px", border: "solid 1px #ebebeb", padding: "0.3em" }}/>
+              <datalist id="level_id">
+                <option value="1"></option>
+                <option value="2"></option>
+                <option value="3"></option>
+                <option value="4"></option>
+              </datalist>
+          
+
           <label
             style={{ display: "block", marginBottom: "0.5em" }}
             htmlFor="correo"
@@ -134,9 +135,9 @@ export default function CreatLesson() {
           <input style={{width: "100%", fontSize: "1.3vw", borderRadius: "4px", border: "solid 1px #ebebeb", padding: "0.3em" }}
             value={min_time}
             minLength={1}
-            maxLength={16}
+            maxLength={8}
             onChange={handleChangeMaxTime}
-            type="text"
+            type="number"
             id="min_time"
           />
           <label
@@ -148,9 +149,9 @@ export default function CreatLesson() {
           <input style={{width: "100%", fontSize: "1.3vw", borderRadius: "4px", border: "solid 1px #ebebeb", padding: "0.3em" }}
             value={min_mistakes}
             minLength={1}
-            maxLength={16}
+            maxLength={8}
             onChange={handleChangeMaxMistakes}
-            type="text"
+            type="number"
             id="min_mistakes"
           />
         </div>
