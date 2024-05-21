@@ -1,15 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import styles from "@/app/_styles/GroupsTable.module.css";
+import Image from "next/image";
+import view from "@/app/ui/see.svg";
 
-export default function StudentsTable({ group_id }) {
-  const pathname = usePathname()
+export default function StudentsTable({ group_id, actions }) {
+  const pathname = usePathname();
+  const router = useRouter();
   const [students, setStudents] = useState([]);
 
   const getStudents = async () => {
-    const userType = pathname === '/student/groups' ? 'student' : 'teacher'
-       try {
+    const userType = pathname === "/student/groups" ? "student" : "teacher";
+    try {
       const res = await fetch(
         `http://25.37.76.172:5000/${userType}/groups/members?group_id=${group_id}`,
         {
@@ -38,6 +41,7 @@ export default function StudentsTable({ group_id }) {
           <tr>
             <th>#</th>
             <th>Nombre completo</th>
+            {actions === true ? <th>Acción</th> : <></>}
           </tr>
         </thead>
         <tbody>
@@ -45,6 +49,18 @@ export default function StudentsTable({ group_id }) {
             <tr key={index}>
               <td>{student.student_id}</td>
               <td>{student.name}</td>
+              {actions === true ? (
+                <td>
+                  <button aria-label={`Ver estudiante ${student.name}`}
+                  onClick={() => {
+                    router.push(`/teacher/groups/info/student-info?student_id=${student.student_id}`)
+                  }}>
+                    <Image src={view} alt="" />
+                  </button>
+                </td>
+              ) : (
+                <></>
+              )}
             </tr>
           ))}
         </tbody>
