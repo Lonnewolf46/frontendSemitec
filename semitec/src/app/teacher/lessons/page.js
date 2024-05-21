@@ -1,4 +1,4 @@
-import LessonsScreen from "../../components/lessons-screen";
+import LessonsScreen from "../../components/teacher-lessons-screen";
 
 export default function TeacherLessons() {
   return (
