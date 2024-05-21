@@ -20,17 +20,18 @@
 
 .anchor-button{
   display: flex;
-    background-color: #F29325; 
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    width: 100%;
-    border-radius: 5px;
-    height: min-content;
-    margin: 5%;
+  background-color: #F29325; 
+  border: none;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  width: 180px;
+  border-radius: 5px;
+  height: min-content;
+  margin: 5%;
+  justify-content: center;
 }
 
 .anchor-button:hover {
