@@ -89,7 +89,7 @@ export default function Login({ }) {
                             <Form>
                                 <text className="login-text">Correo</text>
                                 <Field
-                                    className="form-control"
+                                    className="form-styling"
                                     type="email"
                                     name="email"
                                     placeholder="Ingrese su correo."
@@ -101,7 +101,7 @@ export default function Login({ }) {
                                 />
                                 <text className="login-text">Contraseña</text>
                                 <Field
-                                    className="form-control"
+                                    className="form-styling"
                                     type="password"
                                     name="password"
                                     placeholder="Ingrese su contraseña."
@@ -112,13 +112,15 @@ export default function Login({ }) {
                                     component="div"
                                 />
                                 <br></br>
-                                <button
-                                    type="submit"
-                                    className="button"
-                                    disabled={isSubmitting}
-                                >
-                                    Iniciar Sesión
-                                </button>
+                                <div className="button-wrap">
+                                    <button
+                                        type="submit"
+                                        className="button"
+                                        disabled={isSubmitting}
+                                    >
+                                        Iniciar Sesión
+                                    </button>
+                                </div>
                                 <div className="anchor-and-text-container">
                                     <text className="reg-text">¿Aún no tiene cuenta? </text>
                                     <text className="reg-text"> </text>

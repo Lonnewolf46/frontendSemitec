@@ -73,6 +73,7 @@ a {
 
 .error-message{
     color: #D94F04;
+    font-size: 20px;
 }
 
 .login-right-side{
@@ -121,4 +122,9 @@ a {
 .field-error{
     font-size: 1vw;
     font-weight: 100;
+}
+
+.form-styling{
+    width: 100%;
+    font-size: 1.3vw;
 }
