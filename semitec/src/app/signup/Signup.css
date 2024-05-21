@@ -93,7 +93,7 @@ body {
     height: 160px;
     flex-grow: 4;
     background-repeat: no-repeat;
-    margin-left: 75%;
+    margin-left: 69%;
 }
 
 
@@ -110,7 +110,7 @@ body {
 .welcome-text{
     display: flex;
     justify-content: center;
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 950;
     width: 100%;
     color: #555555;
@@ -121,11 +121,11 @@ body {
       background-color: #F29325; 
       border: none;
       color: white;
-      padding: 15px 32px;
-      text-align: center;
+      padding: 15px;
+      justify-content: center;
       text-decoration: none;
-      font-size: 16px;
-      width: fit-content;
+      font-size: 32px;
+      width: 180px;
       border-radius: 5px;
       height: min-content;
       margin-bottom: 5%;
