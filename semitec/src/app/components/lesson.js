@@ -175,6 +175,7 @@ export default function Lesson() {
     >
       <div className={styles.text}>
         <span aria-hidden="true" className={styles.done}>
+          {(lessonProps.done).endsWith(' ') && <>&nbsp;</>}
           {lessonProps.done}
         </span>
         <span
