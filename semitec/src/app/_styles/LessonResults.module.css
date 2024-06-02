@@ -4,3 +4,17 @@
     padding: 1% 2%;
     border: solid 1px #adadad;
 }
+
+.title {
+    font-size: 2.5vw;
+}
+
+.contentWrapper p {
+    font-size: 1.1vw;
+}
+
+.interactionContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

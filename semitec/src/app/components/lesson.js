@@ -160,9 +160,12 @@ export default function Lesson() {
     getLesson(lesson_id);
     setShowMetrics(false);
     dispatchMetrics({ type: "restart" });
-    console.log(metrics);
   };
 
+  const handleBack = () => {
+    const match = pathname.match(/^\/[^\/]+\/lessons/)
+    router.push(match[0])
+  }
   return (
     <div
       tabIndex={0}
@@ -193,6 +196,7 @@ export default function Lesson() {
         metrics={metrics}
         showMetrics={showMetrics}
         handleContinue={handleContinue}
+        handleBack={handleBack}
         restrictions={{min_time: lessonProps.min_time, min_mistakes: lessonProps.min_mistakes}}
       />
       <div aria-hidden="true" className={styles.typingArea}>
