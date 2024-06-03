@@ -1,0 +1,15 @@
+.mainContainer {
+    width: 90vw;
+    margin: 30px auto;
+    height: 70vh;
+}
+
+.mainContainer h1 {
+    font-size: 2.7vw;
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
