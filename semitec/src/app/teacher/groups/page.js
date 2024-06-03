@@ -15,7 +15,7 @@ export default function TeacherGroups() {
   return (
     <main className={styles.mainContainer}>
       <div className={styles.flexContainer}>
-        <h1 style={{ fontSize: "2.7vw" }}>Mis grupos</h1>
+        <h1>Mis grupos</h1>
         <button className={buttons.primary} onClick={handleClick}>
           Nuevo Grupo
         </button>
