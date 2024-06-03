@@ -54,7 +54,7 @@ export default function StudentInfo() {
       <div className={containers.fullScreenContainer}>
         <div className={containers.halfScreenContainer}>
           <Profile
-            username={profile.username}
+            username={profile.name}
             institution={profile.institution}
             user_code={profile.user_code}
             user_type={profile.user_type}
