@@ -4,7 +4,6 @@ import contrast from "@/assets/bg_images/location.svg";
 import emailIcon from "@/assets/bg_images/email.svg";
 import briefcase from "@/assets/bg_images/briefcase.svg";
 
-//import contrast from "../ui/contrast.svg";
 import avatar from "@/app/ui/avatar.svg";
 
 export default function Profile({
