@@ -22,6 +22,7 @@ a {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin: 10px;
 }
 
 
@@ -110,13 +111,13 @@ a {
     font-size: 30px;
     font-weight: bolder;
     width: 100%;
-    padding-bottom: 5%;
 }
 
 .login-text {
     display: inherit;
-    font-size: 1.3vw;
+    font-size: 1.2vw;
     font-weight: 100;
+    margin: 10px 0 10px 0;
 }
 
 .field-error{
@@ -126,5 +127,8 @@ a {
 
 .form-styling{
     width: 100%;
-    font-size: 1.3vw;
+    font-size: 1.1vw;
+    border: 1px solid #ebebeb;
+    border-radius: 4px;
+    padding: 0.3em; 
 }

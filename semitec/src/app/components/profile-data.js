@@ -1,51 +1,52 @@
-import "./profile-data.css"
-import avatar from "@/app/ui/avatar.svg"
+import "./profile-data.css";
+import Image from "next/image";
+import contrast from "@/assets/bg_images/location.svg";
+import emailIcon from "@/assets/bg_images/email.svg";
+import briefcase from "@/assets/bg_images/briefcase.svg";
 
-export default function Profile({username,institution,user_code,user_type,email,country,province,canton,district}) {
-    return (
-        <div>
-            <div className="icon">
-                
+//import contrast from "../ui/contrast.svg";
+import avatar from "@/app/ui/avatar.svg";
+
+export default function Profile({
+  username,
+  institution,
+  user_code,
+  user_type,
+  email,
+  country,
+  province,
+  canton,
+  district,
+}) {
+  return (
+    <>
+      <div className="flex-container">
+        <div className="icon"></div>
+        <div className={"data-container"}>
+          <div className="header-format">
+            <div className="name-format">{username}</div>
+            <div className="institution-format">{institution}</div>
+            <div className="id-format">#{user_code}</div>
+          </div>
+
+          <div>
+            <div className="body-line">
+              <Image src={briefcase} alt="" />
+              <div className="data">{user_type}</div>
             </div>
-            <div className="flex-container">
-                <div className={"data-container"}> 
-                    <div className="header-format">
-                        <div className="name-format">
-                            {username}
-                        </div>
-                        <div className="institution-format">
-                            {institution}
-                        </div>
-                        <div className="id-format">
-                            #{user_code}
-                        </div>
-                    </div>
-                
-                    <div className="body-format">
-                        <div className="body-line">
-                            <div className="type-icon"/>
-                            <div className="data">
-                                {user_type}
-                            </div>
-                        </div>
-                        <div className="empty-space"/>
-                        <div className="body-line">
-                            <div className="email-icon"/>
-                            <div className="data">
-                                {email}
-                            </div>
-                        </div>
-                        <div className="empty-space"/>
-                        <div className="body-line">
-                            <div className="location-icon"/>
-                            <div className="data">
-                                {country}, {province}, {canton}, {district}
-                            </div>
-                        </div>
-                        <div className="empty-space"/>
-                    </div>
-                </div>
+            <div className="body-line">
+              <Image src={emailIcon} alt="" />
+              <div className="data">{email}</div>
             </div>
+            <div className="body-line">
+              <Image src={contrast} alt="" />
+              <div className="data">
+                {country}, {province}, {canton}, {district}
+              </div>
+            </div>
+          </div>
         </div>
-    );
-  }
+      </div>
+    </>
+  );
+}
