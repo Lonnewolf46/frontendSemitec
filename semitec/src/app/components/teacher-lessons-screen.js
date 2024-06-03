@@ -2,6 +2,8 @@
 import styles from "./LessonsScreen.module.css";
 import sub_styles from "./LessonInfo.module.css";
 import ad_styles from "./teacher-lessons-additional.module.css"
+import buttonStyles from '@/app/_styles/Button.module.css'
+
 import { useEffect, useState } from "react";
 import ListCard from "./list-card";
 import LessonImg from "../ui/lesson-img.svg";
@@ -35,11 +37,9 @@ export default function LeesonsScreen() {
       <div className={styles.leftContainer}>
         <div className={ad_styles.flexcontainer}> 
             <h1>Lecciones</h1>
-            <div className={styles.buttonContainer}>
-                <button onClick={handleClick} className={sub_styles.startButton}>
+                <button onClick={handleClick} className={buttonStyles.primary}>
                 Crear Lección
                 </button>
-            </div>
         </div>
         <div className={styles.lessonListContainer}>
           <ul className={styles.lessonList}>
