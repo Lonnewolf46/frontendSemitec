@@ -6,6 +6,7 @@ export default function LessonResults({
   metrics,
   showMetrics,
   handleContinue,
+  handleBack,
   restrictions,
 }) {
   const [message, setMessage] = useState("");
@@ -29,14 +30,14 @@ export default function LessonResults({
       metrics.mistakes > restrictions.min_mistakes &&
       metrics.time_taken <= restrictions.min_time
     ) {
-      setMessage("Tu tiempo es excelente. Debes mejorar la precisión.");
+      setMessage("¡Tu tiempo es excelente! Debes mejorar la precisión.");
     } else if (
       metrics.mistakes <= restrictions.min_mistakes &&
       metrics.time_taken > restrictions.min_time
     ) {
-      setMessage("Tu precisión es excelente. Debes mejorar el tiempo .");
+      setMessage("¡Tu precisión es excelente! Debes mejorar el tiempo .");
     } else {
-      setMessage("Tu precisión y tiempo son excelntes, sigue así.");
+      setMessage("¡Tu precisión y tiempo son excelentes, sigue así!");
     }
   }, [showMetrics]);
 
@@ -46,16 +47,26 @@ export default function LessonResults({
       ref={dialogRef}
       aria-labelledby="results-title"
     >
-      <h2 id="results-title">Resultados de la lección</h2>
-      <p>{message}</p>
-      <p>Tiempo: {metrics.time_taken} s</p>
-      <p>Errores: {metrics.mistakes}</p>
-      <p>Precisión: {metrics.accuracy_rate} %</p>
-      <p>PPM: {metrics.pulsation_per_minute}</p>
-      <p>Pulsaciones válidas: {metrics.valid_keystrokes}</p>
-      <div style={{ margin: "auto" }}>
+      <h1 id="results-title" className={styles.title}>
+        Resultados de la lección
+      </h1>
+      <div className={styles.contentWrapper}>
+        <p>{message}</p>
+        <p><strong>Tiempo</strong>: {metrics.time_taken} s</p>
+        <p><strong>Errores</strong>: {metrics.mistakes}</p>
+        <p><strong>Precisión</strong>: {metrics.accuracy_rate} %</p>
+        <p><strong>PPM</strong>: {metrics.pulsation_per_minute}</p>
+        <p><strong>Pulsaciones válidas</strong>: {metrics.valid_keystrokes}</p>
+      </div>
+      <div className={styles.interactionContainer}>
         <button
-          style={{ margin: "auto" }}
+          className={buttonStyles.secondary}
+          onClick={handleBack
+          }
+        >
+          Volver a lecciones
+        </button>
+        <button
           className={buttonStyles.primary}
           onClick={handleContinue}
         >

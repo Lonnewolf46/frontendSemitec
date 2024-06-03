@@ -22,6 +22,7 @@ a {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin: 10px;
 }
 
 
@@ -73,6 +74,7 @@ a {
 
 .error-message{
     color: #D94F04;
+    font-size: 20px;
 }
 
 .login-right-side{
@@ -109,16 +111,24 @@ a {
     font-size: 30px;
     font-weight: bolder;
     width: 100%;
-    padding-bottom: 5%;
 }
 
 .login-text {
     display: inherit;
-    font-size: 1.3vw;
+    font-size: 1.2vw;
     font-weight: 100;
+    margin: 10px 0 10px 0;
 }
 
 .field-error{
     font-size: 1vw;
     font-weight: 100;
+}
+
+.form-styling{
+    width: 100%;
+    font-size: 1.1vw;
+    border: 1px solid #ebebeb;
+    border-radius: 4px;
+    padding: 0.3em; 
 }

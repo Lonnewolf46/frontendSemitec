@@ -137,26 +137,22 @@ export default function SignUp() {
                   <div className={stage === 1 ? 'personal' : 'hidden'}>
                       <div className='signup-header'>Registrarme (Paso 1 de 2)</div>
                         <text className='login-text'>Nombre</text>
-                        <br></br>
-                        <Field width="100" type ="name" name="name" placeholder = "Ingrese su nombre." />
+                        <Field className="form-styling" type ="name" name="name" placeholder = "Ingrese su nombre." />
                         <ErrorMessage className='error-message' name="name" component="div"/> 
                         <br></br>
                         <br></br>
                         <text className='login-text'>Correo</text>
-                        <br></br>
-                        <Field className='form-control' type="email" name="email" placeholder="Ingrese su correo."/>
+                        <Field className="form-styling" type="email" name="email" placeholder="Ingrese su correo."/>
                         <ErrorMessage className='error-message' name="email" component="div"/> 
                         <br></br>
                         <br></br>
                         <text className='login-text'>Contraseña</text>
-                        <br></br>
-                        <Field className='form-control' type="password" name="password" placeholder="Ingrese su nueva contraseña."/>
+                        <Field className="form-styling" type="password" name="password" placeholder="Ingrese su nueva contraseña."/>
                         <ErrorMessage className='error-message' name="password" component="div"/>
                         <br></br>
                         <br></br>
                         <text className='login-text'>Soy</text>
-                        <br></br>
-                        <Field as="select" className='form-control' type="user_type_id" name="user_type_id">
+                        <Field as="select" className="form-styling" type="user_type_id" name="user_type_id">
                           <option>Seleccione un tipo de usuario.</option>
                           <option value="1">Estudiante</option>
                           <option value="2">Tutor</option>
@@ -173,7 +169,7 @@ export default function SignUp() {
                   <div className={stage === 2 ? 'personal' : 'hidden'}>
                     <div className='signup-header'>Registrarme (Paso 2 de 2)</div>
                     <text className='login-text'>País</text>
-                    <Field as="select" className='form-control' type="country" name="country">
+                    <Field as="select" className="form-styling" type="country" name="country">
                       <option>Seleccione un país.</option>
                       <option value="1">Costa Rica</option>
                     </Field>
@@ -181,7 +177,7 @@ export default function SignUp() {
                     <br></br>
                     <br></br>
                     <text className='login-text'>Provincia</text>
-                    <Field as="select" className='form-control' type="province" name="province">
+                    <Field as="select" className="form-styling" type="province" name="province">
                       <option>Seleccione una provincia.</option>
                       <option value="1">San José</option>
                       <option value="2">Alajuela</option>
@@ -195,7 +191,7 @@ export default function SignUp() {
                     <br></br>
                     <br></br>
                     <text className='login-text'>Cantón</text>
-                    <Field as="select" className='form-control' type="canton" name="canton">
+                    <Field as="select" className="form-styling" type="canton" name="canton">
                       <option>Seleccione un cantón.</option>
                       <option value="1">Alvarado</option>
                       <option value="2">Cartago</option>
@@ -210,7 +206,7 @@ export default function SignUp() {
                     <br></br>
                     <br></br>
                     <text className='login-text'>Institución</text>
-                    <Field as="select" className='form-control' type="institution_id" name="institution_id">
+                    <Field as="select" className="form-styling" type="institution_id" name="institution_id">
                       <option>Seleccione una institución.</option>
                       <option value="1">Escuela Padre Peralta</option>
                       <option value="2">Escuela de los Angeles</option>

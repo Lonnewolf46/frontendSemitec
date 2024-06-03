@@ -42,7 +42,7 @@ export default function Login({ }) {
         <div className="flex-container">
             <div className="bg-size" alt="Imagen azul decorativa en el fondo">
                 <div className="details-container">
-                    <text className="login-left-side-header">SEMITEC</text>
+                    <h1 className="login-left-side-header">SEMITEC</h1>
                     <text className="login-left-side-text">
                         Sistema de enseñanza de la mecanografía
                     </text>
@@ -58,7 +58,7 @@ export default function Login({ }) {
             <div className="login-size">
                 <div className="logo-img" />
                 <div className="login-right-side">
-                    <text className="login-header">Iniciar sesión</text>
+                    <h1 className="login-header">Iniciar sesión</h1>
                     <Formik
                         initialValues={{ password: "", email: "" }}
                         validate={(values) => {
@@ -89,10 +89,10 @@ export default function Login({ }) {
                             <Form>
                                 <text className="login-text">Correo</text>
                                 <Field
-                                    className="form-control"
+                                    className="form-styling"
                                     type="email"
                                     name="email"
-                                    placeholder="Ingrese su correo."
+                                    placeholder="Ingrese su correo electrónico"
                                 />
                                 <ErrorMessage
                                     className="error-message"
@@ -101,10 +101,10 @@ export default function Login({ }) {
                                 />
                                 <text className="login-text">Contraseña</text>
                                 <Field
-                                    className="form-control"
+                                    className="form-styling"
                                     type="password"
                                     name="password"
-                                    placeholder="Ingrese su contraseña."
+                                    placeholder="Ingrese su contraseña"
                                 />
                                 <ErrorMessage
                                     className="error-message"
@@ -112,15 +112,17 @@ export default function Login({ }) {
                                     component="div"
                                 />
                                 <br></br>
-                                <button
-                                    type="submit"
-                                    className="button"
-                                    disabled={isSubmitting}
-                                >
-                                    Iniciar Sesión
-                                </button>
+                                <div className="button-wrap">
+                                    <button
+                                        type="submit"
+                                        className="button"
+                                        disabled={isSubmitting}
+                                    >
+                                        Iniciar Sesión
+                                    </button>
+                                </div>
                                 <div className="anchor-and-text-container">
-                                    <text className="reg-text">¿Aún no tiene cuenta? </text>
+                                    <text className="reg-text">¿Aún no tiene cuenta? &nbsp;</text>
                                     <text className="reg-text"> </text>
                                     <a href={"/signup"}>Registrarse</a>
                                 </div>
