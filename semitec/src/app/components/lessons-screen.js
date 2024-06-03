@@ -24,7 +24,7 @@ export default function LeesonsScreen() {
   return (
     <div className={styles.lessonsMainContainer}>
       <div className={styles.leftContainer}>
-        <h1>Lecciones</h1>
+        <h1 style={{fontSize: "2.1vw"}}>Lecciones</h1>
         <div className={styles.lessonListContainer}>
           <ul className={styles.lessonList}>
             {lessons.map((lesson, index) => (

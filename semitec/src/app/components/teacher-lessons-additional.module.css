@@ -1,5 +1,9 @@
 .flexcontainer{
     display: flex;
     justify-content: space-between;
-    align-content: flex-end;
+    align-items: center;
+}
+
+.flexcontainer h1 {
+    font-size: 2.1vw;
 }
