@@ -6,6 +6,7 @@ import Highcharts from 'highcharts';
 import accessibility from 'highcharts/modules/accessibility';
 import WelcomeCard from "@/app/components/welcome-card";
 import containers from "@/app/_styles/Containers.module.css";
+import styles from './styles.module.css'
 import ProgressCard from "@/app/components/progressCard";
 import StatsCard from "@/app/components/statsCard";
 import NextLessonCard from "@/app/components/next-lesson-card";
@@ -130,14 +131,14 @@ export default function StudentHome() {
 
   return (
     <main>
-      <div className={containers.fullScreenContainer}>
-        <div className={containers.halfScreenContainer}>
+    <div className={styles.main_container}>
+        <div className={styles.left_section}>
           <WelcomeCard username={username} />
-          <div style={{ marginTop: "10px" }}>
+          <div style={{ marginTop: "10px", height: "55vh", alignContent: "center" }}>
             <HighchartsReact highcharts={Highcharts} options={options} />
           </div>
         </div>
-        <div className={containers.halfScreenContainer}>
+        <div className={styles.right_section}>
           <section
             style={{
               display: "flex",
@@ -147,7 +148,7 @@ export default function StudentHome() {
             }}
           >
             <ProgressCard amount={stats.avg_mistakes} text={"errores promedio"} />
-            <ProgressCard amount={`${stats.avg_time_taken}`} text={"tiempo promedio"} />
+            <ProgressCard amount={`${stats.avg_time_taken}`} text={"tiempo promedio ⓘ"} />
           </section>
           <section>
             <div
@@ -160,7 +161,7 @@ export default function StudentHome() {
               Estadísticas
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <StatsCard value={stats.avg_pulsation_per_minute} name={"PPM"} />
+              <StatsCard value={stats.avg_pulsation_per_minute} name={"PPM ⓘ"} />
               <StatsCard value={`${stats.avg_accuracy_rate}%`} name={"Precisión"} />
             </div>
           </section>
