@@ -40,7 +40,7 @@ export default function Login({ }) {
 
     return (
         <div className="flex-container">
-            <div className="bg-size" alt="Imagen azul decorativa en el fondo">
+            <section className="bg-size" alt="Imagen azul decorativa en el fondo">
                 <div className="details-container">
                     <h1 className="login-left-side-header">SEMITEC</h1>
                     <text className="login-left-side-text">
@@ -54,8 +54,8 @@ export default function Login({ }) {
                     </text>
                     <text className="login-left-side-text">Costa Rica. </text>
                 </div>
-            </div>
-            <div className="login-size">
+            </section>
+            <section className="login-size">
                 <div className="logo-img" />
                 <div className="login-right-side">
                     <h1 className="login-header">Iniciar sesión</h1>
@@ -134,7 +134,7 @@ export default function Login({ }) {
                         )}
                     </Formik>
                 </div>
-            </div>
+            </section>
         </div>
     );
 }
