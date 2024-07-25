@@ -1,0 +1,20 @@
+.main_container {
+    margin: 20px auto;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    display: flex;
+}
+
+.left_section {
+    padding: 0 0 0 0;
+    width: 46vw;
+    margin: auto;
+    height: 76vh;
+}
+
+.right_section {
+    padding: 0 0 0 0;
+    width: 46vw;
+    margin: auto;
+    height: 76vh;
+}

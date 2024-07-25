@@ -1,5 +1,5 @@
 import Image from "next/image";
-import kirby from "@/app/ui/Kirby.svg";
+import kirby from "@/app/ui/semitec-doggo.gif";
 import styles from "@/app/_styles/WelcomeCard.module.css";
 
 export default function WelcomeCard({ username }) {
@@ -11,7 +11,7 @@ export default function WelcomeCard({ username }) {
           <p className={styles.message}>Qué bueno verte de nuevo.</p>
         </div>
         <div>
-          <Image src={kirby} alt="Kirby dandote la bienvenida!" />
+          <Image width={232} height={189} src={kirby} alt="La mascota de semitec, un perro guía, dandote la bienvenida!" />
         </div>
       </div>
     </>
