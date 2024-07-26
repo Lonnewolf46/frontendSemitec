@@ -11,7 +11,7 @@ export default function JoinGroup() {
   const join = async () => {
     try {
       const response = await fetch(
-        "http://25.37.76.172:5000/student/groups/join",
+        `${process.env.NEXT_PUBLIC_API_HOST}/student/groups/join`,
         {
           method: "POST",
           headers: {

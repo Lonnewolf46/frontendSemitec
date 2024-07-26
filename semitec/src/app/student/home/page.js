@@ -52,7 +52,7 @@ export default function StudentHome() {
 
   const getUsername = async () => {
     try {
-      const res = await fetch("http://25.37.76.172:5000/student/username", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/username`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },
@@ -69,7 +69,7 @@ export default function StudentHome() {
 
   const getStats = async () => {
     try{
-      const res = await fetch("http://25.37.76.172:5000/student/lessons/stats", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/stats`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },
@@ -86,7 +86,7 @@ export default function StudentHome() {
 
   const getAccuracyHistory = async () => {
     try{
-      const res = await fetch("http://25.37.76.172:5000/student/lessons/accuracy-history", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/accuracy-history`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },
@@ -103,7 +103,7 @@ export default function StudentHome() {
 
   const getNextLesson = async () => {
     try{
-      const res = await fetch("http://25.37.76.172:5000/student/lessons/next-lesson", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/next-lesson`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },

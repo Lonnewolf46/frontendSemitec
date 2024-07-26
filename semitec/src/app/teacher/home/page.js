@@ -8,7 +8,7 @@ export default function TeacherHome() {
   const [username, setUsername] = useState("");
   const getUsername = async () => {
     try {
-      const res = await fetch("http://25.37.76.172:5000/teacher/username", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/username`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },

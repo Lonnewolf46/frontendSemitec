@@ -12,7 +12,7 @@ export default function StudentInfo() {
 
     const getStats = async () => {
     try{
-      const res = await fetch(`http://25.37.76.172:5000/teacher/groups/info/student-info?user_id=${searchParams.get("student_id")}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups/info/student-info?user_id=${searchParams.get("student_id")}`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },
@@ -29,7 +29,7 @@ export default function StudentInfo() {
 
   const getData = async () => {
     try {
-      const res = await fetch(`http://25.37.76.172:5000/teacher/groups/info/student-profile?user_id=${searchParams.get("student_id")}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups/info/student-profile?user_id=${searchParams.get("student_id")}`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },

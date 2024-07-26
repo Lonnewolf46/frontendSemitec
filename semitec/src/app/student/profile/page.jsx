@@ -15,7 +15,7 @@ export default function profile_student() {
 
   const getData = async () => {
     try {
-      const res = await fetch("http://25.37.76.172:5000/student/profile", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/profile`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },
