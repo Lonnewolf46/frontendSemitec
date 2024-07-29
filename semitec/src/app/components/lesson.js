@@ -125,7 +125,7 @@ export default function Lesson() {
 
     try {
       const res = await fetch(
-        "http://25.37.76.172:5000/student/lesson/results",
+        `${process.env.NEXT_PUBLIC_API_HOST}/student/lesson/results`,
         {
           method: "POST",
           headers: {
