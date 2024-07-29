@@ -16,7 +16,7 @@ export default function StudentGroups() {
   const getGroups = async () => {
     try {
       const response = await fetch(
-        "http://25.37.76.172:5000/student/groups",
+        `${process.env.NEXT_PUBLIC_API_HOST}/student/groups`,
         {
           headers: {
             "auth-token": localStorage.getItem("auth-token"),

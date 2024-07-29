@@ -12,7 +12,7 @@ export default function TeacherGroupsTable() {
 
   const getGroups = async () => {
     try {
-      const response = await fetch("http://25.37.76.172:5000/teacher/groups", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },

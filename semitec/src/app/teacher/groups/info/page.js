@@ -10,7 +10,7 @@ export default function GroupInfo() {
   const getGroupInfo = async () => {
     try {
       const res = await fetch(
-        `http://25.37.76.172:5000/teacher/groups/info?group_id=${searchParams.get(
+        `${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups/info?group_id=${searchParams.get(
           "group_id"
         )}`,
         {

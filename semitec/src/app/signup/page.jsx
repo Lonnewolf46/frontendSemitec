@@ -23,7 +23,7 @@ export default function SignUp() {
     updated_data.district_id = 1;
     console.log(updated_data)
     try {
-        const response = await fetch('http://25.37.76.172:5000/register', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/register`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

@@ -28,7 +28,7 @@ export default function Lesson() {
   const getLesson = async (lesson_id) => {
     try {
       const res = await fetch(
-        `http://25.37.76.172:5000/lesson?lesson_id=${lesson_id}`
+        `${process.env.NEXT_PUBLIC_API_HOST}/lesson?lesson_id=${lesson_id}`
       );
       const data = await res.json();
       if (res.ok) {
