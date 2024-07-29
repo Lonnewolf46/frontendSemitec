@@ -14,7 +14,7 @@ export default function StudentsTable({ group_id, actions }) {
     const userType = pathname === "/student/groups" ? "student" : "teacher";
     try {
       const res = await fetch(
-        `http://25.37.76.172:5000/${userType}/groups/members?group_id=${group_id}`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/${userType}/groups/members?group_id=${group_id}`,
         {
           headers: {
             "auth-token": localStorage.getItem("auth-token"),
