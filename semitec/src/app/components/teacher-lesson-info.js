@@ -19,6 +19,10 @@ export default function LessonInfo({ lesson }) {
       <p>{lesson.words}</p>
       <h2>Descripción</h2>
       <p>{lesson.description}</p>
+      <h2>Cantidad mínima de errores permitidos</h2>
+      <p>{lesson.min_mistakes}</p>
+      <h2>Tiempo máximo para terminar la lección</h2>
+      <p>{lesson.min_time} segundos</p>
     </div>
   );
 }
