@@ -1,9 +1,10 @@
 .container {
-    height: 120vh;
+    min-height: 120vh;
     width: 34.7vw;
     border-radius: 50px;
     background-color: #ebebeb;
     padding-top: 2%;
+    padding-bottom: 1%;
     text-align: center; 
     margin: 10vh auto 10vh auto;
 }
@@ -14,4 +15,24 @@
 
 .title {
     font-size: 2.7vw;
+}
+
+.container label {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.container input, select, textarea {
+    width: 100%;
+    font-size: 1.3vw;
+    border-radius: 4px;
+    border: solid 1px #ebebeb;
+    padding: 0.3em;
+}
+
+.buttonContainer {
+    margin: auto;
+    width: fit-content;
+    padding-top: 1em;
 }

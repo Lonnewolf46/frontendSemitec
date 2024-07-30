@@ -86,20 +86,8 @@ export default function CreatLesson() {
           onSubmit={handleClick}
           style={{ marginBottom: "15px", textAlign: "left", fontSize: "1.3vw" }}
         >
-          <label
-            style={{ display: "block", marginBottom: "0.5em" }}
-            htmlFor="name"
-          >
-            Nombre
-          </label>
+          <label htmlFor="name">Nombre</label>
           <input
-            style={{
-              width: "100%",
-              fontSize: "1.3vw",
-              borderRadius: "4px",
-              border: "solid 1px #ebebeb",
-              padding: "0.3em",
-            }}
             required
             value={name}
             minLength={1}
@@ -108,26 +96,10 @@ export default function CreatLesson() {
             type="text"
             id="name"
           />
-          <label
-            style={{
-              display: "block",
-              marginTop: "1em",
-              marginBottom: "0.5em",
-            }}
-            htmlFor="level_id"
-          >
-            Nivel
-          </label>
+          <label htmlFor="level_id">Nivel</label>
 
           <select
             id="level_id"
-            style={{
-              width: "100%",
-              fontSize: "1.3vw",
-              borderRadius: "4px",
-              border: "solid 1px #ebebeb",
-              padding: "0.3em",
-            }}
             onChange={(e) => {
               setLevelID(e.target.value);
             }}
@@ -138,25 +110,9 @@ export default function CreatLesson() {
             <option value="4">Nivel 4</option>
           </select>
 
-          <label
-            style={{
-              display: "block",
-              marginTop: "1em",
-              marginBottom: "0.5em",
-            }}
-            htmlFor="words"
-          >
-            Contenido de la Lección
-          </label>
+          <label htmlFor="words">Contenido de la Lección</label>
           <textarea
             required
-            style={{
-              width: "100%",
-              fontSize: "1.3vw",
-              borderRadius: "4px",
-              border: "solid 1px #ebebeb",
-              padding: "0.3em",
-            }}
             value={words}
             rows="5"
             minLength={1}
@@ -165,26 +121,9 @@ export default function CreatLesson() {
             type="text"
             id="words"
           />
-          <label
-            style={{
-              display: "block",
-              marginTop: "1em",
-              marginBottom: "0.5em",
-            }}
-            htmlFor="description"
-          >
-            Descripción
-          </label>
+          <label htmlFor="description">Descripción</label>
           <textarea
             required
-            style={{
-              width: "100%",
-              fontSize: "1.3vw",
-              borderRadius: "4px",
-              border: "solid 1px #ebebeb",
-
-              padding: "0.3em",
-            }}
             value={description}
             rows="5"
             minLength={1}
@@ -193,25 +132,9 @@ export default function CreatLesson() {
             type="text"
             id="description"
           />
-          <label
-            style={{
-              display: "block",
-              marginTop: "1em",
-              marginBottom: "0.5em",
-            }}
-            htmlFor="min_time"
-          >
-            Límite de tiempo en segundos
-          </label>
+          <label htmlFor="min_time">Límite de tiempo en segundos</label>
           <input
             required
-            style={{
-              width: "100%",
-              fontSize: "1.3vw",
-              borderRadius: "4px",
-              border: "solid 1px #ebebeb",
-              padding: "0.3em",
-            }}
             value={min_time}
             minLength={1}
             maxLength={8}
@@ -219,25 +142,9 @@ export default function CreatLesson() {
             type="number"
             id="min_time"
           />
-          <label
-            style={{
-              display: "block",
-              marginTop: "1em",
-              marginBottom: "0.5em",
-            }}
-            htmlFor="min_mistakes"
-          >
-            Cantidad máxima de errores
-          </label>
+          <label htmlFor="min_mistakes">Cantidad máxima de errores</label>
           <input
             required
-            style={{
-              width: "100%",
-              fontSize: "1.3vw",
-              borderRadius: "4px",
-              border: "solid 1px #ebebeb",
-              padding: "0.3em",
-            }}
             value={min_mistakes}
             minLength={1}
             maxLength={8}
@@ -245,9 +152,8 @@ export default function CreatLesson() {
             type="number"
             id="min_mistakes"
           />
-          <div style={{ margin: "auto", width: "fit-content" }}>
+          <div className={styles.buttonContainer} >
             <button
-              style={{ marginTop: "1em" }}
               type="submit"
               className={buttonStyles.primary}
             >
