@@ -7,7 +7,7 @@ import buttonStyles from "@/app/_styles/Button.module.css";
 export default function CreatLesson() {
   const router = useRouter();
   const [name, setVarName] = useState("");
-  const [level_id, setLevelID] = useState("");
+  const [level_id, setLevelID] = useState(1);
   const [words, setVarWords] = useState("");
   const [description, setDescription] = useState("");
   const [min_time, setMinTime] = useState("");
@@ -126,7 +126,6 @@ export default function CreatLesson() {
               fontSize: "1.3vw",
               borderRadius: "4px",
               border: "solid 1px #ebebeb",
-
               padding: "0.3em",
             }}
             onChange={(e) => {
