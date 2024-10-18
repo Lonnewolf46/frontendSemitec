@@ -2,7 +2,7 @@ import { AccessibilityBar } from "../components/accessibility-bar";
 import NavBar from "../components/NavBar";
 
 const menuList = [
-  { text: "Lecciones", href: "/guest/lessons", children: [{text: "Predeterminadas", href: "/teacher/lessons"}, {text: "Públicas", href: "/teacher/lessons"}]  },
+  { text: "Lecciones", href: "/guest/lessons", children: [{text: "Predeterminadas", href: "/guest/lessons"}, {text: "Públicas", href: "/guest/lessons"}]  },
   { text: "Acerca de", href: "/guest/about", children: [] },
   { text: "Preguntas frecuentes", href: "/guest/faqs", children: [] },
 ];
