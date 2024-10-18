@@ -1,0 +1,68 @@
+:root {
+  /* Your default theme */
+  --background: white;
+  --text: black;
+  --link: white;
+  --selected-text: blue;
+  --button-color: #824c0f;
+  --button-text: white;
+  --button-border: 0px;
+  --navbar-background: #007172;;
+  --navbar-border: 0px
+  --accessibility-bar-button
+}
+  [data-theme='claro'] {
+    --background: white;
+    --foreground: black;
+  }
+
+  [data-theme='oscuro'] {
+    --background: black;
+    --foreground: white;
+  }
+
+[data-theme="negro"] {
+    --navbar-background: black;
+    --navbar-border: 2px solid #ffee32;
+  --background: black;
+  --foreground: white;
+  --button-color: black;
+  --button-text: #ffee32;
+  --button-border: 2px solid #ffee32;
+}
+
+[data-theme="blanco"] {
+  --background: #FFFAEF;
+  --foreground: #3D3D3D;
+  --button-color: #fffaef;
+  --button-text: #202020;
+  --button-border: 2px solid #202020;
+}
+
+  [data-theme='gris'] {
+    --background: black;
+    --foreground: white;
+    --button-color: #black;
+    --button-text: #ffee32;
+    --button-border: 2px solid #ffee32;
+  }
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+button {
+  background-color: var(--button-color);
+  color: var(--button-text);
+  border: var(--button-border);
+}
+
+nav {
+    background-color: var(--navbar-background);
+    border: var(--navbar-border);
+}
+
+.bar {
+  border-color: var(--navbar-border)
+}

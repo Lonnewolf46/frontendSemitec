@@ -1,6 +1,9 @@
 import { AccessibilityBar } from "./components/accessibility-bar";
 import { Footer } from "./components/footer";
 import { Atkinson_Hyperlegible, Atkinson_Hyperlegible } from "next/font/google";
+import { ThemeProvider } from "next-themes";
+import "./globals.css";
+
 const atkinson_Hyperlegible = Atkinson_Hyperlegible({
   subsets: ["latin"],
   weight: "400",
@@ -12,10 +15,20 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const styles = "";
   return (
     <html lang="es">
-      <body className={atkinson_Hyperlegible.className} style={ {margin: "0px"}}>
-        {children}
+      <body
+        className={atkinson_Hyperlegible.className}
+        style={{ margin: "0px" }}
+      >
+        <ThemeProvider
+          defaultTheme="light"
+          enableColorScheme
+          themes={["light", "dark", "noche"]}
+        >
+          {children}
+        </ThemeProvider>
         {<Footer />}
       </body>
     </html>
