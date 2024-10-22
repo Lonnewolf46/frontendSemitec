@@ -13,6 +13,12 @@
   --link-color: white;
   --logo-color: white;
   --avatar-stroke: #824c0f;
+
+  /* Accessibility bar */
+  --accesibility-bar-bg: #025259;
+  --accesibility-bar-btn-color: white;
+  --accesibility-bar-btn-border: 2px solid white;
+  --accesibility-bar-border: 0px;
 }
 [data-theme="Predeterminado"] {
   --background: white;
@@ -30,6 +36,11 @@
   --navbar-border: 2px solid #202020;
   --logo-color: #202020;
   --avatar-stroke: #202020;
+
+  --accesibility-bar-bg: #fffaef;
+  --accesibility-bar-btn-color: #202020;
+  --accesibility-bar-border: 2px solid #202020;
+  --accesibility-bar-btn-border: 2px solid #202020;
 }
 
 [data-theme="Ceniza"] {
@@ -43,6 +54,11 @@
   --navbar-border: 2px solid #B6F6F0;
   --logo-color: #B6F6F0;
   --avatar-stroke: #b6f6f0;
+
+  --accesibility-bar-bg: #2d3236;
+  --accesibility-bar-btn-color: #b6f6f0;
+  --accesibility-bar-border: 2px solid #b6f6f0;
+  --accesibility-bar-btn-border: 2px solid #b6f6f0;
 }
 
 [data-theme="Grafito"] {
@@ -56,6 +72,11 @@
   --button-border: 2px solid #ffffff;
   --logo-color: #ffffff;
   --avatar-stroke: #ffffff;
+
+  --accesibility-bar-bg: #202020;
+  --accesibility-bar-btn-color: #ffffff;
+  --accesibility-bar-border: 2px solid #ffffff;
+  --accesibility-bar-btn-border: 2px solid #ffffff;
 }
 
 [data-theme="Noche"] {
@@ -69,6 +90,11 @@
   --link-color: #8080ff;
   --logo-color: #ffee32;
   --avatar-stroke: #ffee32;
+
+  --accesibility-bar-bg: #000000;
+  --accesibility-bar-border: 2px solid #ffee32;
+  --accesibility-bar-btn-color: #ffee32;
+  --accesibility-bar-btn-border: 2px solid #ffee32;
 }
 
 body {
@@ -107,4 +133,30 @@ menu {
 
 .avatar-figure {
   fill: var(--button-text);
+}
+
+.bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 2.9vw;
+  background-color: var(--accesibility-bar-bg);
+  border: var(--accesibility-bar-border);
+}
+
+.bar button {
+  font-size: 1vw;
+  font-weight: bold;
+  width: 1.6vw;
+  height: 74%;
+  margin-right: 5px;
+  padding: 0px;
+  background-color: transparent;
+  border-radius: 3px;
+  color: var(--accesibility-bar-btn-color);
+  border: var(--accesibility-bar-btn-border);
+}
+
+.accessibility-bar-btn-content {
+  fill: var(--accesibility-bar-btn-color);
 }

@@ -10,7 +10,7 @@ export default function Menu({ isOpen, menuList, handleClick }) {
         right: "10px", 
         margin: "0",
         padding: "0px",
-        border: "1px solid white",
+        border: "0px solid white",
         zIndex: 1000,
       }}
     >
