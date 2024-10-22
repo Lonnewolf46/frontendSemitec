@@ -1,3 +1,4 @@
+@import "https://code/highcharts.com/css/highcharts.css";
 :root {
   /* Your default theme */
   --background: white;
@@ -7,45 +8,68 @@
   --button-color: #824c0f;
   --button-text: white;
   --button-border: 0px;
-  --navbar-background: #007172;;
-  --navbar-border: 0px
-  --accessibility-bar-button
+  --navbar-background: #007172;
+  --navbar-border: 0px;
+  --link-color: white;
+  --logo-color: white;
+  --avatar-stroke: #824c0f;
 }
-  [data-theme='claro'] {
-    --background: white;
-    --foreground: black;
-  }
+[data-theme="Predeterminado"] {
+  --background: white;
+  --foreground: black;
+}
 
-  [data-theme='oscuro'] {
-    --background: black;
-    --foreground: white;
-  }
+[data-theme="Amanecer"] {
+  --background: #fffaef;
+  --foreground: #3d3d3d;
+  --link-color: #1C5E75;
+  --button-color: #fffaef;
+  --button-text: #202020;
+  --button-border: 2px solid #202020;
+  --navbar-background: #fffaef;
+  --navbar-border: 2px solid #202020;
+  --logo-color: #202020;
+  --avatar-stroke: #202020;
+}
 
-[data-theme="negro"] {
-    --navbar-background: black;
-    --navbar-border: 2px solid #ffee32;
+[data-theme="Ceniza"] {
+  --background: #2D3236;
+  --foreground: #ffffff;
+  --link-color: #70EBDE;
+  --button-color: #2D3236;
+  --button-text: #B6F6F0;
+  --button-border: 2px solid #B6F6F0;
+  --navbar-background: #2D3236;
+  --navbar-border: 2px solid #B6F6F0;
+  --logo-color: #B6F6F0;
+  --avatar-stroke: #b6f6f0;
+}
+
+[data-theme="Grafito"] {
+  --background: #202020;
+  --foreground: #ffffff;
+  --link-color: #75E9FC;
+  --navbar-background: #202020;
+  --navbar-border: 2px solid #ffffff;
+  --button-color: #202020;
+  --button-text: #ffffff;
+  --button-border: 2px solid #ffffff;
+  --logo-color: #ffffff;
+  --avatar-stroke: #ffffff;
+}
+
+[data-theme="Noche"] {
+  --navbar-background: black;
+  --navbar-border: 2px solid #ffee32;
   --background: black;
   --foreground: white;
   --button-color: black;
   --button-text: #ffee32;
   --button-border: 2px solid #ffee32;
+  --link-color: #8080ff;
+  --logo-color: #ffee32;
+  --avatar-stroke: #ffee32;
 }
-
-[data-theme="blanco"] {
-  --background: #FFFAEF;
-  --foreground: #3D3D3D;
-  --button-color: #fffaef;
-  --button-text: #202020;
-  --button-border: 2px solid #202020;
-}
-
-  [data-theme='gris'] {
-    --background: black;
-    --foreground: white;
-    --button-color: #black;
-    --button-text: #ffee32;
-    --button-border: 2px solid #ffee32;
-  }
 
 body {
   background-color: var(--background);
@@ -59,10 +83,28 @@ button {
 }
 
 nav {
-    background-color: var(--navbar-background);
-    border: var(--navbar-border);
+  background-color: var(--navbar-background);
+  border: var(--navbar-border);
 }
 
-.bar {
-  border-color: var(--navbar-border)
+a {
+  color: var(--link-color);
+}
+
+menu {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.logo {
+  fill: var(--logo-color);
+}
+
+.avatar-fill {
+  fill: var(--button-color);
+  stroke: var(--avatar-stroke);
+}
+
+.avatar-figure {
+  fill: var(--button-text);
 }

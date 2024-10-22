@@ -10,17 +10,81 @@ import styles from './styles.module.css'
 import ProgressCard from "@/app/components/progressCard";
 import StatsCard from "@/app/components/statsCard";
 import NextLessonCard from "@/app/components/next-lesson-card";
+import {useTheme } from "next-themes";
+const themes = {
+  Predeterminado: {
+    backgroundColor: '#ffffff',
+    textColor: '#000000',
+    legendColor: '#000000',
+  },
+  Amanecer: {
+    backgroundColor: '#FFFAEF',
+    textColor: '#3D3D3D',
+    legendColor: '#202020',
+  },
+  Ceniza: {
+    backgroundColor: '#2D3236',
+    textColor: '#ffffff',
+    legendColor: '#B6F6F0',
+  },
+  Grafito: {
+    backgroundColor: '#202020',
+    textColor: '#ffff',
+    legendColor: '#ffff',
+  },
+  Noche: {
+    backgroundColor: '#000000',
+    textColor: '#ffffff',
+    legendColor: '#ffee32',
+  },
+};
 
 export default function StudentHome() {
+  const theme = useTheme();
   const [username, setUsername] = useState("");
   const [stats, setStats] = useState({avg_time_taken: 0, avg_mistakes: 0, avg_accuracy_rate: 0, avg_pulsation_per_minute:0 })
   const [metricsHistory, setAccuracyHistory] = useState([])
   const [nextLessonId, setNextLessonId] = useState(1)
   const router = useRouter();
 
+  const currentTheme = themes[theme.theme] || themes.Predeterminado;
+
   const options = {
+    chart: {
+      backgroundColor: currentTheme.backgroundColor,
+      style: {
+        color: currentTheme.textColor,
+      }
+    },
     title: {
       text: "Estadísticas últimas 10 lecciones",
+      style: {
+        color: currentTheme.textColor,
+      }
+    },
+    xAxis: {
+      labels: {
+        style: {
+          color: currentTheme.textColor,
+        }
+      }
+    },
+    yAxis: {
+      title: {
+        style: {
+          color: currentTheme.textColor,
+        }
+      },
+      labels: {
+        style: {
+          color: currentTheme.textColor,
+        }
+      }
+    },
+    legend: {
+      itemStyle: {
+        color: currentTheme.legendColor, // Set the color of the legend labels dynamically
+      }
     },
     series: [
       {

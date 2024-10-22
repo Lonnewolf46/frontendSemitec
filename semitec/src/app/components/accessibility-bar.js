@@ -14,7 +14,7 @@ export function AccessibilityBar() {
   const { theme, setTheme } = useTheme();
   const [themesMenuStatus, setThemesMenuStatus] = useState(false)
 
-  const themes = ["claro", "oscuro", "blanco", "negro", "gris"];
+  const themes = ["Predeterminado", "Amanecer", "Ceniza", "Grafito", "Noche"];
   const openThemesMenu = () => {
     setThemesMenuStatus((prev) => !prev);
   };
