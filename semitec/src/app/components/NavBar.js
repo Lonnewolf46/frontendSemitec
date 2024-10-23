@@ -22,7 +22,7 @@ export default function NavBar({ menuList }) {
   };
 
   return (
-    <header>
+    <div>
       <nav className={styles.navBar}>
         <div
           style={{
@@ -181,6 +181,6 @@ export default function NavBar({ menuList }) {
           </div>
         </div>
       </nav>
-    </header>
+    </div>
   );
 }

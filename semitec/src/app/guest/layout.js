@@ -10,8 +10,10 @@ const menuList = [
 export default function GuestLayout({ children }) {
   return (
     <>
-      <NavBar menuList={menuList} />
-      <AccessibilityBar />
+      <header>
+        <NavBar menuList={menuList} />
+        <AccessibilityBar />
+      </header>
       {children}
     </>
   );

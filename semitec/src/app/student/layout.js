@@ -9,14 +9,14 @@ const menuList = [
   { text: "Preguntas frecuentes", href: "/student/faqs" },
 ];
 
-export default function StudentLayout({
-    children,
-}) {
-    return (
-        <>
-      <NavBar menuList={menuList} />
-      <AccessibilityBar />
-            {children}
-        </>
-    )
+export default function StudentLayout({ children }) {
+  return (
+    <>
+      <header>
+        <NavBar menuList={menuList} />
+        <AccessibilityBar />
+      </header>
+      {children}
+    </>
+  );
 }
