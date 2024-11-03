@@ -83,3 +83,35 @@
     justify-content: space-around;
 }
 
+.lexemesContainer {
+    background-color: white;
+    border: solid 1px #CED4DA;
+    margin: 1vw 1vw 1vw 1vw;
+    border-radius: 6px;
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+.lexemesContent{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttnedText{
+    background-color: #ffffff;
+    border: 0px;
+    padding: 1vw;
+    font-size: 1.2vw;
+    margin: 0.25vw;
+    border-radius: 4px;
+    min-width: 90%;
+    min-height: 80%;
+}
+.buttnedText:focus {
+    outline: 2px solid #CED4DA;
+}
+.buttnedText:hover {
+    outline: 2px solid #CED4DA;
+}

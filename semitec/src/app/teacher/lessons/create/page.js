@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "@/app/_styles/CreateLesson.module.css";
@@ -8,14 +8,16 @@ import info from "@/app/ui/info-circle.svg";
 import buttonStyles from "@/app/_styles/Button.module.css";
 export default function CreatLesson() {
   const router = useRouter();
-  const [name, setVarName] = useState("");
-  const [level_id, setLevelID] = useState(1);
+  const [name, setName] = useState("");
+  const [level_id, setLevelID] = useState();
   const [words, setVarWords] = useState("");
   const [description, setDescription] = useState("");
-  const [min_time, setMinTime] = useState("");
-  const [min_mistakes, setMinMistakes] = useState("");
-  const [iterations, setIterations] = useState("1");
+  const [max_time, setMaxTime] = useState("");
+  const [max_mistakes, setMaxMistakes] = useState("");
+  const [iterations, setIterations] = useState("1");  
   const [publicActivity, setPublicActivity] = useState(false);
+  const [available_lexemes, setLexemes] = useState([]);
+  const [available_levels, setAvLevels] = useState([]);
 
   const createLesson = async () => {
     try {
@@ -57,11 +59,35 @@ export default function CreatLesson() {
     }
   };
 
-  const handleChangeName = (event) => {
-    setVarName(event.target.value);
+  const getLexemes = async() => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/lessons/lexemes`);
+      const data = await response.json();
+      const lexemeNames = data.map(item => item.lexeme_name);
+      setLexemes(lexemeNames);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const handleChangeLevel = (event) => {
-    setLevelID(event.target.value);
+
+  const getLevels = async() => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/lessons/levels`);
+      const data = await response.json();
+      const levelsData = data.map(item => ({
+        level_id: item.level_id,
+        name: item.name, }));
+      setAvLevels(levelsData);
+      if (levelsData.length > 0 && !level_id) {
+        setLevelID(levelsData[0].level_id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChangeName = (event) => {
+    setName(event.target.value);
   };
   const handleChangeWords = (event) => {
     setVarWords(event.target.value);
@@ -71,25 +97,49 @@ export default function CreatLesson() {
   };
   const handleChangeMaxTime = (event) => {
     if(event.target.value >= 0)
-      setMinTime(event.target.value);
+      setMaxTime(event.target.value);
   };
   const handleChangeMaxMistakes = (event) => {
     if(event.target.value >= 0)
-      setMinMistakes(event.target.value);
+      setMaxMistakes(event.target.value);
   };
   const handleChangeIterations = (event) => {
     if(event.target.value > 0)
       setIterations(event.target.value);
   }
+  const handleChangeLevel = (event) => {
+    setLevelID(event.target.value);
+  };
   const handleChangePublic = (event) => {
-    console.log(event.target.checked);
     setPublicActivity(event.target.checked);
   }
 
-  const handleClick = (event) => {
-    event.preventDefault();
-    createLesson();
+  const handleClickLex = (lexeme) => {
+    if(words.length!=0){
+      setVarWords(words + ' ' + lexeme);
+    }
+    else{
+      setVarWords(lexeme);
+    }
   };
+
+  useEffect(
+    () => {
+      getLexemes();
+      getLevels();
+    },[]);
+
+  const validateForms = () => {
+    const leftForm = document.getElementById('left-form');
+    const rightForm = document.getElementById('right-form');
+    if (leftForm.checkValidity() && rightForm.checkValidity() && level_id) {
+      console.log(`Name: ${name}`); console.log(`Level ID: ${level_id}`); console.log(`Words: ${words}`); console.log(`Description: ${description}`); console.log(`Max Time: ${max_time}`); console.log(`Max Mistakes: ${max_mistakes}`); console.log(`Iterations: ${iterations}`); console.log(`Public Activity: ${publicActivity}`);
+      //Do something related to passing parameters to the next screen
+    }
+    else { 
+        alert('Verifique que todos los campos estén llenos.'); 
+      } 
+    };
 
   return (
     <div className={styles.parent}>
@@ -99,6 +149,7 @@ export default function CreatLesson() {
         </div>
         <div style={{display: 'flex', justifyContent: 'center'}}>
           <div className={styles.leftContainer}>
+          <form id="left-form">
             <h2 className={styles.sectionHeader}>Información de la lección</h2>
             <label htmlFor="name" className={styles.formsLabel}>Nombre</label>
             <input
@@ -135,17 +186,35 @@ export default function CreatLesson() {
               type="text"
               id="words"
             />
+          </form>
           </div>
           <div className={styles.midContainer}>
             <h2 className={styles.sectionHeader}>Lexemas disponibles</h2>
             <p className={styles.sectionHeader} style={{marginTop: '-1vw'}}>(Opcional)</p>
+            <div className={styles.lexemesContainer}>
+              <div className={styles.lexemesContent}>
+              {available_lexemes.length === 0 ? (
+              <p className={styles.formsLabel}>No hay lexemas disponibles</p>
+              ) : (
+                available_lexemes.map((lexeme, index) => (
+                  <button
+                    className={styles.buttnedText}
+                    key={index}
+                    onClick={() => handleClickLex(lexeme)}> 
+                  {lexeme}
+                  </button>
+                ))
+              )}
+              </div>
+            </div>
           </div>
           <div className={styles.rightContainer}>
+          <form id="right-form">
             <h2 className={styles.sectionHeader}>Personalización de la lección</h2>
             <label htmlFor="min_time" className={styles.formsLabel}>Límite de tiempo (Segundos)</label>
             <input
               required
-              value={min_time}
+              value={max_time}
               placeholder="Ingrese el tiempo máximo"
               minLength={1}
               maxLength={8}
@@ -156,7 +225,7 @@ export default function CreatLesson() {
             <label htmlFor="min_mistakes" className={styles.formsLabel}>Cantidad máxima de errores</label>
             <input
               required
-              value={min_mistakes}
+              value={max_mistakes}
               placeholder="Ingrese el máximo de errores permitidos"
               minLength={1}
               maxLength={8}
@@ -179,18 +248,25 @@ export default function CreatLesson() {
             <label htmlFor="level_id" className={styles.formsLabel}>Nivel</label>
             <select
               id="level_id"
+              style={{width:'95%'}}
               onChange={(e) => {
-                setLevelID(e.target.value);
+                handleChangeLevel(e);
               }}
             >
-              <option value="1">Nivel 1</option>
-              <option value="2">Nivel 2</option>
-              <option value="3">Nivel 3</option>
-              <option value="4">Nivel 4</option>
+              {available_levels.length === 0 ? (
+                <option disabled>Error obteniendo los niveles</option>
+              ) : ( available_levels.map((level) => (
+                <option
+                  key={level.level_id}
+                  value={level.level_id}>
+                    {level.name}
+                </option> 
+               )) 
+              )}
             </select>
             <div style={{display: 'flex', alignItems: 'center'}}>
               <input
-              style={{width: '24px', height: '24px', margin: '0vw'}}
+              style={{width: '24px', height: '24px', margin: '1vw'}}
               type="checkbox"
               value={publicActivity}
               onChange={handleChangePublic}
@@ -206,7 +282,7 @@ export default function CreatLesson() {
               <div className={styles.tooltip}>
                 <Image 
                   src={info} 
-                  alt="Info" 
+                  alt="" 
                   style={{ maxHeight: '24px', maxWidth: '24px', marginLeft: '10px' }} 
                 />
                 <span className={styles.tooltipText}>
@@ -216,13 +292,14 @@ export default function CreatLesson() {
                 </span>
               </div>
             </div>
+            </form>
           </div>
         </div>
         <div className={styles.buttonContainer}>
           <button className={buttonStyles.secondary}>
             Cancelar
           </button>
-          <button className={buttonStyles.primary}>
+          <button id="validate-button" className={buttonStyles.primary} onClick={validateForms}>
             Asignar
           </button>
         </div>
