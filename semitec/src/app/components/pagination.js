@@ -3,18 +3,25 @@ import ListCard from './ListCard';
 import LessonInfo from './LessonInfo'; 
 import LessonImg from './lessonImg.png'; 
 import styles from './Paginacion.module.css'; 
-function Paginacion({ apiUrl }) {
-  const [lessons, setLessons] = useState([]); 
+
+export default function Paginacion() {
+  const [data, setData] = useState([]); 
   const [activeIndex, setActiveIndex] = useState(0); 
   const [currentPage, setCurrentPage] = useState(1); 
   const [totalPages, setTotalPages] = useState(1); 
   const itemsPerPage = 5; 
  
-  const fetchData = async (page) => {
+  const fetchData = async (page,size) => {
     try {
-      const response = await fetch(`${apiUrl}?page=${page}&limit=${itemsPerPage}`);
-      const result = await response.json();
-      setLessons(result.data); 
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/lessons`,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(page,size),
+      });
+      const data = await response.json();
+      setLessons(data); 
       setTotalPages(result.totalPages); 
     } catch (error) {
       console.error('Error al cargar los datos de la API:', error);
@@ -22,7 +29,7 @@ function Paginacion({ apiUrl }) {
   };
 
   useEffect(() => {
-    fetchData(currentPage); 
+    fetchData(currentPage,totalPages); 
   }, [currentPage]);
 
  
@@ -90,4 +97,3 @@ function Paginacion({ apiUrl }) {
   );
 }
 
-export default Paginacion;
