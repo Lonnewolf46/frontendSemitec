@@ -37,3 +37,12 @@
     border-bottom: none;
     margin-bottom: 0;
 }
+
+.buttonContainer {
+    margin-top: 2vw;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: flex-end;
+    justify-content: space-around;
+}
