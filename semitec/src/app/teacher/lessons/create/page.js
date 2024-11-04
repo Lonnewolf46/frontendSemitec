@@ -6,6 +6,7 @@ import styles from "@/app/_styles/CreateLesson.module.css";
 import info from "@/app/ui/info-circle.svg";
 
 import buttonStyles from "@/app/_styles/Button.module.css";
+import { Content } from "next/font/google";
 export default function CreatLesson() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -21,41 +22,41 @@ export default function CreatLesson() {
 
   const createLesson = async () => {
     try {
-      console.log(
-        JSON.stringify({
-          name: name,
-          level_id: level_id,
-          words: words,
-          description: description,
-          min_time: min_time,
-          min_mistakes: min_mistakes,
-        })
-      );
+      var sharedvalue = 0;
+      if(publicActivity){sharedvalue = 1}
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_HOST}/teacher/lessons/create`,
+        `${process.env.NEXT_PUBLIC_API_HOST}/lessons/create`,// TODO: cambiar a /teacher/lessons/create
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("auth-token"),
+            //"auth-token": localStorage.getItem("auth-token"),
           },
           body: JSON.stringify({
-            name: name,
             level_id: level_id,
-            words: words,
+            teacher_id: 1,//TODO: CAMBIAR EN PROD
+            content: words,
+            iterations: iterations,
+            max_time: max_time,
+            max_mistakes: max_mistakes,
+            name: name,
             description: description,
-            min_time: min_time,
-            min_mistakes: min_mistakes,
+            shared: sharedvalue
           }),
         }
       );
       const data = await response.json();
-      console.log(data);
-      if (response.ok) {
-        router.push("/teacher/lessons");
+        if (data.success === true) {
+          var helper = data.outlesson_id; //Contiene el ID de la lección ingresada
+          router.push("/teacher/lessons");
+          //Ir a asignación
+        }
+      else{
+        alert("No se ha podido crear la lección, inténtelo de nuevo más tarde.");
       }
     } catch (error) {
       console.log(error);
+      alert("Ha ocurrido un error al crear la lección, inténtelo de nuevo más tarde.")
     }
   };
 
@@ -133,8 +134,9 @@ export default function CreatLesson() {
     const leftForm = document.getElementById('left-form');
     const rightForm = document.getElementById('right-form');
     if (leftForm.checkValidity() && rightForm.checkValidity() && level_id) {
-      console.log(`Name: ${name}`); console.log(`Level ID: ${level_id}`); console.log(`Words: ${words}`); console.log(`Description: ${description}`); console.log(`Max Time: ${max_time}`); console.log(`Max Mistakes: ${max_mistakes}`); console.log(`Iterations: ${iterations}`); console.log(`Public Activity: ${publicActivity}`);
-      //Do something related to passing parameters to the next screen
+      var sharedvalue = 0;
+      if(publicActivity){sharedvalue = 1}
+      createLesson();
     }
     else { 
         alert('Verifique que todos los campos estén llenos.'); 
