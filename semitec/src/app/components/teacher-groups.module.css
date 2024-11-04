@@ -1,0 +1,48 @@
+.rightContainer, .leftContainer {
+    padding: 32px 0 0 32px;
+    width: 46vw;
+    margin: auto;
+    height: 76vh;
+    border-radius: 10px;
+    border: solid 1px #e6e6e6;
+}
+
+.groupsMainContainer {
+    margin: 20px auto;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    display: flex;
+}
+
+.groupListContainer {
+    max-height: 85%;
+    overflow-y: auto;
+}
+
+
+.groupList {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+.groupList li {
+    margin: 10px 0;
+}
+
+.groupList li:first-child {
+    margin-top: 0;
+}
+.groupList li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.buttonContainer {
+    margin-top: 2vw;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: flex-end;
+    justify-content: space-around;
+}

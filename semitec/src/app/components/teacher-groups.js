@@ -1,13 +1,16 @@
 "use client";
-import styles from "./LessonsScreen.module.css";
+
+import styles from "./teacher-groups.module.css";
 import buttonStyles from "@/app/_styles/Button.module.css";
 import { useEffect, useState } from "react";
 import ListCard from "./list-card";
 import LessonImg from "../ui/lesson-img.svg";
-import LessonInfo from "./lesson-info";
+import GroupInfo from "./lesson-info";
+import GroupInfo from "../teacher/groups/info/page";
 
-export default function LeesonsScreen() {
-  const [lessons, setLessons] = useState([]);
+
+export default function TeacherGroupsTable() {
+  const [groups, setGroups] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1); 
   const [totalPages, setTotalPages] = useState(1); 
@@ -15,59 +18,64 @@ export default function LeesonsScreen() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/lessons/public/total`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/groups/public/total`,{
+        headers: {
+          "auth-token": localStorage.getItem("auth-token"),
+        },
+      });
       const data = await response.json();
       
       if (response.ok) {
-        const totalLessons = data.total;
-        const calculatedTotalPages = Math.ceil(totalLessons / itemsPerPage);
+        const totalGroups = data.total;
+        const calculatedTotalPages = Math.ceil(totalGroups / itemsPerPage);
         setTotalPages(calculatedTotalPages);
       } else {
-        console.error("Error al obtener el total de lecciones:", data.message);
+        console.error("Error al obtener el total de grupos de un profesor:", data.message);
       }
     } catch (error) {
       console.error("Error al llamar al endpoint:", error);
     }
   };
-  const getLessons = async (var_page_number,var_page_size) => {
+  const getGroups = async (var_page_number,var_page_size) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/lessons/public`,{
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups`,{
         method: "POST",
         headers: {
+            "auth-token": localStorage.getItem("auth-token"),
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          teacher_id: teacher_id,
           var_page_number: var_page_number,
           var_page_size: var_page_size
       }),
       });
       const data = await response.json();
-      setLessons(data); 
+      setGroups(data); 
     } catch (error) {
       console.error('Error al cargar los datos de la API:', error);
     }
   };
   useEffect(() => {
-    getLessons(currentPage,itemsPerPage); 
+    getGroups(currentPage,itemsPerPage); 
   }, [currentPage]);
 
   useEffect(() => {
     fetchData(); 
   }, []);
-       
+
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
-
   return (
-    <div className={styles.lessonsMainContainer}>
+    <div className={styles.groupsMainContainer}>
       <div className={styles.leftContainer}>
-        <h1 style={{fontSize: "2.1vw"}}>Lecciones</h1>
-        <div className={styles.lessonListContainer}>
-          <ul className={styles.lessonList}>
-            {lessons.map((lesson, index) => (
+        <h1 style={{fontSize: "2.1vw"}}>Grupos</h1>
+        <div className={styles.groupListContainer}>
+          <ul className={styles.groupList}>
+            {groups.map((group, index) => (
               <li
                 tabIndex={index}
                 key={index}
@@ -77,7 +85,7 @@ export default function LeesonsScreen() {
               >
                 <ListCard
                   imagePath={LessonImg}
-                  lessonName={lesson.name}
+                  lessonName={group.name}
                   active={activeIndex === index}
                 />
               </li>
@@ -106,8 +114,8 @@ export default function LeesonsScreen() {
       </div>
 
       <div className={styles.rightContainer}>
-        {lessons.length > 0 ? (
-          <LessonInfo lesson={lessons[activeIndex]} />
+        {groups.length > 10 ? (
+          <GroupInfo group={groups[activeIndex]} />
         ) : (
           <></>
         )}
