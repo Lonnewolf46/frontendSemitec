@@ -19,9 +19,6 @@ export function AccessibilityBar() {
       <button aria-label="Seleccionar tipografía">
         <Image src={typography} alt="" />
       </button>
-      <button aria-label="Seleccionar velocidad de voz">
-        <Image src={voiceSpeed} alt="" />
-      </button>
       <button aria-label="Selecionar tema de contraste" style={{ marginRight: "16px" }}>
         <Image src={contrast} sizes="(max-width: 24px) 1.6vw, 2.2vw" alt="" />
       </button>
