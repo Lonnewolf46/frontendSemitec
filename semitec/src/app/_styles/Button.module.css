@@ -16,3 +16,11 @@
   font-size: 20px;
   border-radius: 4px;
 }
+
+/*Temporary change for visual aid on pagination*/
+.primary:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

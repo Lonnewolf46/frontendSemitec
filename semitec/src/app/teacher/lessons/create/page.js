@@ -4,11 +4,16 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "@/app/_styles/CreateLesson.module.css";
 import info from "@/app/ui/info-circle.svg";
-
 import buttonStyles from "@/app/_styles/Button.module.css";
+import CryptoJS from 'crypto-js';
 import { Content } from "next/font/google";
 export default function CreatLesson() {
   const router = useRouter();
+
+  const encryptData = (data) => {
+    return CryptoJS.AES.encrypt(JSON.stringify(data), process.env.NEXT_PUBLIC_ENCRYPT_KEY).toString();
+  };
+  
   const [name, setName] = useState("");
   const [level_id, setLevelID] = useState();
   const [words, setVarWords] = useState("");
@@ -20,45 +25,24 @@ export default function CreatLesson() {
   const [available_lexemes, setLexemes] = useState([]);
   const [available_levels, setAvLevels] = useState([]);
 
-  const createLesson = async () => {
-    try {
-      var sharedvalue = 0;
-      if(publicActivity){sharedvalue = 1}
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_HOST}/lessons/create`,// TODO: cambiar a /teacher/lessons/create
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            //"auth-token": localStorage.getItem("auth-token"),
-          },
-          body: JSON.stringify({
-            level_id: level_id,
-            teacher_id: 1,//TODO: CAMBIAR EN PROD
-            content: words,
-            iterations: iterations,
-            max_time: max_time,
-            max_mistakes: max_mistakes,
-            name: name,
-            description: description,
-            shared: sharedvalue
-          }),
-        }
-      );
-      const data = await response.json();
-        if (data.success === true) {
-          var helper = data.outlesson_id; //Contiene el ID de la lección ingresada
-          router.push("/teacher/lessons");
-          //Ir a asignación
-        }
-      else{
-        alert("No se ha podido crear la lección, inténtelo de nuevo más tarde.");
-      }
-    } catch (error) {
-      console.log(error);
-      alert("Ha ocurrido un error al crear la lección, inténtelo de nuevo más tarde.")
-    }
-  };
+  const assignLesson = () => {
+    var sharedvalue = 0;
+    if(publicActivity){sharedvalue = 1}
+    sessionStorage.setItem('lesson',encryptData(
+      JSON.stringify({
+        level_id: level_id,
+        content: words,
+        iterations: iterations,
+        max_time: max_time,
+        max_mistakes: max_mistakes,
+        name: name,
+        description: description,
+        shared: sharedvalue
+      })
+    ));
+    sessionStorage.removeItem('checkedStudents');
+    router.push("/teacher/lessons/create/assign");
+  }
 
   const getLexemes = async() => {
     try {
@@ -97,15 +81,15 @@ export default function CreatLesson() {
     setDescription(event.target.value);
   };
   const handleChangeMaxTime = (event) => {
-    if(event.target.value >= 0)
+    if(event.target.value >= 0 && event.target.value.length <= 4)
       setMaxTime(event.target.value);
   };
   const handleChangeMaxMistakes = (event) => {
-    if(event.target.value >= 0)
+    if(event.target.value >= 0 && event.target.value.length <= 2)
       setMaxMistakes(event.target.value);
   };
   const handleChangeIterations = (event) => {
-    if(event.target.value > 0)
+    if(event.target.value >= 0 && event.target.value.length <= 2)
       setIterations(event.target.value);
   }
   const handleChangeLevel = (event) => {
@@ -124,23 +108,30 @@ export default function CreatLesson() {
     }
   };
 
-  useEffect(
-    () => {
+  useEffect(() => {
       getLexemes();
       getLevels();
-    },[]);
+  },[]);
 
   const validateForms = () => {
-    const leftForm = document.getElementById('left-form');
-    const rightForm = document.getElementById('right-form');
-    if (leftForm.checkValidity() && rightForm.checkValidity() && level_id) {
-      var sharedvalue = 0;
-      if(publicActivity){sharedvalue = 1}
-      createLesson();
+    if(iterations==="0"){
+      alert('Se requiere de mínimo 1 iteración.'); 
     }
-    else { 
-        alert('Verifique que todos los campos estén llenos.'); 
-      } 
+    else if(max_time==="0"){
+      alert('Se requiere de mínimo 1 segundo de límite de tiempo.');
+    }
+    else{
+      const leftForm = document.getElementById('left-form');
+      const rightForm = document.getElementById('right-form');
+      if (leftForm.checkValidity() && rightForm.checkValidity() && level_id) {
+        var sharedvalue = 0;
+        if(publicActivity){sharedvalue = 1}
+        assignLesson();
+      }
+      else { 
+          alert('Verifique que todos los campos estén llenos.'); 
+        } 
+    }
     };
 
   return (
@@ -219,7 +210,7 @@ export default function CreatLesson() {
               value={max_time}
               placeholder="Ingrese el tiempo máximo"
               minLength={1}
-              maxLength={8}
+              maxLength={4}
               onChange={handleChangeMaxTime}
               type="number"
               id="min_time"
@@ -230,7 +221,6 @@ export default function CreatLesson() {
               value={max_mistakes}
               placeholder="Ingrese el máximo de errores permitidos"
               minLength={1}
-              maxLength={8}
               onChange={handleChangeMaxMistakes}
               type="number"
               id="min_mistakes"
@@ -242,7 +232,6 @@ export default function CreatLesson() {
               placeholder="Ingrese las iteraciones del contenido"
               value={iterations}
               minLength={0}
-              maxLength={2}
               onChange={handleChangeIterations}
               type="number"
               id="iterations"
@@ -268,7 +257,7 @@ export default function CreatLesson() {
             </select>
             <div style={{display: 'flex', alignItems: 'center'}}>
               <input
-              style={{width: '24px', height: '24px', margin: '1vw'}}
+              style={{width: '4vh', height: '4vh', margin: '1vw'}}
               type="checkbox"
               value={publicActivity}
               onChange={handleChangePublic}
@@ -285,7 +274,7 @@ export default function CreatLesson() {
                 <Image 
                   src={info} 
                   alt="" 
-                  style={{ maxHeight: '24px', maxWidth: '24px', marginLeft: '10px' }} 
+                  style={{ maxHeight: '4vh', maxWidth: '4vh', marginLeft: '10px' }} 
                 />
                 <span className={styles.tooltipText}>
                   <p className={styles.formsLabel}>
@@ -302,7 +291,7 @@ export default function CreatLesson() {
             Cancelar
           </button>
           <button id="validate-button" className={buttonStyles.primary} onClick={validateForms}>
-            Asignar
+            Crear actividad
           </button>
         </div>
       </div>
