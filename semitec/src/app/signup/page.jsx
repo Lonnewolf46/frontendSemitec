@@ -1,7 +1,6 @@
 'use client';
 import {React, useState, useEffect, use} from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { customSelectSchema } from "../schemas";
 import { useRouter } from "next/navigation";
 import './Signup.css';
 import '../components/button/button.css'
@@ -14,16 +13,19 @@ export default function SignUp() {
   const [provinces, setProvinces] = useState([])
   const [cantons, setCantons] = useState([])
   const [districts, setDistricts] = useState([])
+  const [educationLevels, setEducationLevels] = useState([])
   const [institutions, setInstitutions] = useState([])
+  const [selectedUserType, setSelectedUserType] = useState()
   const [selectedCountry, setSelectedCountry] = useState()
   const [selectedProvince, setSelectedProvince] = useState()
   const [selectedCanton, setSelectedCanton] = useState()
   const [selectedDistrict, setSelectedDistrict] = useState()
-  const [selectedInstitution, setSelectedInstitution] = useState()
-  const [selectedUserType, setSelectedUserType] = useState()
+  const [selectedInstitution, setSelectedInstitution] = useState() 
+  const [selectedEducationLevel, setSelectedEducationLevel] = useState() 
 
   const signupTutor = async (credentials) => {
     let { country, province, canton,...updated_data } = credentials;
+    const user_configuration_id = 0 
     console.log("tutor")
     console.log(updated_data)
     {/*try {
@@ -44,6 +46,7 @@ export default function SignUp() {
 
   const signupStudent = async (credentials) => {
     let { country, province, canton,...updated_data } = credentials;
+    const user_configuration_id = 0 
     console.log("student")
     console.log(updated_data)
     {/*try {
@@ -62,7 +65,6 @@ export default function SignUp() {
     }*/}
   }
 
-  'test NEW functions'
   const getCountries = () => {
     const response = fetch(`${process.env.NEXT_PUBLIC_API_HOST}/countries`)
     return response
@@ -101,6 +103,16 @@ export default function SignUp() {
     return response
   };
 
+  const getDistricts = async() => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/districts?canton_id=${selectedCanton}`); 
+    if (!response.ok) {
+      throw new Error(
+        `Unable to Fetch Data.`
+      );
+    }
+    return response
+  };
+
   const getInstitutions = async() => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/institutions?country_id=${selectedCountry}`); 
     if (!response.ok) {
@@ -113,6 +125,16 @@ export default function SignUp() {
 
   const getUserTypes = async() => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/account-type`); 
+    if (!response.ok) {
+      throw new Error(
+        `Unable to Fetch Data.`
+      );
+    }
+    return response
+  };
+
+  const getEducationLevels = async() => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/education-levels`); 
     if (!response.ok) {
       throw new Error(
         `Unable to Fetch Data.`
@@ -173,6 +195,19 @@ export default function SignUp() {
 
   useEffect(() => {
     if (selectedCanton){
+      getDistricts()
+      .then( (res) => res.json())
+      .then(data => setDistricts(data))          
+      .catch( (err) => {
+        throw new Error(
+          `Unable to Fetch Data from Districts.`
+        )
+      })
+    }
+  }, [selectedCanton])
+
+  useEffect(() => {
+    if (selectedDistrict){
       getInstitutions()
       .then( (res) => res.json())
       .then(data => setInstitutions(data))          
@@ -182,11 +217,25 @@ export default function SignUp() {
         )
       })
     }
-  }, [selectedCanton])
+  }, [selectedDistrict])
+
+  useEffect(() => {
+    getEducationLevels()
+    .then( (res) => res.json())
+    .then(data => setEducationLevels(data))          
+    .catch( (err) => {
+      throw new Error(
+        `Unable to Fetch Data from Education Levels.`
+      )
+    })
+    
+  }, [])
 
   useEffect(()=>{
     console.log(selectedUserType)
   },[selectedUserType])
+
+  
 
   return (
 
@@ -195,7 +244,7 @@ export default function SignUp() {
             <div className='logo-img'/>
 
             <Formik 
-              initialValues={{fullname: '',  email: '', password: '', user_type: '', country:'', province:'', canton:'', district: '', other_signs: '', education_level_id: '', institution:''}}
+              initialValues={{name: '',  email: '', password: '', user_type: '', country:'', province:'', canton:'', district_id: '', other_signs: '', education_level_id: '', institution_id:''}}
               validate={values => {
                 const errors = {}; 
                 if (!values.email) {
@@ -210,8 +259,8 @@ export default function SignUp() {
                     errors.password = 'Contraseña requerida.';
                 } 
 
-                if (!values.fullname) {
-                  errors.fullname = 'Nombre requerido.';
+                if (!values.name) {
+                  errors.name = 'Nombre requerido.';
                 } 
 
                 if (!values.user_type) {
@@ -230,8 +279,8 @@ export default function SignUp() {
                   errors.canton = 'Cantón requerido.';
                 } 
 
-                if (!values.district) {
-                  errors.district = 'Distrito requerido.';
+                if (!values.district_id) {
+                  errors.district_id = 'Distrito requerido.';
                 } 
 
                 if (!values.other_signs) {
@@ -242,8 +291,8 @@ export default function SignUp() {
                   errors.education_level_id = 'Nivel de educación requerido.';
                 } 
 
-                if (!values.institution) {
-                  errors.institution = 'Institución requerida.';
+                if (!values.institution_id) {
+                  errors.institution_id = 'Institución requerida.';
                 } 
                 
                 return errors;
@@ -264,8 +313,8 @@ export default function SignUp() {
                   <div className={stage === 1 ? 'personal' : 'hidden'}>
                       <div className='signup-header'>Registrarme (Paso 1 de 3)</div>
                         <text className='login-text'>Nombre</text>
-                        <Field className="form-styling" type ="fullname" name="fullname" placeholder = "Ingrese su nombre." />
-                        <ErrorMessage className='error-message' name="fullname" component="div"/> 
+                        <Field className="form-styling" type ="name" name="name" placeholder = "Ingrese su nombre." />
+                        <ErrorMessage className='error-message' name="name" component="div"/> 
                         <br></br>
                         <br></br>
                         {/* PENDIENTE REVISAR CONTRA LA BD Y EL API. 
@@ -396,10 +445,19 @@ export default function SignUp() {
                       selectedCanton &&
                       <>
                       <text className='login-text'>Distrito</text>
-                    <Field as="select" className="form-styling" type="district" name="district" >
+                    <Field as="select" className="form-styling" type="district_id" name="district_id" onChange={(e)=>{setSelectedDistrict(e.target.value); setFieldValue("district_id", (e.target.value))}}>
                       <option>Seleccione un distrito.</option>
-                      <option value="1">Guadalupe</option>
-                      <option value="2">La Joya</option>
+                      {
+                            districts && Array.isArray(districts)? 
+                                districts.map( 
+                                  (district_id) => {
+                                    return <option value={district_id.district_id}>
+                                      {district_id.name}
+                                      </option>}
+                                )
+                                :
+                                <></>
+                          }
                     </Field>
                     <ErrorMessage className='error-message' name="district" component="div"/>
                       </>
@@ -409,7 +467,7 @@ export default function SignUp() {
                     <br></br>
 
                     {
-                      selectedCanton &&
+                      selectedDistrict &&
                       <>
                         <text className='login-text'>Otras señas</text>
                         <Field className="form-styling" type ="other_signs" name="other_signs" placeholder = "Digite otras señas de ubicación." />
@@ -426,31 +484,40 @@ export default function SignUp() {
                     <div className={stage === 3 ? 'academia' : 'hidden'}>
                     <div className='signup-header'>Registrarme (Paso 3 de 3)</div>
                     <text className='login-text'>Nivel Académico</text>
-                    <Field as="select" className="form-styling" type="education_level_id" name="education_level_id" >
+                    <Field as="select" className="form-styling" type="education_level_id" name="education_level_id" onChange={(e)=>{setSelectedEducationLevel(e.target.value); setFieldValue("education_level_id", (e.target.value))}}>
                       <option>Seleccione un nivel académico.</option>
-                      <option value="1">Primaria</option>
-                      <option value="2">Secundaria</option>
+                      {
+                            educationLevels && Array.isArray(educationLevels)? 
+                                educationLevels.map( 
+                                  (education_level_id) => {
+                                    return <option value={education_level_id.education_level_id}>
+                                      {education_level_id.name}
+                                      </option>}
+                                )
+                                :
+                                <></>
+                        }
                     </Field>
                     <ErrorMessage className='error-message' name="education_level_id" component="div"/>
                     <br></br>
                     <br></br>
                     
                     <text className='login-text'>Institución</text>
-                      <Field as="select" className="form-styling" type="institution" name="institution" onChange={(e)=>{setSelectedInstitution(e.target.value); setFieldValue("institution", (e.target.value))}}>
+                      <Field as="select" className="form-styling" type="institution_id" name="institution_id" onChange={(e)=>{setSelectedInstitution(e.target.value); setFieldValue("institution_id", (e.target.value))}}>
                         <option>Seleccione una institución.</option>
                         {
                             institutions && Array.isArray(institutions)? 
                                 institutions.map( 
-                                  (institution) => {
-                                    return <option value={institution.institution_id}>
-                                      {institution.name}
+                                  (institution_id) => {
+                                    return <option value={institution_id.institution_id}>
+                                      {institution_id.name}
                                       </option>}
                                 )
                                 :
                                 <></>
-                          }
+                        }
                       </Field>
-                      <ErrorMessage className='error-message' name="institution" component="div"/>
+                      <ErrorMessage className='error-message' name="institution_id" component="div"/>
 
                     <br></br>
                     <br></br>
