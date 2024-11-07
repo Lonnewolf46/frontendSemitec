@@ -1,25 +1,23 @@
 .leftContainer {
     padding: 32px 32px 0 32px;
-    width: 46vw;
+    width: 50%;
     margin: 1vw;
     height: 76vh;
     border-radius: 10px;
-    border: solid 1px #e6e6e6;
+    border: solid 1px var(--card-container-bg);
 }
 
 .rightContainer {
     padding: 32px 32px 0 32px;
-    width: 46vw;
+    width: 50%;
     margin: 1vw;
     height: 76vh;
     border-radius: 10px;
-    border: solid 1px #e6e6e6;
+    border: solid 1px var(--card-container-bg);
 }
 
 .groupsMainContainer {
     margin: 20px auto;
-    padding-left: 1vw;
-    padding-right: 1vw;
     display: flex;
 }
 

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "@/app/_styles/GroupsTable.module.css";
+import stylesAlt from "./teacher-groups.module.css"
 import buttonStyles from "@/app/_styles/Button.module.css";
 import UIDisplayInfo from "./UIStateDisplay"
 import CryptoJS from 'crypto-js';
@@ -141,6 +142,7 @@ export default function StudentsTableAssign({ group_id }) {
   }
 
   return (
+    <>
     <div className={styles.container}>
       <table>
         <thead>
@@ -155,36 +157,36 @@ export default function StudentsTableAssign({ group_id }) {
               <td>{student.student_name}</td>
               <td>
                 <input
-                  style={{width: '4vh', height: '4vh', margin: '1vw'}}
+                  style={{ width: '4vh', height: '4vh', margin: '1vw' }}
                   type="checkbox"
                   checked={checkedStudents.includes(student.student_id)}
                   onChange={() => handleCheckboxChange(student.student_id)}
-                  alt={`Incluir a ${student.student_name} en la actividad.`}
-                />
+                  alt={`Incluir a ${student.student_name} en la actividad.`} />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className={styles.buttonContainer}>
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={buttonStyles.primary}
-          >
-            Anterior
-          </button>
-          <span>
-            Página {currentPage} de {totalPages}
-          </span>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={buttonStyles.primary}
-          >
-            Siguiente
-          </button>
-        </div>
     </div>
+    <div className={styles.buttonContainer}>
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={buttonStyles.primary}
+        >
+          Anterior
+        </button>
+        <span>
+          Página {currentPage} de {totalPages}
+        </span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={buttonStyles.primary}
+        >
+          Siguiente
+        </button>
+      </div>
+      </>
   );
 }

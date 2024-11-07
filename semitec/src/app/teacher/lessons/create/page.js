@@ -194,7 +194,7 @@ export default function CreatLesson() {
                     className={styles.buttnedText}
                     key={index}
                     onClick={() => handleClickLex(lexeme)}> 
-                  {lexeme}
+                    <p className={styles.formsLabel} style={{margin:'0'}}>{lexeme}</p>
                   </button>
                 ))
               )}

@@ -25,8 +25,16 @@
 
 .container button {
     background-color: transparent;
-    color: #007172;
     border: none;
     cursor: pointer;
     padding: 0;
+}
+
+.buttonContainer {
+    margin-top: 0.5vw;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: space-around;
 }

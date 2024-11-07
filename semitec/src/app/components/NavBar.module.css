@@ -26,7 +26,7 @@
 .navDropButton {
     background: none;
     border: none;
-    color: white;
+    color: var(--link-color);
     text-decoration: none;
     font-size: inherit;
     cursor: pointer;
@@ -43,7 +43,7 @@
     top: 100%;
     left: 0;
     padding: 1vw;
-    background-color: #ffffff;
+    background-color: var(--background);;
     border-radius: 10px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     flex-direction: column;
@@ -57,4 +57,21 @@
 .dropdown:hover .dropdownContent,
 .dropdown:focus-within .dropdownContent {
     display: flex;
+}
+
+.buttonContent { 
+    display: flex;
+    align-items: center;
+}
+
+.buttonIcon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 3.2em;
+    transition: transform 0.3s;
+}
+
+.invertedIcon {
+    transform: translateY(-50%) rotate(180deg); /* Invert the icon */
 }

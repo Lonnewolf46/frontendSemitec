@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from "next/image";
 import styles from './NavBar.module.css';
+import dropdownArrowIcon from "@/app/ui/arrow-drop-down.svg"
 
 function DropdownButton({ text, items }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -25,15 +27,18 @@ function DropdownButton({ text, items }) {
              onClick={() => setIsOpen((prevState) => !prevState)}
              onKeyDown={handleKeyDown}
             >
-                {text}
+              <div className={styles.buttonContent}>
+              <span>{text}</span>
+              <Image src={dropdownArrowIcon} className={`${styles.buttonIcon} ${isOpen ? styles.invertedIcon: ''}`} alt=''/>
+              </div>
         </button>
-      {isOpen && (
+      {isOpen && (  
         <div className={styles.dropdownContent}>
           {items.map((item, index) => (
             <Link
               key={index}
               className={styles.navItem}
-              style={{ padding: '0.5vw', color: 'black' }} 
+              style={{ padding: '0.5vw', color: 'var(--text)' }} 
               href={item.href}
               onClick={() => setIsOpen((prevState) => !prevState)}
              >
