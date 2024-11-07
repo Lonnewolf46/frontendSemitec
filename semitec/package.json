@@ -18,7 +18,8 @@
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18",
     "react-select": "^5.8.0",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "crypto-js": "^4.2.0"
   },
   "devDependencies": {
     "eslint": "^8",

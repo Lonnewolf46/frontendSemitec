@@ -13,3 +13,16 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.compact {
+    margin: 0;
+}
+.heading {
+    margin: 10px 0;
+}
+.header_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.3vw;
+}

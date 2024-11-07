@@ -3,28 +3,37 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "@/app/_styles/GroupsTable.module.css";
 import buttonStyles from "@/app/_styles/Button.module.css";
-import Image from "next/image";
 import UIDisplayInfo from "./UIStateDisplay"
-import view from "@/app/ui/see.svg";
-import profile from "@/app/ui/avatarFill.svg";
-import deleteUser from "@/app/ui/trashcan.svg";
+import CryptoJS from 'crypto-js';
 
-export default function StudentsTable({ group_id, actions }) {
+//TODO: Extract the lesson_id from inside the localStorage
+export default function StudentsTableAssign({ group_id }) {
+
+  //Consts for student selection
+  const encryptData = (data) => {
+    return CryptoJS.AES.encrypt(JSON.stringify(data), process.env.NEXT_PUBLIC_ENCRYPT_KEY).toString(); 
+  };
+  const decryptData = (cipherText) => {
+    const bytes = CryptoJS.AES.decrypt(cipherText, process.env.NEXT_PUBLIC_ENCRYPT_KEY);
+    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  };
+  const [checkedStudents, setCheckedStudents] = useState(() => {
+    const saved = sessionStorage.getItem('checkedStudents');
+    return saved ? decryptData(saved) : [];
+  });
+  //Regular consts
   const pathname = usePathname();
-  const router = useRouter();
-  const [groupID, setGroupId] = useState(group_id);
-  const [students, setStudents] = useState([]);
+  const [studentsDB, setStudents] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1); 
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoadingData] = useState(true); 
-  const [errorLoading, setErrorLoad] = useState(false);
-  const itemsPerPage = 4; 
+  const [errorLoading, setErrorLoad] = useState(false); 
+  const itemsPerPage = 4;
 
   const fetchCount = async () => {
-    const userType = pathname === "/student/groups" ? "student" : "teacher";
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${userType}/groups/members/total?var_group_id=${group_id}`,{
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups/members/total?var_group_id=${group_id}`,{
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },
@@ -42,7 +51,7 @@ export default function StudentsTable({ group_id, actions }) {
     }
   };
 
-  const getStudents = async (ingroup_id,page_number,page_size) => {
+  const getStudents = async (ingroupId,page_number,page_size) => {
     const userType = pathname === "/student/groups" ? "student" : "teacher";
     try {
       const response = await fetch(
@@ -54,7 +63,7 @@ export default function StudentsTable({ group_id, actions }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            var_group_id: group_id,
+            var_group_id: ingroupId,
             var_page_number: page_number,
             var_page_size: page_size  
         })
@@ -72,6 +81,21 @@ export default function StudentsTable({ group_id, actions }) {
       setLoadingData(false); // Set loading state to false after fetch is done
     }
   };
+
+  const handleCheckboxChange = (student_id) => {
+    setCheckedStudents((prev) => {
+      if (prev.includes(student_id)) { 
+        return prev.filter((id) => id !== student_id); 
+      } else { 
+        return [...prev, student_id]; 
+      } 
+    }); 
+  };
+
+  useEffect(() => { // Save the state to localStorage whenever it changes
+    sessionStorage.setItem('checkedStudents',encryptData(checkedStudents));
+  }, [checkedStudents]);
+
   useEffect(() => {
     getStudents(group_id,currentPage,itemsPerPage);
   }, [currentPage, group_id]);
@@ -79,7 +103,6 @@ export default function StudentsTable({ group_id, actions }) {
   useEffect(() => {
     setLoadingData(true);
     setErrorLoad(false);
-    setGroupId(group_id);
     fetchCount();
     setCurrentPage(1);
   }, [group_id]);
@@ -101,24 +124,20 @@ export default function StudentsTable({ group_id, actions }) {
 
   //If there are no students in the data state
   //Check if it was because of an error, else it just so happened that there are no groups.
-  if (students.length === 0) {
+  if (studentsDB.length === 0) {
     return (
       errorLoading ? ( 
-        <>
         <UIDisplayInfo
           title="Error"
           message="Hubo un error al cargar los estudiantes."
         />
-        </>
         ) : (
-          <>
             <UIDisplayInfo
               title="Estudiantes"
               message="No hay estudiantes en este grupo"
             />
-          </> 
         )
-  );
+    );
   }
 
   return (
@@ -126,45 +145,23 @@ export default function StudentsTable({ group_id, actions }) {
       <table>
         <thead>
           <tr>
-            <th>#</th>
             <th>Nombre completo</th>
-            {actions === true ? <><th>Estadísticas</th><th>Perfil</th><th>Eliminar</th></> : <></>}
+            <th>Asignar</th>
           </tr>
         </thead>
         <tbody>
-          {students.map((student, index) => (
+          {studentsDB.map((student, index) => (
             <tr key={index}>
-              <td>{index}</td>
               <td>{student.student_name}</td>
-              {actions === true ? (
-                <>
-                <td>
-                  <button aria-label={`Ver estadísticas del estudiante: ${student.student_name}`}
-                    onClick={() => {
-                      alert("No funcional");
-                    } }>
-                    <Image src={view} alt="" />
-                  </button>
-                </td><td>
-                    <button aria-label={`Ver perfil del estudiante: ${student.student_name}`}
-                      onClick={() => {
-                        router.push(`/teacher/groups/info/student-info?student_id=${student.student_id}`);
-                      } }>
-                      <Image src={profile} alt="" />
-                    </button>
-                  </td>
-                  <td>
-                  <button aria-label={`Eliminar estudiante: ${student.student_name}`}
-                  onClick={() => {
-                    alert("No funcional");
-                  }}>
-                    <Image src={deleteUser} alt="" />
-                  </button>
-                </td>
-                  </>
-              ) : (
-                <></>
-              )}
+              <td>
+                <input
+                  style={{width: '4vh', height: '4vh', margin: '1vw'}}
+                  type="checkbox"
+                  checked={checkedStudents.includes(student.student_id)}
+                  onChange={() => handleCheckboxChange(student.student_id)}
+                  alt={`Incluir a ${student.student_name} en la actividad.`}
+                />
+              </td>
             </tr>
           ))}
         </tbody>

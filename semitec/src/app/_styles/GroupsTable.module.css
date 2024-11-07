@@ -1,6 +1,6 @@
 .container {
     overflow-x:auto;
-    max-height: 45vh;
+    max-height: 100%;
 }
 
 .container table {
@@ -29,5 +29,4 @@
     border: none;
     cursor: pointer;
     padding: 0;
-
 }
