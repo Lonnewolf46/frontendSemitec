@@ -7,7 +7,7 @@
     margin: 1vw 1vw 1vw 1vw;
     width: 90%;
     border-radius: 50px;
-    background-color: #ebebeb;
+    background-color: var(--card-container-bg);
     text-align: center;
 }
 
@@ -100,7 +100,7 @@
 }
 
 .buttnedText{
-    background-color: #ffffff;
+    background-color:transparent ;
     border: 0px;
     padding: 1vw;
     font-size: 1.2vw;

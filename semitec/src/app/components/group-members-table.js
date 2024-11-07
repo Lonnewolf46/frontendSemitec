@@ -122,7 +122,7 @@ export default function StudentsTable({ group_id, actions }) {
   }
 
   return (
-    <div className={styles.container}>
+    <><div className={styles.container}>
       <table>
         <thead>
           <tr>
@@ -138,14 +138,14 @@ export default function StudentsTable({ group_id, actions }) {
               <td>{student.student_name}</td>
               {actions === true ? (
                 <>
-                <td>
-                  <button aria-label={`Ver estadísticas del estudiante: ${student.student_name}`}
-                    onClick={() => {
-                      alert("No funcional");
-                    } }>
-                    <Image src={view} alt="" />
-                  </button>
-                </td><td>
+                  <td>
+                    <button aria-label={`Ver estadísticas del estudiante: ${student.student_name}`}
+                      onClick={() => {
+                        alert("No funcional");
+                      } }>
+                      <Image src={view} alt="" />
+                    </button>
+                  </td><td>
                     <button aria-label={`Ver perfil del estudiante: ${student.student_name}`}
                       onClick={() => {
                         router.push(`/teacher/groups/info/student-info?student_id=${student.student_id}`);
@@ -154,14 +154,14 @@ export default function StudentsTable({ group_id, actions }) {
                     </button>
                   </td>
                   <td>
-                  <button aria-label={`Eliminar estudiante: ${student.student_name}`}
-                  onClick={() => {
-                    alert("No funcional");
-                  }}>
-                    <Image src={deleteUser} alt="" />
-                  </button>
-                </td>
-                  </>
+                    <button aria-label={`Eliminar estudiante: ${student.student_name}`}
+                      onClick={() => {
+                        alert("No funcional");
+                      } }>
+                      <Image src={deleteUser} alt="" />
+                    </button>
+                  </td>
+                </>
               ) : (
                 <></>
               )}
@@ -169,25 +169,24 @@ export default function StudentsTable({ group_id, actions }) {
           ))}
         </tbody>
       </table>
-      <div className={styles.buttonContainer}>
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={buttonStyles.primary}
-          >
-            Anterior
-          </button>
-          <span>
-            Página {currentPage} de {totalPages}
-          </span>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={buttonStyles.primary}
-          >
-            Siguiente
-          </button>
-        </div>
-    </div>
+    </div><div className={styles.buttonContainer}>
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={buttonStyles.primary}
+        >
+          Anterior
+        </button>
+        <span>
+          Página {currentPage} de {totalPages}
+        </span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={buttonStyles.primary}
+        >
+          Siguiente
+        </button>
+      </div></>
   );
 }
