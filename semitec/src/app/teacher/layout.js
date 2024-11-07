@@ -12,8 +12,10 @@ const menuList = [
 export default function TeacherLayout({ children }) {
   return (
     <>
-      <NavBar menuList={menuList} />
-      <AccessibilityBar />
+      <header>
+        <NavBar menuList={menuList} />
+        <AccessibilityBar />
+      </header>
       {children}
     </>
   );
