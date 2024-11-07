@@ -19,7 +19,7 @@ export default function LeesonsScreen() {
       const data = await response.json();
       
       if (response.ok) {
-        const totalLessons = data.total;
+        const totalLessons = data.get_lessons_public_count;
         const calculatedTotalPages = Math.ceil(totalLessons / itemsPerPage);
         setTotalPages(calculatedTotalPages);
       } else {
