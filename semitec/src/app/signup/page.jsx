@@ -57,9 +57,10 @@ export default function SignUp() {
           }) 
           })
           const data = await response.json()
-
+          setSignUpStage(stage+1)
     } catch (error){
         console.log(error)
+        setSignUpStage(stage+2)
     }
   }
 
@@ -88,12 +89,11 @@ export default function SignUp() {
           })
           const data = await response.json()
           console.log(data)
-
-    } catch (error){
-        console.log(error)
-    }
-    }
-}
+          setSignUpStage(stage+1)
+        } catch (error){
+            console.log(error)
+            setSignUpStage(stage+2)
+}}}
 
   const getCountries = () => {
     const response = fetch(`${process.env.NEXT_PUBLIC_API_HOST}/countries`)
@@ -352,7 +352,6 @@ export default function SignUp() {
                                         signupStudent(values):
                                         signupTutor(values)
                                       }
-                                      setSignUpStage(stage+1)
                                   }}
               >
               
@@ -607,6 +606,13 @@ export default function SignUp() {
                   <div className={stage === 4 ? 'academia' : 'hidden'}>
                       <div className='welcome-header'>¡Ahora sos parte de SEMITEC!</div>
                       <div className='welcome-text'>Iniciá sesión para empezar a aprender</div>
+                      <div className='wave-img' aria-description='Imagen de un perro saludando.'/>
+                      <a className="final-anchor-button" href={'/login'}> Continuar </a>
+                  </div>
+
+                  <div className={stage === 5 ? 'academia' : 'hidden'}>
+                      <div className='welcome-header'>¡Oh, no!</div>
+                      <div className='welcome-text'>Algo salió mal</div>
                       <div className='wave-img' aria-description='Imagen de un perro saludando.'/>
                       <a className="final-anchor-button" href={'/login'}> Continuar </a>
                   </div>
