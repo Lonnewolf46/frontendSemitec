@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import TeacherGroupsTable from "@/app/components/teacher-groups-table";
+import TeacherGroupsTable from "@/app/components/teacher-groups";
 import styles from "../../components/LessonsScreen.module.css";
 import WelcomeCard from "@/app/components/welcome-card";
 
