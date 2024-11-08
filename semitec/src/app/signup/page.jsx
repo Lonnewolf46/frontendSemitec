@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useRouter } from "next/navigation";
 import './Signup.css';
 import '../components/button/button.css'
+import { number } from 'yup';
 
 export default function SignUp() {
   const router = useRouter();
@@ -25,45 +26,60 @@ export default function SignUp() {
 
   const signupTutor = async (credentials) => {
     let { country, province, canton,...updated_data } = credentials;
-    const user_configuration_id = 0 
-    console.log("tutor")
-    console.log(updated_data)
-    {/*try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/register`, {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/register-teacher`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(updated_data)
+            body: JSON.stringify
+            ({
+              user_type_id: updated_data.user_type,
+              institution_id: updated_data.institution,
+              district_id: updated_data.district,
+              name: updated_data.fullname,
+              password: updated_data.password,
+              email: updated_data.email,
+              other_signs: updated_data.other_signs
+          }) 
           })
           const data = await response.json()
-          console.log(data)
 
     } catch (error){
         console.log(error)
-    }*/}
+    }
   }
 
   const signupStudent = async (credentials) => {
     let { country, province, canton,...updated_data } = credentials;
-    const user_configuration_id = 0 
     console.log("student")
-    console.log(updated_data)
-    {/*try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/register`, {
+    {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/register-student`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(updated_data)
+            body: JSON.stringify
+            ({
+              user_type_id: updated_data.user_type,
+              institution_id: updated_data.institution,
+              district_id: updated_data.district,
+              name: updated_data.fullname,
+              password: updated_data.password,
+              email: updated_data.email,
+              other_signs: updated_data.other_signs,
+              education_level_id: updated_data.education_level,
+              date_birth: updated_data.birth_date.toString()
+          }) 
           })
           const data = await response.json()
           console.log(data)
 
     } catch (error){
         console.log(error)
-    }*/}
-  }
+    }}
+}
 
   const getCountries = () => {
     const response = fetch(`${process.env.NEXT_PUBLIC_API_HOST}/countries`)
@@ -230,11 +246,6 @@ export default function SignUp() {
     })
     
   }, [])
-
-  useEffect(()=>{
-    console.log(selectedUserType)
-  },[selectedUserType])
-
   
 
   return (
@@ -244,7 +255,7 @@ export default function SignUp() {
             <div className='logo-img'/>
 
             <Formik 
-              initialValues={{name: '',  email: '', password: '', user_type: '', country:'', province:'', canton:'', district_id: '', other_signs: '', education_level_id: '', institution_id:''}}
+              initialValues={{fullname: '',  email: '', password: '', user_type: '', country:'', province:'', canton:'', district: '', other_signs: '', education_level: '', institution:''}}
               validate={values => {
                 const errors = {}; 
                 if (!values.email) {
@@ -259,8 +270,8 @@ export default function SignUp() {
                     errors.password = 'Contraseña requerida.';
                 } 
 
-                if (!values.name) {
-                  errors.name = 'Nombre requerido.';
+                if (!values.fullname) {
+                  errors.fullname = 'Nombre requerido.';
                 } 
 
                 if (!values.user_type) {
@@ -279,20 +290,20 @@ export default function SignUp() {
                   errors.canton = 'Cantón requerido.';
                 } 
 
-                if (!values.district_id) {
-                  errors.district_id = 'Distrito requerido.';
+                if (!values.district) {
+                  errors.district = 'Distrito requerido.';
                 } 
 
                 if (!values.other_signs) {
                   errors.other_signs = 'Otras señas requeridas.';
                 } 
 
-                if (!values.education_level_id) {
-                  errors.education_level_id = 'Nivel de educación requerido.';
+                if (!values.education_level) {
+                  errors.education_level = 'Nivel de educación requerido.';
                 } 
 
-                if (!values.institution_id) {
-                  errors.institution_id = 'Institución requerida.';
+                if (!values.institution) {
+                  errors.institution = 'Institución requerida.';
                 } 
                 
                 return errors;
@@ -313,16 +324,10 @@ export default function SignUp() {
                   <div className={stage === 1 ? 'personal' : 'hidden'}>
                       <div className='signup-header'>Registrarme (Paso 1 de 3)</div>
                         <text className='login-text'>Nombre</text>
-                        <Field className="form-styling" type ="name" name="name" placeholder = "Ingrese su nombre." />
-                        <ErrorMessage className='error-message' name="name" component="div"/> 
+                        <Field className="form-styling" type ="fullname" name="fullname" placeholder = "Ingrese su nombre." />
+                        <ErrorMessage className='error-message' name="fullname" component="div"/> 
                         <br></br>
                         <br></br>
-                        {/* PENDIENTE REVISAR CONTRA LA BD Y EL API. 
-                        <text className='login-text'>Apellidos</text>
-                        <Field className="form-styling" type ="surname" name="surname" placeholder = "Ingrese sus apellidos." />
-                        <ErrorMessage className='error-message' name="name" component="div"/> 
-                        <br></br>
-                        <br></br>*/}
                         <text className='login-text'>Correo</text>
                         <Field className="form-styling" type="email" name="email" placeholder="Ingrese su correo."/>
                         <ErrorMessage className='error-message' name="email" component="div"/> 
@@ -349,7 +354,7 @@ export default function SignUp() {
                               <></>
                         }
                         </Field>
-                        <ErrorMessage className='error-message' name="user_type_id" component="div"/>
+                        <ErrorMessage className='error-message' name="user_type" component="div"/>
                         <br></br>
                         <br></br>
 
@@ -445,14 +450,14 @@ export default function SignUp() {
                       selectedCanton &&
                       <>
                       <text className='login-text'>Distrito</text>
-                    <Field as="select" className="form-styling" type="district_id" name="district_id" onChange={(e)=>{setSelectedDistrict(e.target.value); setFieldValue("district_id", (e.target.value))}}>
+                    <Field as="select" className="form-styling" type="district" name="district" onChange={(e)=>{setSelectedDistrict(e.target.value); setFieldValue("district", (e.target.value))}}>
                       <option>Seleccione un distrito.</option>
                       {
                             districts && Array.isArray(districts)? 
                                 districts.map( 
-                                  (district_id) => {
-                                    return <option value={district_id.district_id}>
-                                      {district_id.name}
+                                  (district) => {
+                                    return <option value={district.district_id}>
+                                      {district.name}
                                       </option>}
                                 )
                                 :
@@ -484,40 +489,40 @@ export default function SignUp() {
                     <div className={stage === 3 ? 'academia' : 'hidden'}>
                     <div className='signup-header'>Registrarme (Paso 3 de 3)</div>
                     <text className='login-text'>Nivel Académico</text>
-                    <Field as="select" className="form-styling" type="education_level_id" name="education_level_id" onChange={(e)=>{setSelectedEducationLevel(e.target.value); setFieldValue("education_level_id", (e.target.value))}}>
+                    <Field as="select" className="form-styling" type="education_level" name="education_level" onChange={(e)=>{setSelectedEducationLevel(e.target.value); setFieldValue("education_level", (e.target.value))}}>
                       <option>Seleccione un nivel académico.</option>
                       {
                             educationLevels && Array.isArray(educationLevels)? 
                                 educationLevels.map( 
-                                  (education_level_id) => {
-                                    return <option value={education_level_id.education_level_id}>
-                                      {education_level_id.name}
+                                  (education_level) => {
+                                    return <option value={education_level.education_level_id}>
+                                      {education_level.name}
                                       </option>}
                                 )
                                 :
                                 <></>
                         }
                     </Field>
-                    <ErrorMessage className='error-message' name="education_level_id" component="div"/>
+                    <ErrorMessage className='error-message' name="education_level" component="div"/>
                     <br></br>
                     <br></br>
                     
                     <text className='login-text'>Institución</text>
-                      <Field as="select" className="form-styling" type="institution_id" name="institution_id" onChange={(e)=>{setSelectedInstitution(e.target.value); setFieldValue("institution_id", (e.target.value))}}>
+                      <Field as="select" className="form-styling" type="institution" name="institution" onChange={(e)=>{setSelectedInstitution(e.target.value); setFieldValue("institution", (e.target.value))}}>
                         <option>Seleccione una institución.</option>
                         {
                             institutions && Array.isArray(institutions)? 
                                 institutions.map( 
-                                  (institution_id) => {
-                                    return <option value={institution_id.institution_id}>
-                                      {institution_id.name}
+                                  (institution) => {
+                                    return <option value={institution.institution_id}>
+                                      {institution.name}
                                       </option>}
                                 )
                                 :
                                 <></>
                         }
                       </Field>
-                      <ErrorMessage className='error-message' name="institution_id" component="div"/>
+                      <ErrorMessage className='error-message' name="institution" component="div"/>
 
                     <br></br>
                     <br></br>
