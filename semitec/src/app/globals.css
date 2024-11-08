@@ -175,3 +175,7 @@ menu {
   background-color: var(--card-container-bg);
   border: var(--button-border);
 }
+
+h1 {
+  font-size: 4vw;
+}
