@@ -16,16 +16,29 @@ export default function SignUp() {
   const [districts, setDistricts] = useState([])
   const [educationLevels, setEducationLevels] = useState([])
   const [institutions, setInstitutions] = useState([])
-  const [selectedUserType, setSelectedUserType] = useState()
-  const [selectedCountry, setSelectedCountry] = useState()
-  const [selectedProvince, setSelectedProvince] = useState()
-  const [selectedCanton, setSelectedCanton] = useState()
-  const [selectedDistrict, setSelectedDistrict] = useState()
-  const [selectedInstitution, setSelectedInstitution] = useState() 
-  const [selectedEducationLevel, setSelectedEducationLevel] = useState() 
+  const [selectedUserType, setSelectedUserType] = useState(null)
+  const [selectedCountry, setSelectedCountry] = useState(null)
+  const [selectedProvince, setSelectedProvince] = useState(null)
+  const [selectedCanton, setSelectedCanton] = useState(null)
+  const [selectedDistrict, setSelectedDistrict] = useState(null)
+  const [selectedInstitution, setSelectedInstitution] = useState(null) 
+  const [selectedEducationLevel, setSelectedEducationLevel] = useState(null) 
+  const [selectedBirthDate, setBirthDate] = useState(null)
+
+  const handleDateChange = (e) => {
+    setBirthDate(e.target.value);
+  };
+
+  const maxDate = () => {
+    const today = new Date().toISOString().split('T')[0];
+    return today
+  }
 
   const signupTutor = async (credentials) => {
     let { country, province, canton,...updated_data } = credentials;
+    console.log(updated_data.user_type,updated_data.institution,updated_data.district,updated_data.fullname,updated_data.password,updated_data.email,updated_data.other_signs)
+    
+    console.log(updated_data.district, selectedDistrict)
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/register-teacher`, {
             method: 'POST',
@@ -36,7 +49,7 @@ export default function SignUp() {
             ({
               user_type_id: updated_data.user_type,
               institution_id: updated_data.institution,
-              district_id: updated_data.district,
+              district_id: selectedDistrict,
               name: updated_data.fullname,
               password: updated_data.password,
               email: updated_data.email,
@@ -52,7 +65,7 @@ export default function SignUp() {
 
   const signupStudent = async (credentials) => {
     let { country, province, canton,...updated_data } = credentials;
-    console.log("student")
+    console.log(selectedBirthDate)
     {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/register-student`, {
@@ -64,13 +77,13 @@ export default function SignUp() {
             ({
               user_type_id: updated_data.user_type,
               institution_id: updated_data.institution,
-              district_id: updated_data.district,
+              district_id: selectedDistrict,
               name: updated_data.fullname,
               password: updated_data.password,
               email: updated_data.email,
               other_signs: updated_data.other_signs,
               education_level_id: updated_data.education_level,
-              date_birth: updated_data.birth_date.toString()
+              date_birth: selectedBirthDate
           }) 
           })
           const data = await response.json()
@@ -78,13 +91,14 @@ export default function SignUp() {
 
     } catch (error){
         console.log(error)
-    }}
+    }
+    }
 }
 
   const getCountries = () => {
     const response = fetch(`${process.env.NEXT_PUBLIC_API_HOST}/countries`)
     return response
-    /*
+    /* 
     try{
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/countries`);
       if (!response.ok) {
@@ -187,7 +201,11 @@ export default function SignUp() {
     if (selectedCountry){
       getProvinces()
       .then( (res) => res.json())
-      .then(data => setProvinces(data))          
+      .then(data => {
+        setProvinces(data)
+        setCantons(null)
+        setDistricts(null)
+      })          
       .catch( (err) => {
         throw new Error(
           `Unable to Fetch Data from Provinces.`
@@ -200,7 +218,10 @@ export default function SignUp() {
     if (selectedProvince){
       getCantons()
       .then( (res) => res.json())
-      .then(data => setCantons(data))          
+      .then(data => {
+        setCantons(data)
+        setDistricts(null)
+      })          
       .catch( (err) => {
         throw new Error(
           `Unable to Fetch Data from Cantons.`
@@ -264,14 +285,26 @@ export default function SignUp() {
                     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
                     ) {
                     errors.email = 'Correo inválido.';
+                    } else if (
+                    (values.email).length > 32
+                    ) {
+                    errors.email = 'Máximo de caracteres excedido, ingresá un correo más corto.';
                     }
 
                 if (!values.password) {
                     errors.password = 'Contraseña requerida.';
+                  } else if(
+                    (values.password).length > 15
+                  ){ 
+                  errors.password = 'Máximo de caracteres excedido.'
                 } 
 
                 if (!values.fullname) {
                   errors.fullname = 'Nombre requerido.';
+                } else if(
+                  (values.fullname).length > 48
+                ){ 
+                errors.fullname = 'Máximo de caracteres excedido.'
                 } 
 
                 if (!values.user_type) {
@@ -296,6 +329,10 @@ export default function SignUp() {
 
                 if (!values.other_signs) {
                   errors.other_signs = 'Otras señas requeridas.';
+                } else if(
+                  (values.other_signs).length > 500
+                ){ 
+                errors.other_signs = 'Máximo de caracteres excedido, por favor se más breve.'
                 } 
 
                 if (!values.education_level) {
@@ -359,10 +396,19 @@ export default function SignUp() {
                         <br></br>
 
                         {
+                          
                           selectedUserType && selectedUserType==1?
                           <>
                           <text className='login-text'>Fecha de nacimiento</text>
-                          <Field className="form-styling" type ="birth_date" name="birth_date" placeholder = "Formato: dia.mes.año" />
+                            <input
+                                type="date"
+                                id="birth_date"
+                                name="birth_date"
+                                min="1930-01-01"
+                                max={maxDate()}
+                                onChange={handleDateChange}
+                                required 
+                            />
                           <ErrorMessage className='error-message' name="birth_date" component="div"/>
                           </>:
                           <></>
@@ -377,8 +423,17 @@ export default function SignUp() {
                   <div className={stage === 2 ? 'location' : 'hidden'}>
                     <div className='signup-header'>Registrarme (Paso 2 de 3)</div>
                     <text className='login-text'>País</text>
-                    <Field as="select" className="form-styling" type="country" name="country" onChange={(e)=>{setSelectedCountry(e.target.value); setFieldValue("country", (e.target.value))}} >
-                      <option>Seleccione un país.</option>
+                    <Field as="select" 
+                      className="form-styling" 
+                      type="country"
+                      name="country" 
+                      onChange={(e)=>{
+                        setSelectedCountry(e.target.value); 
+                        setFieldValue("country", (e.target.value));
+                        setFieldValue("province", 0);
+                        setFieldValue("other_signs", (""))
+                      }} >
+                      <option value={0}>Seleccione un país.</option>
                       {
                         countries && Array.isArray(countries)? 
 
@@ -399,8 +454,14 @@ export default function SignUp() {
                       selectedCountry &&
                       <>
                         <text className='login-text'>Provincia</text>
-                        <Field as="select" className="form-styling" type="province" name="province" onChange={(e)=>{setSelectedProvince(e.target.value); setFieldValue("province", (e.target.value))}}>
-                        <option>Seleccione una provincia.</option>
+                        <Field as="select" className="form-styling" type="province" name="province" 
+                          onChange={(e)=>{
+                            setSelectedProvince(e.target.value); 
+                            setFieldValue("province", (e.target.value));
+                            setFieldValue("canton", 0);
+                            setFieldValue("other_signs", (""))
+                          }}>
+                        <option value={0}>Seleccione una provincia.</option>
                           {
                             provinces && Array.isArray(provinces)? 
                                 provinces.map( 
@@ -425,8 +486,14 @@ export default function SignUp() {
                     selectedProvince &&
                     <>
                       <text className='login-text'>Cantón</text>
-                      <Field as="select" className="form-styling" type="canton" name="canton" onChange={(e)=>{setSelectedCanton(e.target.value); setFieldValue("canton", (e.target.value))}}>
-                        <option>Seleccione un cantón.</option>
+                      <Field as="select" className="form-styling" type="canton" name="canton" onChange={(e)=>
+                      {
+                        setSelectedCanton(e.target.value); 
+                        setFieldValue("canton", (e.target.value));
+                        setFieldValue("district", 0);
+                        setFieldValue("other_signs", (""))
+                      }}>
+                        <option value={0}>Seleccione un cantón.</option>
                           {
                             cantons && Array.isArray(cantons)? 
                                 cantons.map( 
@@ -450,7 +517,11 @@ export default function SignUp() {
                       selectedCanton &&
                       <>
                       <text className='login-text'>Distrito</text>
-                    <Field as="select" className="form-styling" type="district" name="district" onChange={(e)=>{setSelectedDistrict(e.target.value); setFieldValue("district", (e.target.value))}}>
+                    <Field as="select" className="form-styling" type="district" name="district" onChange={(e)=>{
+                      setSelectedDistrict(e.target.value); 
+                      setFieldValue("district", (e.target.value));
+                      setFieldValue("other_signs", (""))
+                      }}>
                       <option>Seleccione un distrito.</option>
                       {
                             districts && Array.isArray(districts)? 
@@ -481,7 +552,7 @@ export default function SignUp() {
                     }
 
                     <div className='buttons-container'>
-                          <a className="anchor-button" href={'/login'}> Volver </a>
+                          <button className="button" onClick={() => setSignUpStage(stage-1)}> Volver </button>
                           <button className="button" onClick={() => setSignUpStage(stage+1)}> Siguiente </button>
                       </div>
                     </div>
