@@ -8,7 +8,6 @@
   padding: 0 20px;
   padding-bottom: 20px;
   width: 45vw;
-  margin: auto;
   border-radius: 10px;
   border: solid 1px #e6e6e6;
 }
@@ -27,4 +26,8 @@
 
 .halfScreenContainer h1 {
   margin: 0 0 1vw 0;
+}
+
+.halfScreenContainer p {
+  font-size: 2vw;
 }
