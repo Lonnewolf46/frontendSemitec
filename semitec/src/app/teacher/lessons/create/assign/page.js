@@ -30,10 +30,10 @@ export default function TeacherLessonAssign() {
       );
       const data = await response.json();
         if (data[0].successcode) {
-          alert("Práctica creada con éxito.");
           sessionStorage.removeItem('checkedStudents');
           sessionStorage.removeItem('lesson');
-          router.push("teacher/home");
+          alert("Lección creada y asignada con éxito");
+          router.push("/teacher/home");
         }
         else{
           alert("Algo ha salido mal al crear la lección, inténtelo de nuevo más tarde.");
