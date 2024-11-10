@@ -3,16 +3,17 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 25px;
-    padding-left: 30px;
+    padding: 10px 30px;
+    height: 11vh;
 }
 
-.name {
-    font-size: 4vw;
-    margin-bottom: 0.1em;
-    margin-top: 0;
+.title {
+    font-weight: bold;
+    font-size: 2.7vw;
 }
 
-.message {
+.info{
     font-size: 2vw;
-    margin: 0;
+    align-items: right;
+
 }
