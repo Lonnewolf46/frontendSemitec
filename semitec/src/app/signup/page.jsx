@@ -358,23 +358,23 @@ export default function SignUp() {
               {({ submitForm, setFieldValue }) => (
                 <Form>
                   <div className={stage === 1 ? 'personal' : 'hidden'}>
-                      <div className='signup-header'>Registrarme (Paso 1 de 3)</div>
-                        <text className='login-text'>Nombre</text>
+                      <h1 className='signup-header'>Registrarme (Paso 1 de 3)</h1>
+                        <h2 className='login-text'>Nombre</h2>
                         <Field className="form-styling" type ="fullname" name="fullname" placeholder = "Ingrese su nombre." />
                         <ErrorMessage className='error-message' name="fullname" component="div"/> 
                         <br></br>
                         <br></br>
-                        <text className='login-text'>Correo</text>
+                        <h2 className='login-text'>Correo</h2>
                         <Field className="form-styling" type="email" name="email" placeholder="Ingrese su correo."/>
                         <ErrorMessage className='error-message' name="email" component="div"/> 
                         <br></br>
                         <br></br>
-                        <text className='login-text'>Contraseña</text>
+                        <h2 className='login-text'>Contraseña</h2>
                         <Field className="form-styling" type="password" name="password" placeholder="Ingrese su nueva contraseña."/>
                         <ErrorMessage className='error-message' name="password" component="div"/>
                         <br></br>
                         <br></br>
-                        <text className='login-text'>Soy</text>
+                        <h2 className='login-text'>Soy</h2>
                         <Field as="select" className="form-styling" type="user_type" name="user_type" onChange={(e)=>{setSelectedUserType(e.target.value); setFieldValue("user_type", (e.target.value))}}>
                         <option>Seleccione un tipo de cuenta.</option>
                         {
@@ -420,8 +420,8 @@ export default function SignUp() {
                   </div>
 
                   <div className={stage === 2 ? 'location' : 'hidden'}>
-                    <div className='signup-header'>Registrarme (Paso 2 de 3)</div>
-                    <text className='login-text'>País</text>
+                    <h1 className='signup-header'>Registrarme (Paso 2 de 3)</h1>
+                    <h2 className='login-text'>País</h2>
                     <Field as="select" 
                       className="form-styling" 
                       type="country"
@@ -452,7 +452,7 @@ export default function SignUp() {
                     {
                       selectedCountry &&
                       <>
-                        <text className='login-text'>Provincia</text>
+                        <h2 className='login-text'>Provincia</h2>
                         <Field as="select" className="form-styling" type="province" name="province" 
                           onChange={(e)=>{
                             setSelectedProvince(e.target.value); 
@@ -484,7 +484,7 @@ export default function SignUp() {
                     {
                     selectedProvince &&
                     <>
-                      <text className='login-text'>Cantón</text>
+                      <h2 className='login-text'>Cantón</h2>
                       <Field as="select" className="form-styling" type="canton" name="canton" onChange={(e)=>
                       {
                         setSelectedCanton(e.target.value); 
@@ -515,7 +515,7 @@ export default function SignUp() {
                     {
                       selectedCanton &&
                       <>
-                      <text className='login-text'>Distrito</text>
+                      <h2 className='login-text'>Distrito</h2>
                     <Field as="select" className="form-styling" type="district" name="district" onChange={(e)=>{
                       setSelectedDistrict(e.target.value); 
                       setFieldValue("district", (e.target.value));
@@ -544,7 +544,7 @@ export default function SignUp() {
                     {
                       selectedDistrict &&
                       <>
-                        <text className='login-text'>Otras señas</text>
+                        <h2 className='login-text'>Otras señas</h2>
                         <Field className="form-styling" type ="other_signs" name="other_signs" placeholder = "Digite otras señas de ubicación." />
                         <ErrorMessage className='error-message' name="other_signs" component="div"/>
                       </>
@@ -557,8 +557,8 @@ export default function SignUp() {
                     </div>
 
                     <div className={stage === 3 ? 'academia' : 'hidden'}>
-                    <div className='signup-header'>Registrarme (Paso 3 de 3)</div>
-                    <text className='login-text'>Nivel Académico</text>
+                    <h1 className='signup-header'>Registrarme (Paso 3 de 3)</h1>
+                    <h2 className='login-text'>Nivel Académico</h2>
                     <Field as="select" className="form-styling" type="education_level" name="education_level" onChange={(e)=>{setSelectedEducationLevel(e.target.value); setFieldValue("education_level", (e.target.value))}}>
                       <option>Seleccione un nivel académico.</option>
                       {
@@ -577,7 +577,7 @@ export default function SignUp() {
                     <br></br>
                     <br></br>
                     
-                    <text className='login-text'>Institución</text>
+                    <h2 className='login-text'>Institución</h2>
                       <Field as="select" className="form-styling" type="institution" name="institution" onChange={(e)=>{setSelectedInstitution(e.target.value); setFieldValue("institution", (e.target.value))}}>
                         <option>Seleccione una institución.</option>
                         {
@@ -604,15 +604,15 @@ export default function SignUp() {
                   </div>
 
                   <div className={stage === 4 ? 'academia' : 'hidden'}>
-                      <div className='welcome-header'>¡Ahora sos parte de SEMITEC!</div>
-                      <div className='welcome-text'>Iniciá sesión para empezar a aprender</div>
+                      <h1 className='welcome-header'>¡Ahora sos parte de SEMITEC!</h1>
+                      <h2 className='welcome-text'>Iniciá sesión para empezar a aprender</h2>
                       <div className='wave-img' aria-description='Imagen de un perro saludando.'/>
                       <a className="final-anchor-button" href={'/login'}> Continuar </a>
                   </div>
 
                   <div className={stage === 5 ? 'academia' : 'hidden'}>
-                      <div className='welcome-header'>¡Oh, no!</div>
-                      <div className='welcome-text'>Algo salió mal</div>
+                      <h1 className='welcome-header'>¡Oh, no!</h1>
+                      <h2 className='welcome-text'>Algo salió mal. Pot favor intentá de nuevo.</h2>
                       <div className='wave-img' aria-description='Imagen de un perro saludando.'/>
                       <a className="final-anchor-button" href={'/login'}> Continuar </a>
                   </div>
