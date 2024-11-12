@@ -47,7 +47,7 @@ export default function StudentHome() {
   const [stats, setStats] = useState({avg_time_taken: 0, avg_mistakes: 0, avg_accuracy_rate: 0, avg_pulsation_per_minute:0 })
   const [metricsHistory, setAccuracyHistory] = useState([])
   const [nextLessonId, setNextLessonId] = useState(1)
-  const [assignedLessons, setAssignedLessons] = useState(0);
+  const [assignedLessons, setAssignedLessons] = useState();
   const router = useRouter();
 
   const currentTheme = themes[theme.theme] || themes.Predeterminado;
@@ -136,7 +136,7 @@ export default function StudentHome() {
 
   const getStats = async () => {
     try{
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/stats`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/ppm-and-accuracy`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },
@@ -152,41 +152,58 @@ export default function StudentHome() {
   }
 
   const getAssignedLessons = async () => {
-  /*
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_HOST}/student/CONSULTA A API`,
-        {
-          headers: {
-            "auth-token": localStorage.getItem("auth-token"),
-          },
-        }
-      );
-      const data = await res.json();
-      if (res.ok) {
-        setAssignedLessons(data);
-        console.log(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }*/
-  };
+    {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/next-assignment`, {
+            method: 'POST',
+            headers: {
+              "auth-token": localStorage.getItem("auth-token"),
+            }
+          })
+          const data = await response.json()
+          setAssignedLessons(data.length)
+          console.log(assignedLessons)
+
+    } catch (error){
+        console.log(error)
+    }
+  }  
+  }
+
+  const getNextAssignedLessonId = async () => {
+    {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/count-pending`, {
+            method: 'POST',
+            headers: {
+              "auth-token": localStorage.getItem("auth-token"),
+            }
+          })
+          const data = await response.json()
+          console.log(data)
+
+    } catch (error){
+        console.log(error)
+    }
+  }  
+  }
 
   const getAccuracyHistory = async () => {
-    try{
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/accuracy-history`, {
-        headers: {
-          "auth-token": localStorage.getItem("auth-token"),
-        },
-      });
-      const data = await res.json();
-      if (res.ok) {
-        console.log(data);
-        setAccuracyHistory(data)
-      }
-    } catch (error) {
-      console.log(error)
+    {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/ppm-and-accuracy`, {
+            method: 'POST',
+            headers: {
+              "auth-token": localStorage.getItem("auth-token"),
+            }
+          })
+          const data = await response.json()
+          console.log(data)
+
+    } catch (error){
+        console.log(error)
     }
+  }  
   }
 
   const getNextLesson = async () => {
@@ -195,6 +212,10 @@ export default function StudentHome() {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },
+        body: JSON.stringify
+            ({
+              teacher_id: null
+            })
       });
       const data = await res.json();
       if (res.ok) {
@@ -203,8 +224,7 @@ export default function StudentHome() {
       }
     } catch (error) {
       console.log(error)
-    }
-  }
+  }}
 
   const handleStart = () => {
     router.push(`/student/lessons/lesson?lesson_id=${nextLessonId + 1}`)
@@ -215,6 +235,7 @@ export default function StudentHome() {
     getAccuracyHistory();
     getNextLesson();
     getAssignedLessons();
+    getNextAssignedLessonId();
     accessibility(Highcharts);
     console.log(assignedLessons);
     console.log(assignedLessons+1);
@@ -237,7 +258,7 @@ export default function StudentHome() {
             <section className={styles.halfScreenContainer}>
               <h1 className={styles.headerText}>¿Qué haremos hoy?</h1>
               <div className={styles.cardWrapper}>
-              <AssignedLesssonsCard handleStart={handleStart} quantity= {assignedLessons + 1} />
+              <AssignedLesssonsCard handleStart={handleStart} quantity= {assignedLessons} />
               <NextLessonCard handleStart={handleStart} lesson_id={nextLessonId + 1}/>
               </div>
             </section>

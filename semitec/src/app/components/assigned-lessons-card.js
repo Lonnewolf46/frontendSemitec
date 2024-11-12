@@ -4,23 +4,20 @@ export default function AssignedLesssonsCard({ //cambiar handleStart por la func
     handleStart,
     quantity,
     }) {
-    console.log(quantity)
-    console.log("I have printed")
     return (
         <article className={`${styles.container} card-container-theme`}>
           
-          {quantity === 0 && (
-            (<div>
-              <div className={styles.info}> No tenés lecciones asignadas.</div>
-            </div>)
-        )
+          
+          <div>
+            <div className={styles.info}>Tenés {quantity} tareas asignadas.</div>
+          </div>
+          {quantity !== 0 && (
+            (<button className={styles.button} onClick={handleStart}>
+              Iniciar
+            </button>)
+          )
           }
-            <div>
-            <div className={styles.info}>Tenés {quantity} lecciones asignadas.</div>
-            </div>
-            <button className={styles.button} onClick={handleStart}>
-            Iniciar
-            </button>
+          
               
         
         
