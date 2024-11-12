@@ -30,11 +30,12 @@ export default function StudentsTableAssign({ group_id }) {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoadingData] = useState(true); 
   const [errorLoading, setErrorLoad] = useState(false); 
-  const itemsPerPage = 4;
+  const itemsPerPage = 5;
 
   const fetchCount = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups/members/total?var_group_id=${group_id}`,{
+      const userType = pathname === "/student/groups" ? "student" : "teacher";
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${userType}/groups/members/total?var_group_id=${group_id}`,{
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },

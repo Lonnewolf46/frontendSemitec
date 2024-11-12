@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 pTableType defines which type of table is shown as children
 1: Table for student's management
 2: Table for student's selection for assignments
+3: Table for just showing students, no controls or buttons
 */
 export default function GroupInfo({pGroup, pTableType}) {
   const [groupInfo, setGroupInfo] = useState(pGroup);
@@ -64,7 +65,19 @@ export default function GroupInfo({pGroup, pTableType}) {
       </div>
     );
   }
-  
+  if(tableType === "Read"){
+    return (
+      <div>
+        <section>
+          <h1 className={styles.heading}
+              style={{ fontSize: "1.5vw" }}>
+            Estudiantes
+          </h1>
+          <StudentsTable group_id={groupInfo.group_id} actions={false} />
+        </section>
+      </div>
+    );
+  }
   return(
     <>
     </>
