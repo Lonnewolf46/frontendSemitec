@@ -3,8 +3,9 @@ import {React, useState, useEffect, use} from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useRouter } from "next/navigation";
 import './Signup.css';
+import doggo from "@/app/ui/semitec-doggo.gif";
 import '../components/button/button.css'
-import { number } from 'yup';
+import Image from "next/image"
 
 export default function SignUp() {
   const router = useRouter();
@@ -606,14 +607,28 @@ export default function SignUp() {
                   <div className={stage === 4 ? 'academia' : 'hidden'}>
                       <h1 className='welcome-header'>¡Ahora sos parte de SEMITEC!</h1>
                       <h2 className='welcome-text'>Iniciá sesión para empezar a aprender</h2>
-                      <div className='wave-img' aria-description='Imagen de un perro saludando.'/>
+                      <div>
+                        <Image 
+                          width={232} 
+                          height={189} 
+                          src={doggo} 
+                          className="doggo"
+                          alt="La mascota de semitec, un perro guía, dandote la bienvenida!" />
+                      </div>
                       <a className="final-anchor-button" href={'/login'}> Continuar </a>
                   </div>
 
                   <div className={stage === 5 ? 'academia' : 'hidden'}>
                       <h1 className='welcome-header'>¡Oh, no!</h1>
-                      <h2 className='welcome-text'>Algo salió mal. Pot favor intentá de nuevo.</h2>
-                      <div className='wave-img' aria-description='Imagen de un perro saludando.'/>
+                      <h2 className='welcome-text'>Algo salió mal. Por favor intentá de nuevo.</h2>
+                      <div>
+                      <Image 
+                          width={232} 
+                          height={189} 
+                          src={doggo} 
+                          className="doggo"
+                          alt="La mascota de semitec, un perro guía, dandote la bienvenida!" />
+                      </div>
                       <a className="final-anchor-button" href={'/login'}> Continuar </a>
                   </div>
                 </Form>
