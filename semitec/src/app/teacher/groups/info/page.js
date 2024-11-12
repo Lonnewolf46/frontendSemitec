@@ -33,8 +33,9 @@ export default function GroupInfo({pGroup, pTableType}) {
   }, [pGroup, pTableType]);
 
   const handleClick = () => {
-    router.push('/teacher/groups/students/add'); 
-  };
+    const groupId = groupInfo.group_id; 
+    router.push(`/teacher/groups/students/add?group_id=${groupId}`);
+};
 
   if(tableType === "Regular"){
     return (

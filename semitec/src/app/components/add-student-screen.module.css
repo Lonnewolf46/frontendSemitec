@@ -1,18 +1,10 @@
-.leftContainer {
-    padding: 32px 0 0 32px;
-    width: 31vw;
-    margin: auto;
-    height: 76vh;
-    border-radius: 10px;
-    border: solid 1px #e6e6e6;
-}
-.rightContainer {
-    padding: 32px 0 0 32px;
-    width: 61vw;
-    margin: auto;
-    height: 76vh;
-    border-radius: 10px;
-    border: solid 1px #e6e6e6;
+.rightContainer, .leftContainer {
+  padding: 32px 0 0 32px;
+  width: 46vw;
+  margin: auto;
+  height: 76vh;
+  border-radius: 10px;
+  border: solid 1px #e6e6e6;
 }
 .MainContainer {
     margin: 20px auto;
@@ -31,11 +23,12 @@
     justify-content:space-between;
 }
 .FormUbicationContainer {
-    width: 100%; 
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-
+  width: 80%; 
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  align-items: flex-start;
+  justify-content:space-between;
 }
 
 .lessonList {
