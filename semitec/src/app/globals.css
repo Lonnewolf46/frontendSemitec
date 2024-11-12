@@ -177,5 +177,6 @@ menu {
 }
 
 h1 {
-  font-size: 4vw;
+  margin: 0 0 1vw 0;
+  font-size: 3.4vw;
 }

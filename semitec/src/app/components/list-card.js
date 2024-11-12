@@ -15,7 +15,7 @@ export default function ListCard({
       <Image src={imagePath} alt="" priority={true} />
       <div className={styles.itemInfo}>
         <div className={styles.medium}>{lessonName}</div>
-        <div className={styles.middle}>{}</div>
+        <div className={styles.middle}>Código {middleInfo}</div>
         <div aria-hidden="true" className={`${styles.details}`}>
           <Image src={details} alt="" />
           <div style={{ marginRight: "10px" }}>Detalles</div>
