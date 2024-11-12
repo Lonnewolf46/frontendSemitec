@@ -16,16 +16,20 @@ export default function LessonInfo({ lesson }) {
         <h1>Detalles de la actividad</h1>
         <h2>Descripción</h2>
         <p>
-          En esta lección practicaras {" "}
-          <strong>{lesson.level_name}</strong> mediante la repetición de las palabras{" "}
+          En esta lección practicaras <strong>{lesson.level_name}</strong>{" "}
+          mediante la repetición de las palabras{" "}
           <strong>{lesson.content}</strong> por {lesson.iterations} iteraciones.
         </p>
         <p>{lesson.description}</p>
         <h2>Criterios de aprobción</h2>
         <p>Errores máximos {lesson.min_mistakes}</p>
         <p>Tiempo máximo {lesson.min_time} segundos</p>
-        <h2>Lección creada por</h2>
-        <p>{lesson.teacher_name}</p>
+        {!pathname.includes("teacher/lessons/assignment") && (
+          <>
+            <h2>Lección creada por</h2>
+            <p>{lesson.teacher_name}</p>
+          </>
+        )}
       </div>
       {pathname.includes("teacher") ? (
         <></>

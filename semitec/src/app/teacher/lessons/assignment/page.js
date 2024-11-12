@@ -1,6 +1,6 @@
 import LessonsScreen from '../../../components/lessons-screen' 
 
-export default function Assignments() {
+export default function TeacherAssignments() {
   return (
     <main>
       <LessonsScreen title="Tareas"
