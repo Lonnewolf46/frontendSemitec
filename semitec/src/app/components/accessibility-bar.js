@@ -30,7 +30,7 @@ export function AccessibilityBar() {
         <svg
           className="accessibility-bar-btn-content"
           xmlns="http://www.w3.org/2000/svg"
-          height="auto"
+          height="100%"
           viewBox="0 0 24 24"
           width="1.2vw"
           fill="#FFFFFF"
@@ -43,7 +43,7 @@ export function AccessibilityBar() {
         <svg
           className="accessibility-bar-btn-content"
           xmlns="http://www.w3.org/2000/svg"
-          height="auto"
+          height="100%"
           viewBox="0 0 24 24"
           width="1.2vw"
           fill="#FFFFFF"
@@ -55,7 +55,7 @@ export function AccessibilityBar() {
       <button aria-label="Seleccionar tipografía">
         <svg
           width="1.2vw"
-          height="auto"
+          height="100%"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -75,10 +75,9 @@ export function AccessibilityBar() {
         <svg
           className="accessibility-bar-btn-content"
           width="1.2vw"
-          height="auto"
-          maxWidth="24px"
+          height="100%"
           xmlns="http://www.w3.org/2000/svg"
-          enable-background="new 0 0 24 24"
+          enableBackground="new 0 0 24 24"
           viewBox="0 0 24 24"
           fill="#FFFFFF"
         >

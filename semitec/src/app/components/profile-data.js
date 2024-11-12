@@ -9,13 +9,12 @@ import avatar from "@/app/ui/avatar.svg";
 export default function Profile({
   username,
   institution,
-  user_code,
   user_type,
   email,
   country,
   province,
   canton,
-  district,
+  district
 }) {
   return (
     <>
@@ -25,7 +24,6 @@ export default function Profile({
           <div className="header-format">
             <div className="name-format">{username}</div>
             <div className="institution-format">{institution}</div>
-            <div className="id-format">#{user_code}</div>
           </div>
 
           <div>

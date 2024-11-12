@@ -25,10 +25,15 @@ export default function CreatLesson() {
   const [available_lexemes, setLexemes] = useState([]);
   const [available_levels, setAvLevels] = useState([]);
 
+  const handleCancel = () => {
+    router.push('/teacher/home');
+  };
+
   const assignLesson = () => {
     var sharedvalue = 0;
     if(publicActivity){sharedvalue = 1}
-    sessionStorage.setItem('lesson',encryptData(
+    sessionStorage.setItem('lesson',
+      encryptData(
       JSON.stringify({
         level_id: level_id,
         content: words,
@@ -124,8 +129,6 @@ export default function CreatLesson() {
       const leftForm = document.getElementById('left-form');
       const rightForm = document.getElementById('right-form');
       if (leftForm.checkValidity() && rightForm.checkValidity() && level_id) {
-        var sharedvalue = 0;
-        if(publicActivity){sharedvalue = 1}
         assignLesson();
       }
       else { 
@@ -287,7 +290,7 @@ export default function CreatLesson() {
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <button className={buttonStyles.secondary}>
+          <button className={buttonStyles.secondary} onClick={handleCancel}>
             Cancelar
           </button>
           <button id="validate-button" className={buttonStyles.primary} onClick={validateForms}>

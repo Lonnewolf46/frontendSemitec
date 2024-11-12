@@ -3,8 +3,9 @@ import {React, useState, useEffect, use} from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useRouter } from "next/navigation";
 import './Signup.css';
+import doggo from "@/app/ui/semitec-doggo.gif";
 import '../components/button/button.css'
-import { number } from 'yup';
+import Image from "next/image"
 
 export default function SignUp() {
   const router = useRouter();
@@ -16,16 +17,29 @@ export default function SignUp() {
   const [districts, setDistricts] = useState([])
   const [educationLevels, setEducationLevels] = useState([])
   const [institutions, setInstitutions] = useState([])
-  const [selectedUserType, setSelectedUserType] = useState()
-  const [selectedCountry, setSelectedCountry] = useState()
-  const [selectedProvince, setSelectedProvince] = useState()
-  const [selectedCanton, setSelectedCanton] = useState()
-  const [selectedDistrict, setSelectedDistrict] = useState()
-  const [selectedInstitution, setSelectedInstitution] = useState() 
-  const [selectedEducationLevel, setSelectedEducationLevel] = useState() 
+  const [selectedUserType, setSelectedUserType] = useState(null)
+  const [selectedCountry, setSelectedCountry] = useState(null)
+  const [selectedProvince, setSelectedProvince] = useState(null)
+  const [selectedCanton, setSelectedCanton] = useState(null)
+  const [selectedDistrict, setSelectedDistrict] = useState(null)
+  const [selectedInstitution, setSelectedInstitution] = useState(null) 
+  const [selectedEducationLevel, setSelectedEducationLevel] = useState(null) 
+  const [selectedBirthDate, setBirthDate] = useState(null)
+
+  const handleDateChange = (e) => {
+    setBirthDate(e.target.value);
+  };
+
+  const maxDate = () => {
+    const today = new Date().toISOString().split('T')[0];
+    return today
+  }
 
   const signupTutor = async (credentials) => {
     let { country, province, canton,...updated_data } = credentials;
+    console.log(updated_data.user_type,updated_data.institution,updated_data.district,updated_data.fullname,updated_data.password,updated_data.email,updated_data.other_signs)
+    
+    console.log(updated_data.district, selectedDistrict)
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/register-teacher`, {
             method: 'POST',
@@ -36,7 +50,7 @@ export default function SignUp() {
             ({
               user_type_id: updated_data.user_type,
               institution_id: updated_data.institution,
-              district_id: updated_data.district,
+              district_id: selectedDistrict,
               name: updated_data.fullname,
               password: updated_data.password,
               email: updated_data.email,
@@ -44,15 +58,16 @@ export default function SignUp() {
           }) 
           })
           const data = await response.json()
-
+          setSignUpStage(stage+1)
     } catch (error){
         console.log(error)
+        setSignUpStage(stage+2)
     }
   }
 
   const signupStudent = async (credentials) => {
     let { country, province, canton,...updated_data } = credentials;
-    console.log("student")
+    console.log(selectedBirthDate)
     {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/register-student`, {
@@ -64,27 +79,27 @@ export default function SignUp() {
             ({
               user_type_id: updated_data.user_type,
               institution_id: updated_data.institution,
-              district_id: updated_data.district,
+              district_id: selectedDistrict,
               name: updated_data.fullname,
               password: updated_data.password,
               email: updated_data.email,
               other_signs: updated_data.other_signs,
               education_level_id: updated_data.education_level,
-              date_birth: updated_data.birth_date.toString()
+              date_birth: selectedBirthDate
           }) 
           })
           const data = await response.json()
           console.log(data)
-
-    } catch (error){
-        console.log(error)
-    }}
-}
+          setSignUpStage(stage+1)
+        } catch (error){
+            console.log(error)
+            setSignUpStage(stage+2)
+}}}
 
   const getCountries = () => {
     const response = fetch(`${process.env.NEXT_PUBLIC_API_HOST}/countries`)
     return response
-    /*
+    /* 
     try{
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/countries`);
       if (!response.ok) {
@@ -187,7 +202,11 @@ export default function SignUp() {
     if (selectedCountry){
       getProvinces()
       .then( (res) => res.json())
-      .then(data => setProvinces(data))          
+      .then(data => {
+        setProvinces(data)
+        setCantons(null)
+        setDistricts(null)
+      })          
       .catch( (err) => {
         throw new Error(
           `Unable to Fetch Data from Provinces.`
@@ -200,7 +219,10 @@ export default function SignUp() {
     if (selectedProvince){
       getCantons()
       .then( (res) => res.json())
-      .then(data => setCantons(data))          
+      .then(data => {
+        setCantons(data)
+        setDistricts(null)
+      })          
       .catch( (err) => {
         throw new Error(
           `Unable to Fetch Data from Cantons.`
@@ -264,14 +286,26 @@ export default function SignUp() {
                     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
                     ) {
                     errors.email = 'Correo inválido.';
+                    } else if (
+                    (values.email).length > 32
+                    ) {
+                    errors.email = 'Máximo de caracteres excedido, ingresá un correo más corto.';
                     }
 
                 if (!values.password) {
                     errors.password = 'Contraseña requerida.';
+                  } else if(
+                    (values.password).length > 15
+                  ){ 
+                  errors.password = 'Máximo de caracteres excedido.'
                 } 
 
                 if (!values.fullname) {
                   errors.fullname = 'Nombre requerido.';
+                } else if(
+                  (values.fullname).length > 48
+                ){ 
+                errors.fullname = 'Máximo de caracteres excedido.'
                 } 
 
                 if (!values.user_type) {
@@ -296,6 +330,10 @@ export default function SignUp() {
 
                 if (!values.other_signs) {
                   errors.other_signs = 'Otras señas requeridas.';
+                } else if(
+                  (values.other_signs).length > 500
+                ){ 
+                errors.other_signs = 'Máximo de caracteres excedido, por favor se más breve.'
                 } 
 
                 if (!values.education_level) {
@@ -315,30 +353,29 @@ export default function SignUp() {
                                         signupStudent(values):
                                         signupTutor(values)
                                       }
-                                      setSignUpStage(stage+1)
                                   }}
               >
               
               {({ submitForm, setFieldValue }) => (
                 <Form>
                   <div className={stage === 1 ? 'personal' : 'hidden'}>
-                      <div className='signup-header'>Registrarme (Paso 1 de 3)</div>
-                        <text className='login-text'>Nombre</text>
+                      <h1 className='signup-header'>Registrarme (Paso 1 de 3)</h1>
+                        <h2 className='login-text'>Nombre</h2>
                         <Field className="form-styling" type ="fullname" name="fullname" placeholder = "Ingrese su nombre." />
                         <ErrorMessage className='error-message' name="fullname" component="div"/> 
                         <br></br>
                         <br></br>
-                        <text className='login-text'>Correo</text>
+                        <h2 className='login-text'>Correo</h2>
                         <Field className="form-styling" type="email" name="email" placeholder="Ingrese su correo."/>
                         <ErrorMessage className='error-message' name="email" component="div"/> 
                         <br></br>
                         <br></br>
-                        <text className='login-text'>Contraseña</text>
+                        <h2 className='login-text'>Contraseña</h2>
                         <Field className="form-styling" type="password" name="password" placeholder="Ingrese su nueva contraseña."/>
                         <ErrorMessage className='error-message' name="password" component="div"/>
                         <br></br>
                         <br></br>
-                        <text className='login-text'>Soy</text>
+                        <h2 className='login-text'>Soy</h2>
                         <Field as="select" className="form-styling" type="user_type" name="user_type" onChange={(e)=>{setSelectedUserType(e.target.value); setFieldValue("user_type", (e.target.value))}}>
                         <option>Seleccione un tipo de cuenta.</option>
                         {
@@ -359,10 +396,19 @@ export default function SignUp() {
                         <br></br>
 
                         {
+                          
                           selectedUserType && selectedUserType==1?
                           <>
                           <text className='login-text'>Fecha de nacimiento</text>
-                          <Field className="form-styling" type ="birth_date" name="birth_date" placeholder = "Formato: dia.mes.año" />
+                            <input
+                                type="date"
+                                id="birth_date"
+                                name="birth_date"
+                                min="1930-01-01"
+                                max={maxDate()}
+                                onChange={handleDateChange}
+                                required 
+                            />
                           <ErrorMessage className='error-message' name="birth_date" component="div"/>
                           </>:
                           <></>
@@ -375,10 +421,19 @@ export default function SignUp() {
                   </div>
 
                   <div className={stage === 2 ? 'location' : 'hidden'}>
-                    <div className='signup-header'>Registrarme (Paso 2 de 3)</div>
-                    <text className='login-text'>País</text>
-                    <Field as="select" className="form-styling" type="country" name="country" onChange={(e)=>{setSelectedCountry(e.target.value); setFieldValue("country", (e.target.value))}} >
-                      <option>Seleccione un país.</option>
+                    <h1 className='signup-header'>Registrarme (Paso 2 de 3)</h1>
+                    <h2 className='login-text'>País</h2>
+                    <Field as="select" 
+                      className="form-styling" 
+                      type="country"
+                      name="country" 
+                      onChange={(e)=>{
+                        setSelectedCountry(e.target.value); 
+                        setFieldValue("country", (e.target.value));
+                        setFieldValue("province", 0);
+                        setFieldValue("other_signs", (""))
+                      }} >
+                      <option value={0}>Seleccione un país.</option>
                       {
                         countries && Array.isArray(countries)? 
 
@@ -398,9 +453,15 @@ export default function SignUp() {
                     {
                       selectedCountry &&
                       <>
-                        <text className='login-text'>Provincia</text>
-                        <Field as="select" className="form-styling" type="province" name="province" onChange={(e)=>{setSelectedProvince(e.target.value); setFieldValue("province", (e.target.value))}}>
-                        <option>Seleccione una provincia.</option>
+                        <h2 className='login-text'>Provincia</h2>
+                        <Field as="select" className="form-styling" type="province" name="province" 
+                          onChange={(e)=>{
+                            setSelectedProvince(e.target.value); 
+                            setFieldValue("province", (e.target.value));
+                            setFieldValue("canton", 0);
+                            setFieldValue("other_signs", (""))
+                          }}>
+                        <option value={0}>Seleccione una provincia.</option>
                           {
                             provinces && Array.isArray(provinces)? 
                                 provinces.map( 
@@ -424,9 +485,15 @@ export default function SignUp() {
                     {
                     selectedProvince &&
                     <>
-                      <text className='login-text'>Cantón</text>
-                      <Field as="select" className="form-styling" type="canton" name="canton" onChange={(e)=>{setSelectedCanton(e.target.value); setFieldValue("canton", (e.target.value))}}>
-                        <option>Seleccione un cantón.</option>
+                      <h2 className='login-text'>Cantón</h2>
+                      <Field as="select" className="form-styling" type="canton" name="canton" onChange={(e)=>
+                      {
+                        setSelectedCanton(e.target.value); 
+                        setFieldValue("canton", (e.target.value));
+                        setFieldValue("district", 0);
+                        setFieldValue("other_signs", (""))
+                      }}>
+                        <option value={0}>Seleccione un cantón.</option>
                           {
                             cantons && Array.isArray(cantons)? 
                                 cantons.map( 
@@ -449,8 +516,12 @@ export default function SignUp() {
                     {
                       selectedCanton &&
                       <>
-                      <text className='login-text'>Distrito</text>
-                    <Field as="select" className="form-styling" type="district" name="district" onChange={(e)=>{setSelectedDistrict(e.target.value); setFieldValue("district", (e.target.value))}}>
+                      <h2 className='login-text'>Distrito</h2>
+                    <Field as="select" className="form-styling" type="district" name="district" onChange={(e)=>{
+                      setSelectedDistrict(e.target.value); 
+                      setFieldValue("district", (e.target.value));
+                      setFieldValue("other_signs", (""))
+                      }}>
                       <option>Seleccione un distrito.</option>
                       {
                             districts && Array.isArray(districts)? 
@@ -474,21 +545,21 @@ export default function SignUp() {
                     {
                       selectedDistrict &&
                       <>
-                        <text className='login-text'>Otras señas</text>
+                        <h2 className='login-text'>Otras señas</h2>
                         <Field className="form-styling" type ="other_signs" name="other_signs" placeholder = "Digite otras señas de ubicación." />
                         <ErrorMessage className='error-message' name="other_signs" component="div"/>
                       </>
                     }
 
                     <div className='buttons-container'>
-                          <a className="anchor-button" href={'/login'}> Volver </a>
+                          <button className="button" onClick={() => setSignUpStage(stage-1)}> Volver </button>
                           <button className="button" onClick={() => setSignUpStage(stage+1)}> Siguiente </button>
                       </div>
                     </div>
 
                     <div className={stage === 3 ? 'academia' : 'hidden'}>
-                    <div className='signup-header'>Registrarme (Paso 3 de 3)</div>
-                    <text className='login-text'>Nivel Académico</text>
+                    <h1 className='signup-header'>Registrarme (Paso 3 de 3)</h1>
+                    <h2 className='login-text'>Nivel Académico</h2>
                     <Field as="select" className="form-styling" type="education_level" name="education_level" onChange={(e)=>{setSelectedEducationLevel(e.target.value); setFieldValue("education_level", (e.target.value))}}>
                       <option>Seleccione un nivel académico.</option>
                       {
@@ -507,7 +578,7 @@ export default function SignUp() {
                     <br></br>
                     <br></br>
                     
-                    <text className='login-text'>Institución</text>
+                    <h2 className='login-text'>Institución</h2>
                       <Field as="select" className="form-styling" type="institution" name="institution" onChange={(e)=>{setSelectedInstitution(e.target.value); setFieldValue("institution", (e.target.value))}}>
                         <option>Seleccione una institución.</option>
                         {
@@ -534,9 +605,30 @@ export default function SignUp() {
                   </div>
 
                   <div className={stage === 4 ? 'academia' : 'hidden'}>
-                      <div className='welcome-header'>¡Ahora sos parte de SEMITEC!</div>
-                      <div className='welcome-text'>Iniciá sesión para empezar a aprender</div>
-                      <div className='wave-img' aria-description='Imagen de un perro saludando.'/>
+                      <h1 className='welcome-header'>¡Ahora sos parte de SEMITEC!</h1>
+                      <h2 className='welcome-text'>Iniciá sesión para empezar a aprender</h2>
+                      <div>
+                        <Image 
+                          width={232} 
+                          height={189} 
+                          src={doggo} 
+                          className="doggo"
+                          alt="La mascota de semitec, un perro guía, dandote la bienvenida!" />
+                      </div>
+                      <a className="final-anchor-button" href={'/login'}> Continuar </a>
+                  </div>
+
+                  <div className={stage === 5 ? 'academia' : 'hidden'}>
+                      <h1 className='welcome-header'>¡Oh, no!</h1>
+                      <h2 className='welcome-text'>Algo salió mal. Por favor intentá de nuevo.</h2>
+                      <div>
+                      <Image 
+                          width={232} 
+                          height={189} 
+                          src={doggo} 
+                          className="doggo"
+                          alt="La mascota de semitec, un perro guía, dandote la bienvenida!" />
+                      </div>
                       <a className="final-anchor-button" href={'/login'}> Continuar </a>
                   </div>
                 </Form>
