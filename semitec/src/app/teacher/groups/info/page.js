@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 pTableType defines which type of table is shown as children
 1: Table for student's management
 2: Table for student's selection for assignments
+3: Table for just showing students, no controls or buttons
 */
 export default function GroupInfo({pGroup, pTableType}) {
   const [groupInfo, setGroupInfo] = useState(pGroup);
@@ -35,7 +36,7 @@ export default function GroupInfo({pGroup, pTableType}) {
         <div className={styles.header_container}>
           <div>
             <p className={styles.compact} style={{ fontWeight: "bold", marginRight: "10%"}}>{groupInfo.group_name}</p>
-            <p className={styles.compact}>{groupInfo.group_code}</p>
+            <p className={styles.compact}>Código: {groupInfo.group_code}</p>
           </div>
           <div >
             <button className={buttonStyles.primary}>Agregar Estudiante</button>
@@ -64,7 +65,25 @@ export default function GroupInfo({pGroup, pTableType}) {
       </div>
     );
   }
-  
+  if(tableType === "Read"){
+    return (
+      <div>
+        <div className={styles.header_container}>
+          <div>
+            <p className={styles.compact} style={{ fontWeight: "bold", marginRight: "10%"}}>{groupInfo.group_name}</p>
+            <p className={styles.compact}>Código: {groupInfo.group_code}</p>
+          </div>
+        </div>
+        <section>
+          <h1 className={styles.heading}
+              style={{ fontSize: "1.5vw" }}>
+            Estudiantes
+          </h1>
+          <StudentsTable group_id={groupInfo.group_id} actions={false} />
+        </section>
+      </div>
+    );
+  }
   return(
     <>
     </>

@@ -19,7 +19,7 @@ export default function StudentsTable({ group_id, actions }) {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoadingData] = useState(true); 
   const [errorLoading, setErrorLoad] = useState(false);
-  const itemsPerPage = 4; 
+  const itemsPerPage = 8;
 
   const fetchCount = async () => {
     const userType = pathname === "/student/groups" ? "student" : "teacher";
@@ -54,7 +54,7 @@ export default function StudentsTable({ group_id, actions }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            var_group_id: group_id,
+            var_group_id: ingroup_id,
             var_page_number: page_number,
             var_page_size: page_size  
         })
@@ -67,14 +67,13 @@ export default function StudentsTable({ group_id, actions }) {
       }
     } catch (error) {
       setErrorLoad(true);
-      console.log(error);
     } finally {
       setLoadingData(false); // Set loading state to false after fetch is done
     }
   };
   useEffect(() => {
-    getStudents(group_id,currentPage,itemsPerPage);
-  }, [currentPage, group_id]);
+    getStudents(groupID,currentPage,itemsPerPage);
+  }, [currentPage, groupID]);
 
   useEffect(() => {
     setLoadingData(true);
@@ -90,6 +89,14 @@ export default function StudentsTable({ group_id, actions }) {
     }
   };
 
+  const handleRetryLoad = () => {
+    setLoadingData(true);
+    setErrorLoad(false);
+    setGroupId(group_id);
+    fetchCount();
+    getStudents(groupID,currentPage,itemsPerPage);
+  }
+
   //UI for loading data
   if (loading) {
     return (
@@ -99,26 +106,32 @@ export default function StudentsTable({ group_id, actions }) {
     )
   }
 
+  if(errorLoading){
+    return(
+      <><UIDisplayInfo
+        title="Error"
+        message="Hubo un error al cargar los estudiantes" />
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '1vw' }}>
+          <button
+            className={buttonStyles.primary}
+            onClick={handleRetryLoad}
+          >
+            Reintentar
+          </button>
+        </div></>
+    )
+  }
+
   //If there are no students in the data state
-  //Check if it was because of an error, else it just so happened that there are no groups.
   if (students.length === 0) {
     return (
-      errorLoading ? ( 
-        <>
+      <>
         <UIDisplayInfo
-          title="Error"
-          message="Hubo un error al cargar los estudiantes."
+          title="Estudiantes"
+          message="No hay estudiantes en este grupo"
         />
-        </>
-        ) : (
-          <>
-            <UIDisplayInfo
-              title="Estudiantes"
-              message="No hay estudiantes en este grupo"
-            />
-          </> 
-        )
-  );
+      </> 
+    )
   }
 
   return (
@@ -174,6 +187,7 @@ export default function StudentsTable({ group_id, actions }) {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className={buttonStyles.primary}
+          aria-label="Estudiantes: anterior página"
         >
           Anterior
         </button>
@@ -184,6 +198,7 @@ export default function StudentsTable({ group_id, actions }) {
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className={buttonStyles.primary}
+          aria-label="Estudiantes: siguiente página"
         >
           Siguiente
         </button>
