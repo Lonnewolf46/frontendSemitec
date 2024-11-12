@@ -10,7 +10,9 @@ import styles from './styles.module.css'
 import ProgressCard from "@/app/components/progressCard";
 import StatsCard from "@/app/components/statsCard";
 import NextLessonCard from "@/app/components/next-lesson-card";
+import AssignedLesssonsCard from "@/app/components/assigned-lessons-card";
 import {useTheme } from "next-themes";
+
 const themes = {
   Predeterminado: {
     backgroundColor: '#ffffff',
@@ -45,6 +47,7 @@ export default function StudentHome() {
   const [stats, setStats] = useState({avg_time_taken: 0, avg_mistakes: 0, avg_accuracy_rate: 0, avg_pulsation_per_minute:0 })
   const [metricsHistory, setAccuracyHistory] = useState([])
   const [nextLessonId, setNextLessonId] = useState(1)
+  const [assignedLessons, setAssignedLessons] = useState(0);
   const router = useRouter();
 
   const currentTheme = themes[theme.theme] || themes.Predeterminado;
@@ -83,7 +86,7 @@ export default function StudentHome() {
     },
     legend: {
       itemStyle: {
-        color: currentTheme.legendColor, // Set the color of the legend labels dynamically
+        color: currentTheme.legendColor, // Set the color of the legend labels dynamically 
       }
     },
     series: [
@@ -92,9 +95,9 @@ export default function StudentHome() {
         data: metricsHistory.map((value) => {
           return value.accuracy_rate
         }),
-      },
+      }/*,
       {
-        name: 'Tiempo',
+        name: 'Tiempo ⓘ',
         data: metricsHistory.map((value) => {
           return value.time_taken
         })
@@ -104,7 +107,7 @@ export default function StudentHome() {
         data: metricsHistory.map((value) => {
           return value.mistakes
         })
-      },
+      }*/,
       {
         name: 'PPM',
         data: metricsHistory.map((value) => {
@@ -148,6 +151,27 @@ export default function StudentHome() {
     }
   }
 
+  const getAssignedLessons = async () => {
+  /*
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_HOST}/student/CONSULTA A API`,
+        {
+          headers: {
+            "auth-token": localStorage.getItem("auth-token"),
+          },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setAssignedLessons(data);
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }*/
+  };
+
   const getAccuracyHistory = async () => {
     try{
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/accuracy-history`, {
@@ -189,8 +213,11 @@ export default function StudentHome() {
     getUsername();
     getStats();
     getAccuracyHistory();
-    getNextLesson()
+    getNextLesson();
+    getAssignedLessons();
     accessibility(Highcharts);
+    console.log(assignedLessons);
+    console.log(assignedLessons+1);
   }, []);
 
   return (
@@ -198,11 +225,6 @@ export default function StudentHome() {
     <div className={styles.main_container}>
         <div className={styles.left_section}>
           <WelcomeCard username={username} />
-          <div style={{ marginTop: "10px", height: "55vh", alignContent: "center" }}>
-            <HighchartsReact highcharts={Highcharts} options={options} />
-          </div>
-        </div>
-        <div className={styles.right_section}>
           <section
             style={{
               display: "flex",
@@ -210,26 +232,35 @@ export default function StudentHome() {
               borderBottom: "solid 6px #007172",
               paddingBottom: "50px",
             }}
-          >
-            <ProgressCard amount={stats.avg_mistakes} text={"errores promedio"} />
-            <ProgressCard amount={`${stats.avg_time_taken}`} text={"tiempo promedio ⓘ"} />
-          </section>
-          <section>
-            <div
-              style={{
-                fontSize: "2.7vw",
-                fontWeight: "bold",
-                marginTop: "20px",
-              }}
-            >
-              Estadísticas
+          />
+          <div className={styles.column}>    
+            <section className={styles.halfScreenContainer}>
+              <h1 className={styles.headerText}>¿Qué haremos hoy?</h1>
+              <div className={styles.cardWrapper}>
+              <AssignedLesssonsCard handleStart={handleStart} quantity= {assignedLessons + 1} />
+              <NextLessonCard handleStart={handleStart} lesson_id={nextLessonId + 1}/>
+              </div>
+            </section>
+            
+          
+          </div>
+        </div>
+        <div className={styles.right_section}>
+          <section className={styles.container}>
+            <div style={{ marginTop: "5px", height: "35vh", alignContent: "center" }}>
+                <HighchartsReact highcharts={Highcharts} options={options} />
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <StatsCard value={stats.avg_pulsation_per_minute} name={"PPM ⓘ"} />
-              <StatsCard value={`${stats.avg_accuracy_rate}%`} name={"Precisión"} />
-            </div>
           </section>
-          <NextLessonCard handleStart={handleStart} lesson_id={nextLessonId + 1}/>
+          <section className={styles.container}>
+            <h1 style={{marginTop: "5vh", marginBottom:"0"}}>Estadísticas</h1>
+              <div style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}>
+                <StatsCard value={stats.avg_pulsation_per_minute} name={"PPM"} /> 
+                <StatsCard value={`${stats.avg_accuracy_rate}%`} name={"Precisión"} />
+              </div>
+          </section>
         </div>
       </div>
     </main>
