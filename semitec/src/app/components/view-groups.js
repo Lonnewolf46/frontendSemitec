@@ -201,11 +201,15 @@ export default function GroupsTable({usage}) {
             <ul className={styles.groupList}>
               {groups.map((group, index) => (
                 <li
-                  tabIndex={index}
+                  tabIndex={0}
                   key={index}
                   onClick={() => {
                     setActiveIndex(index);
                   } }
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      setActiveIndex(index); }
+                    }}
                 >
                   <ListCard
                     imagePath={LessonImg}
@@ -219,6 +223,7 @@ export default function GroupsTable({usage}) {
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
                 className={buttonStyles.primary}
+                aria-label="Grupos: anterior página"
               >
                 Anterior
               </button>
@@ -229,6 +234,7 @@ export default function GroupsTable({usage}) {
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
                 className={buttonStyles.primary}
+                aria-label="Grupos: siguiente página"
               >
                 Siguiente
               </button>

@@ -174,6 +174,7 @@ export default function StudentsTableAssign({ group_id }) {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className={buttonStyles.primary}
+          aria-label="Estudiantes: anterior página"
         >
           Anterior
         </button>
@@ -184,6 +185,7 @@ export default function StudentsTableAssign({ group_id }) {
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className={buttonStyles.primary}
+          aria-label="Estudiantes: siguiente página"
         >
           Siguiente
         </button>

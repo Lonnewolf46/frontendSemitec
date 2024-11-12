@@ -36,7 +36,7 @@ export default function GroupInfo({pGroup, pTableType}) {
         <div className={styles.header_container}>
           <div>
             <p className={styles.compact} style={{ fontWeight: "bold", marginRight: "10%"}}>{groupInfo.group_name}</p>
-            <p className={styles.compact}>{groupInfo.group_code}</p>
+            <p className={styles.compact}>Código: {groupInfo.group_code}</p>
           </div>
           <div >
             <button className={buttonStyles.primary}>Agregar Estudiante</button>
@@ -68,6 +68,12 @@ export default function GroupInfo({pGroup, pTableType}) {
   if(tableType === "Read"){
     return (
       <div>
+        <div className={styles.header_container}>
+          <div>
+            <p className={styles.compact} style={{ fontWeight: "bold", marginRight: "10%"}}>{groupInfo.group_name}</p>
+            <p className={styles.compact}>Código: {groupInfo.group_code}</p>
+          </div>
+        </div>
         <section>
           <h1 className={styles.heading}
               style={{ fontSize: "1.5vw" }}>
