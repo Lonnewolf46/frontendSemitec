@@ -13,19 +13,29 @@ export default function LessonInfo({ lesson }) {
   return (
     <>
       <div className={styles.wrapper}>
-        <h1>Detalle de lección</h1>
-        <h2>Nombre</h2>
-        <p>{lesson.name}</p>
-        <h2>Palabras</h2>
-        <p>{lesson.words}</p>
+        <h1>Detalles de la actividad</h1>
         <h2>Descripción</h2>
+        <p>
+          En esta lección practicaras {" "}
+          <strong>{lesson.level_name}</strong> mediante la repetición de las palabras{" "}
+          <strong>{lesson.content}</strong> por {lesson.iterations} iteraciones.
+        </p>
         <p>{lesson.description}</p>
+        <h2>Criterios de aprobción</h2>
+        <p>Errores máximos {lesson.min_mistakes}</p>
+        <p>Tiempo máximo {lesson.min_time} segundos</p>
+        <h2>Lección creada por</h2>
+        <p>{lesson.teacher_name}</p>
       </div>
-      <div className={styles.buttonContainer}>
-        <button onClick={handleClick} className={styles.startButton}>
-          Iniciar Lección
-        </button>
-      </div>
+      {pathname.includes("teacher") ? (
+        <></>
+      ) : (
+        <div className={styles.buttonContainer}>
+          <button onClick={handleClick} className={styles.startButton}>
+            Iniciar Lección
+          </button>
+        </div>
+      )}
     </>
   );
 }
