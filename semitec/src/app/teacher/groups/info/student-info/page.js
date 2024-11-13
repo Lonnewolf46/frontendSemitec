@@ -7,32 +7,24 @@ import ProgressCard from "@/app/components/progressCard";
 import StatsCard from "@/app/components/statsCard";
 export default function StudentInfo() {
     const searchParams = useSearchParams()
-  const [profile, setProfile] = useState("");
-  const [stats, setStats] = useState({avg_time_taken: 0, avg_mistakes: 0, avg_accuracy_rate: 0, avg_pulsation_per_minute:0 });
-
-    const getStats = async () => {
-    try{
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups/info/student-info?user_id=${searchParams.get("student_id")}`, {
-        headers: {
-          "auth-token": localStorage.getItem("auth-token"),
-        },
-      });
-      const data = await res.json();
-      if (res.ok && data.avg_accuracy_rate !== null) {
-        console.log(data);
-        setStats(data)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+    const [profile, setProfile] = useState("");
+    const [stats, setStats] = useState({avg_time_taken: 0, avg_mistakes: 0, avg_accuracy_rate: 0, avg_pulsation_per_minute:0 });
+    const [medium_accuracy, setAccuracy] = useState(0);
+    const [medium_ppm, setPPM] = useState(0)
+    const [completedLessons, setCompletedLessons] = useState();
+    const [assignedLessons, setAssignedLessons] = useState();
 
   const getData = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups/info/student-profile?user_id=${searchParams.get("student_id")}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups/info/student-profile?student_id=${searchParams.get("student_id")}`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
+          'Content-Type': 'application/json'
         },
+        body: JSON.stringify
+                ({
+                  student_id: searchParams.get("student_id")
+                })
       });
       const data = await res.json();
       if (res.ok) {
@@ -44,9 +36,78 @@ export default function StudentInfo() {
     }
   };
 
+  const getPPMandAccuracy = async () => {
+    {
+      console.log("get stats")
+      let studentId = Number(searchParams.get("student_id"))
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/lessons/stats`, {
+            method: 'POST',
+            headers: {
+              "auth-token": localStorage.getItem("auth-token"),
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                  student_id: studentId,
+                })
+          })
+          
+          const data = await response.json()
+          const initialValue = 0;
+          let sum_ppm = data.reduce(
+            (accumulator, currentValue) => accumulator + currentValue.pulsation_per_minute,
+            initialValue,
+          );
+
+          let sum_accuracy = data.reduce(
+            (accumulator, currentValue) => accumulator + currentValue.accuracy_rate,
+            initialValue,
+          );
+        
+          if (data.length!==0)
+          {
+            sum_accuracy /= data.length
+            sum_ppm /= data.length
+            setPPM(sum_ppm.toFixed(0))
+            setAccuracy(sum_accuracy.toFixed(0))
+          }
+          
+    } catch (error){
+        console.log(error)
+    }
+  }  
+  }
+
+  const getLessons = async () => {
+    {
+      let studentId = Number(searchParams.get("student_id"))
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/lessons/count-pending`, {
+            method: 'POST',
+            headers: {
+              "auth-token": localStorage.getItem("auth-token"),
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify
+                ({
+                  student_id: studentId,
+                })
+          });
+          const data = await response.json()
+          setAssignedLessons(data[0].assigned_lessons_count)
+          setCompletedLessons(data[0].unique_metrics_count)
+    } catch (error) {
+        console.log(error)
+    }
+  }}
+
   useEffect(() => {
-    getData();
-    getStats();
+    //getData();
+    //getStats();
+    getPPMandAccuracy();
+    getLessons();
+    console.log(medium_accuracy)
+    console.log(medium_ppm)
   }, []);
 
   return (
@@ -69,18 +130,19 @@ export default function StudentInfo() {
           <section
             style={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "space-around",
               borderBottom: "solid 6px #007172",
               paddingBottom: "50px",
+              marginRight: "32px"
             }}
           >
             <ProgressCard
-              amount={stats.avg_mistakes}
-              text={"errores promedio"}
+              amount={completedLessons}
+              text={"actividades completadas"}
             />
             <ProgressCard
-              amount={`${stats.avg_time_taken}`}
-              text={"tiempo promedio"}
+              amount={assignedLessons}
+              text={"actividades pendientes"}
             />
           </section>
           <section>
@@ -88,18 +150,26 @@ export default function StudentInfo() {
               style={{
                 fontSize: "2.7vw",
                 fontWeight: "bold",
-                marginTop: "20px",
+                marginTop: "20px"
               }}
             >
               Estadísticas
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <StatsCard value={stats.avg_pulsation_per_minute} name={"PPM"} />
+            {console.log(medium_accuracy)}
+            {console.log(medium_ppm)}
+
+            {medium_ppm !== 0 && medium_accuracy !==0?
+              <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <StatsCard value={medium_ppm} name={"PPM"} />
               <StatsCard
-                value={`${stats.avg_accuracy_rate}%`}
+                value={`${medium_accuracy}%`}
                 name={"Precisión"}
               />
-            </div>
+              </div>
+              :
+              <h2>No hay datos que mostrar.</h2>
+            }
+              
           </section>
         </div>
       </div>
