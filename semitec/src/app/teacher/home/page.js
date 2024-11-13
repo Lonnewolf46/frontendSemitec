@@ -50,10 +50,6 @@ export default function TeacherHome() {
     }
   };
 
-  const handleActivities = () => {
-    router.push("/teacher/lessons");
-  };
-
   useEffect(() => {
     getUsername();
     getRecentActivity();
@@ -70,18 +66,18 @@ export default function TeacherHome() {
           <div className={styles.cardWrapper}>
             <ActivityManagementCard
               text="Actividades creadas"
-              buttonText="Ver"
-              handleClick={handleActivities}
+              buttonText="Ir"
+              handleClick={() => router.push("/teacher/lessons/assignment")}
             />
             <ActivityManagementCard
               text="Practicas predeterminadas"
-              buttonText="Ver"
-              handleClick={handleActivities}
+              buttonText="Ir"
+              handleClick={() => router.push("/teacher/lessons/default")}
             />
             <ActivityManagementCard
               text="Actividades públicas"
-              buttonText="Ver"
-              handleClick={handleActivities}
+              buttonText="Ir"
+              handleClick={() => router.push("/teacher/lessons/public")}
             />
           </div>
         </section>
