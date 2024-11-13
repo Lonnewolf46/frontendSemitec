@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ListCard from "./list-card";
 import LessonImg from "../ui/lesson-img.svg";
 import LessonInfo from "./lesson-info";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function LeesonsScreen({
   title,
@@ -12,6 +13,8 @@ export default function LeesonsScreen({
   lessonCountRoute,
   pagedLessonsRoute,
 }) {
+  const pathname = usePathname();
+  const router = useRouter();
   const [lessonCode, setLessonCode] = useState("");
   const [lessons, setLessons] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -134,7 +137,17 @@ export default function LeesonsScreen({
   return (
     <main className={styles.mainWrapper}>
       <section className={styles.halfScreenContainer}>
-        <h1>{title}</h1>
+        <div className={styles.flexContainer}>
+          <h1>{title}</h1>
+          {pathname.includes("teacher/lessons/assignment") && (
+            <button
+              className={buttonStyles.primary}
+              onClick={() => router.push("/teacher/lessons/create")}
+            >
+              Crear
+            </button>
+          )}
+        </div>
         <form className={styles.searchForm}>
           <div className={styles.labelDiv}>
             <label htmlFor="search">
