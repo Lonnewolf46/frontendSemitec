@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import GroupsScreen from "@/app/components/teacher-groups";
+import GroupsScreen from "@/app/components/view-groups";
 import styles from "@/app/_styles/CreateLesson.module.css";
 import buttonStyles from "@/app/_styles/Button.module.css";
 import CryptoJS from 'crypto-js';
