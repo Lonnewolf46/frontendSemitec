@@ -32,16 +32,14 @@ export default function Lesson() {
       );
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
-
         distpatchLessonProps({
           type: "set_data",
-          words: data.words,
+          words: data.content,
           iterations: data.iterations,
           min_time: data.min_time,
           min_mistakes: data.min_mistakes,
         });
-      }
+      } 
     } catch (error) {
       console.log(error);
     }

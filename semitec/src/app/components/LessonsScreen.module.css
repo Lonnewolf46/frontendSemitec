@@ -82,3 +82,9 @@
     align-items: flex-end;
     justify-content: space-around;
 }
+
+.flexContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
