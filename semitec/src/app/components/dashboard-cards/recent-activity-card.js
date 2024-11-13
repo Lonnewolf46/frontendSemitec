@@ -1,4 +1,4 @@
-import styles from './recent-activity-card.css';
+import styles from './recent-activity-card.module.css';
 export default function RecentActivityCard({title, subtitle}) {
     return (
         <article className={`${styles.container} card-container-theme`}>
