@@ -15,21 +15,20 @@ export default function StudentInfo() {
     const [assignedLessons, setAssignedLessons] = useState();
 
   const getData = async () => {
+    let studentId = Number(searchParams.get("student_id"))
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups/info/student-profile?student_id=${searchParams.get("student_id")}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/student-info`, {
+        method: 'POST',
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
           'Content-Type': 'application/json'
         },
         body: JSON.stringify
-                ({
-                  student_id: searchParams.get("student_id")
-                })
+        ({
+            student_id: studentId
+        })
       });
       const data = await res.json();
-      if (res.ok) {
-        console.log(data);
-      }
       setProfile(data);
     } catch (error) {
       console.log(error);
@@ -38,7 +37,6 @@ export default function StudentInfo() {
 
   const getPPMandAccuracy = async () => {
     {
-      console.log("get stats")
       let studentId = Number(searchParams.get("student_id"))
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/lessons/stats`, {
@@ -102,12 +100,10 @@ export default function StudentInfo() {
   }}
 
   useEffect(() => {
-    //getData();
+    getData();
     //getStats();
     getPPMandAccuracy();
     getLessons();
-    console.log(medium_accuracy)
-    console.log(medium_ppm)
   }, []);
 
   return (
@@ -136,14 +132,29 @@ export default function StudentInfo() {
               marginRight: "32px"
             }}
           >
+          {completedLessons !== 1?
             <ProgressCard
-              amount={completedLessons}
-              text={"actividades completadas"}
-            />
+            amount={completedLessons}
+            text={"actividades completadas"}
+            /> 
+            :
             <ProgressCard
-              amount={assignedLessons}
-              text={"actividades pendientes"}
-            />
+            amount={completedLessons}
+            text={"actividad completada"}
+            /> 
+          }
+
+          {assignedLessons !== 1?
+            <ProgressCard
+            amount={assignedLessons}
+            text={"actividades pendientes"}
+            /> 
+            :
+            <ProgressCard
+            amount={assignedLessons}
+            text={"actividad pendiente"}
+            /> 
+          }
           </section>
           <section>
             <div
@@ -155,9 +166,6 @@ export default function StudentInfo() {
             >
               Estadísticas
             </div>
-            {console.log(medium_accuracy)}
-            {console.log(medium_ppm)}
-
             {medium_ppm !== 0 && medium_accuracy !==0?
               <div style={{ display: "flex", justifyContent: "space-around" }}>
               <StatsCard value={medium_ppm} name={"PPM"} />
