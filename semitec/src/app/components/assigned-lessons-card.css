@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 25px;
+    padding: 10px 30px;
+    height: 11vh;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 2.7vw;
+}
+
+.info{
+    font-size: 2vw;
+    align-items: right;
+}

@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*background-color: #ebebeb;*/
+    border-radius: 25px;
+    padding: 10px 30px;
+    margin-top: 58px;
+}
+.title {
+    font-weight: bold;
+    font-size: 2.7vw;
+}
+
+.info{
+    font-size: 2vw;
+}
+
+.button {
+    align-items: center;
+    padding: 1% 4%;
+    font-size: 2.2vw;
+    height: 4vw;
+    border-radius: 4px;
+}
