@@ -19,28 +19,38 @@ export default function CreateGroup() {
             "Content-Type": "application/json",
             "auth-token": localStorage.getItem("auth-token"),
           },
-          body: JSON.stringify({ name: name }),
+          body: JSON.stringify({ var_group_name: name }),
         }
       );
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
-        setGroupCode(data.group_code);
+        { if (data[0].hasOwnProperty('out_group_code')) {
+          setGroupCode(data[0].out_group_code);
+        } else { 
+          throw new Error('Expected data field "out_group_code" not found'); 
+        }
+      }
       }
     } catch (error) {
-      console.log(error);
+      alert("Ha ocurrido un error al crear el grupo.")
     }
   };
 
   const handleChangeName = (event) => {
     setName(event.target.value);
   };
+
   const handleClick = (event) => {
     event.preventDefault();
     createGroup();
   };
 
+  const handleOnExitClick = () => {
+    router.push(`/teacher/groups`);
+  }
+
   return (
+    <>
     <div className={styles.container}>
       <form className={styles.wrapper} onSubmit={handleClick}>
         <h1 className={styles.title}>Crear Grupo</h1>
@@ -53,12 +63,14 @@ export default function CreateGroup() {
             onChange={handleChangeName}
             type="text"
             id="groupName"
-          />
+            disabled={groupCode !== ""}/>
         </div>
         {groupCode ? (
+          <>
+          <p className={styles.sectionHeader}>Código del grupo</p>
           <p className={styles.code}>
-            <strong>{groupCode}</strong>
-          </p>
+              <strong>{groupCode}</strong>
+          </p></>
         ) : (
           <></>
         )}
@@ -75,10 +87,17 @@ export default function CreateGroup() {
         className={buttonStyles.primary}
         onClick={() => {
           router.push("/teacher/groups");
-        }}
+        } }
       >
         Continuar
       </button>
     </div>
+    <div className={styles.buttonContainer} style={{ marginBottom: '0.25vw' }}>
+      <button hidden={groupCode !== ""} className={buttonStyles.secondary} onClick={handleOnExitClick}>
+        Regresar
+      </button>
+    </div>
+    </>
+    
   );
 }
