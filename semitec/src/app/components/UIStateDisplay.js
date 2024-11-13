@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "./teacher-groups.module.css"; // Import your styles
+import styles from "./view-groups.module.css"; // Import your styles
 
 const ErrorOrLoadingDisplay = ({ title, message }) => {
     return (

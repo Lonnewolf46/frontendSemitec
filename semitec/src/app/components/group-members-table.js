@@ -8,6 +8,7 @@ import UIDisplayInfo from "./UIStateDisplay"
 import view from "@/app/ui/see.svg";
 import profile from "@/app/ui/avatarFill.svg";
 import deleteUser from "@/app/ui/trashcan.svg";
+import CryptoJS from 'crypto-js';
 
 export default function StudentsTable({ group_id, actions }) {
   const pathname = usePathname();
@@ -19,7 +20,11 @@ export default function StudentsTable({ group_id, actions }) {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoadingData] = useState(true); 
   const [errorLoading, setErrorLoad] = useState(false);
-  const itemsPerPage = 8;
+  const itemsPerPage = 6;
+
+  const encryptData = (data) => {
+    return CryptoJS.AES.encrypt(JSON.stringify(data), process.env.NEXT_PUBLIC_ENCRYPT_KEY).toString();
+  };
 
   const fetchCount = async () => {
     const userType = pathname === "/student/groups" ? "student" : "teacher";
@@ -71,6 +76,14 @@ export default function StudentsTable({ group_id, actions }) {
       setLoadingData(false); // Set loading state to false after fetch is done
     }
   };
+
+  const handleStatsClick = (studentID) => {
+    sessionStorage.setItem('student',
+      encryptData(studentID)
+    );
+    router.push("/teacher/groups/stats");
+  }
+
   useEffect(() => {
     getStudents(groupID,currentPage,itemsPerPage);
   }, [currentPage, groupID]);
@@ -153,9 +166,7 @@ export default function StudentsTable({ group_id, actions }) {
                 <>
                   <td>
                     <button aria-label={`Ver estadísticas del estudiante: ${student.student_name}`}
-                      onClick={() => {
-                        alert("No funcional");
-                      } }>
+                      onClick={() => handleStatsClick(student.student_id)}>
                       <Image src={view} alt="" />
                     </button>
                   </td><td>
