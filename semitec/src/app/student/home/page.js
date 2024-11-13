@@ -313,10 +313,10 @@ export default function StudentHome() {
             <h1 style={{marginTop: "5vh", marginBottom:"0"}}>Estadísticas</h1>
               <div style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "space-around",
                 }}>
-                <StatsCard value={medium_ppm} name={"PPM"} /> 
-                <StatsCard value={`${medium_accuracy}%`} name={"Precisión"} />
+                  <StatsCard value={medium_ppm} name={"PPM"} /> 
+                  <StatsCard value={`${medium_accuracy}%`} name={"Precisión"} />
               </div>
           </section>
         </div>
