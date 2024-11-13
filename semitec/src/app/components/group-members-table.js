@@ -147,7 +147,7 @@ export default function StudentsTable({ group_id, actions }) {
         <tbody>
           {students.map((student, index) => (
             <tr key={index}>
-              <td>{index}</td>
+              <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
               <td>{student.student_name}</td>
               {actions === true ? (
                 <>
