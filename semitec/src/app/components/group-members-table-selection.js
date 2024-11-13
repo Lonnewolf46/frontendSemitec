@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "@/app/_styles/GroupsTable.module.css";
-import stylesAlt from "./teacher-groups.module.css"
+import stylesAlt from "./view-groups.module.css"
 import buttonStyles from "@/app/_styles/Button.module.css";
 import UIDisplayInfo from "./UIStateDisplay"
 import CryptoJS from 'crypto-js';

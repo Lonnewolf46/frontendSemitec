@@ -4,12 +4,14 @@ import { useRouter } from "next/navigation";
 import GroupsScreen from "@/app/components/view-groups";
 import styles from "@/app/_styles/CreateLesson.module.css";
 import buttonStyles from "@/app/_styles/Button.module.css";
+import UIDisplayInfo from "@/app/components/UIStateDisplay"
 import CryptoJS from 'crypto-js';
 import { useEffect } from "react";
 
 export default function TeacherLessonAssign() {
   const router = useRouter();
   const [submiting, setSubmitting] = useState(false);
+  const [validEntry, setValidEntry] = useState();
   const decryptData = (cipherText) => {
     const bytes = CryptoJS.AES.decrypt(cipherText, process.env.NEXT_PUBLIC_ENCRYPT_KEY);
     return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
@@ -62,6 +64,30 @@ export default function TeacherLessonAssign() {
     setSubmitting(false);
   }
 
+  const handleOnCancelClick = () =>{
+    sessionStorage.removeItem('checkedStudents');
+    sessionStorage.removeItem('lesson');
+    router.push("/teacher/lessons/create");
+  }
+
+  useEffect(()=>{
+    const studentId = sessionStorage.getItem('lesson');
+    if (studentId) {
+      setValidEntry(true);
+      } else {
+        setValidEntry(false);
+      }
+  },[]);
+  
+  if(!validEntry){
+    return(
+      <UIDisplayInfo
+        title="Error: No autorizado"
+        message="Para crear y asignar una lección utilice la de creación de actividades.">
+      </UIDisplayInfo>
+    )
+  }
+
   return (
     <main>
       <div style={{textAlign:'center', margin: '0'}}>
@@ -69,7 +95,7 @@ export default function TeacherLessonAssign() {
       </div>
       <GroupsScreen usage={"Assignment"} />
       <div className={styles.buttonContainer}>
-          <button className={buttonStyles.secondary}>
+          <button className={buttonStyles.secondary} onClick={handleOnCancelClick}>
             Cancelar
           </button>
           <button id="validate-button" className={buttonStyles.primary} onClick={createAssignLesson} disabled={submiting}>
