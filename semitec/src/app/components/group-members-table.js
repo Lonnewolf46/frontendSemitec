@@ -77,11 +77,46 @@ export default function StudentsTable({ group_id, actions }) {
     }
   };
 
+  const removeStudent = async(inGroup_id, inStudent_id) => {
+    const userType = pathname === "/student/groups" ? "student" : "teacher";
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_HOST}/${userType}/groups/members/remove`,
+        {
+          method: "POST",
+          headers: {
+            "auth-token": localStorage.getItem("auth-token"),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            var_group_id: inGroup_id,
+            var_student_user_id: inStudent_id  
+        })
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      if (data[0].delete_student_from_group) {
+        getStudents(groupID,currentPage,itemsPerPage);
+        alert("Estudiante eliminado del grupo con éxito.");
+      }
+      else{
+        alert("No se ha podido borrar al estudiante.")
+      }
+    } catch (error) {
+      alert("Ha ocurrido un error al intentar eliminar al estudiante.");
+    }
+  }
+
   const handleStatsClick = (studentID) => {
     sessionStorage.setItem('student',
       encryptData(studentID)
     );
     router.push("/teacher/groups/stats");
+  }
+
+  const handleDeleteClick = (student_id) =>{
+    removeStudent(group_id,student_id);
   }
 
   useEffect(() => {
@@ -179,9 +214,7 @@ export default function StudentsTable({ group_id, actions }) {
                   </td>
                   <td>
                     <button aria-label={`Eliminar estudiante: ${student.student_name}`}
-                      onClick={() => {
-                        alert("No funcional");
-                      } }>
+                      onClick={() => handleDeleteClick(student.student_id) }>
                       <Image src={deleteUser} alt="" />
                     </button>
                   </td>
