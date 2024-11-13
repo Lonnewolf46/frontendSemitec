@@ -173,8 +173,10 @@ export default function LeesonsScreen() {
       });
       if (response.ok) {
         alert("Estudiante asignado exitosamente al grupo.");
-        fetchCount(name, selectedFilteredInstitution, searchParams.get("group_id"))
         setCurrentPage(1);
+        fetchCount(name, selectedFilteredInstitution, searchParams.get("group_id"))
+        getStudents(name, selectedInstitution, searchParams.get("group_id"), currentPage, itemsPerPage)
+        
       } else {
         const error = await response.json();
         alert(`Error al asignar el estudiante: ${error.message}`);
@@ -419,11 +421,9 @@ export default function LeesonsScreen() {
                     <div className={styles.buttonContainer}>
                       <button type="submit" className={buttonStyles.primary} disabled={
                             isSubmitting || 
-                            selectedInstitution === "" || 
                             (
-                              
-                              (values.name.trim().length >= 0 && values.name.trim().length < 3 &&
-                              values.lastName.trim().length >= 0 && values.lastName.trim().length < 3)
+                              selectedInstitution === null && // No hay institución seleccionada
+                              (values.name.trim().length < 3 && values.lastName.trim().length < 3) // Ambos son menores de 3 caracteres
                             )
                           }>
                           Aplicar Filtros
@@ -497,7 +497,12 @@ export default function LeesonsScreen() {
                 </div>
                 </>
                 ) : (
-                  <></>
+                  <>
+                  <div className={styles.emptyTable}>
+                    <h3 style={{ fontSize: '1.5em', color: '#333' }}>🔍 Sin resultados</h3>
+                    <p>No hay datos de estudiantes para mostrar.</p>
+                  </div>
+                  </>
                 )}
             </div>
         </div>
