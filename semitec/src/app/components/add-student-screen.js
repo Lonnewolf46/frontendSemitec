@@ -5,19 +5,16 @@ import "./add-student-screen.module.css";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import buttonStyles from "@/app/_styles/Button.module.css";
 import { useEffect, useState } from "react";
-import ListCard from "./list-card";
-import LessonImg from "../ui/lesson-img.svg";
-import LessonInfo from "./lesson-info";
 import UIDisplayInfo from "./UIStateDisplay"
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function LeesonsScreen() {
   const [studentsDB, setStudents] = useState([]);
-  const [checkedStudents, setCheckedStudents] = useState([]);
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1); 
   const [totalPages, setTotalPages] = useState(1); 
-  const itemsPerPage = 4; 
+  const itemsPerPage = 5; 
   const [loading, setLoadingData] = useState(true); 
   const [errorLoading, setErrorLoad] = useState(false); 
   const [provinces, setProvinces] = useState([])
@@ -27,7 +24,9 @@ export default function LeesonsScreen() {
   const [selectedProvince, setSelectedProvince] = useState("")
   const [selectedCanton, setSelectedCanton] = useState("")
   const [selectedDistrict, setSelectedDistrict] = useState("")
-  const [selectedInstitution, setSelectedInstitution] = useState("")  
+  const [selectedInstitution, setSelectedInstitution] = useState(null)
+  const [selectedFilteredInstitution, setSelectedFilteredInstitution] = useState("")
+  const [name, setName] = useState("") 
   const searchParams = useSearchParams();
 
   
@@ -84,13 +83,13 @@ export default function LeesonsScreen() {
       setErrorLoad(true);
       console.log(error);
     } finally {
-      setLoadingData(false); // Set loading state to false after fetch is done
+      setLoadingData(false);  
     }
   };
 
  
   useEffect(() => {
-    getStudents("",selectedInstitution,searchParams.get("group_id"),currentPage,itemsPerPage)
+    getStudents(name,selectedFilteredInstitution,searchParams.get("group_id"),currentPage,itemsPerPage)
   }, [currentPage]);
 
   useEffect(() => {
@@ -150,73 +149,94 @@ export default function LeesonsScreen() {
       setCurrentPage(newPage);
     }
   };
-  const handleCheckboxChange = (student_id) => {
-    setCheckedStudents((prev) => {
-      if (prev.includes(student_id)) { 
-        return prev.filter((id) => id !== student_id); 
-      } else { 
-        return [...prev, student_id]; 
-      } 
-    }); 
+  const handleRadioChange = (userId) => {
+    setSelectedStudent(userId); 
   };
 
+  const handleAssignStudent = async () => {
+    if (!selectedStudent) {
+      alert("Por favor, seleccione un estudiante.");
+      return;
+    }
+    try {
+      const groupId = searchParams.get("group_id");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/groups/students/add`,{
+        method: "POST",
+        headers: {
+          "auth-token": localStorage.getItem("auth-token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          var_group_id: groupId,
+          var_user_id: selectedStudent
+      })
+      });
+      if (response.ok) {
+        alert("Estudiante asignado exitosamente al grupo.");
+        fetchCount(name, selectedFilteredInstitution, searchParams.get("group_id"))
+        setCurrentPage(1);
+      } else {
+        const error = await response.json();
+        alert(`Error al asignar el estudiante: ${error.message}`);
+      }
+    } catch (error) {
+      alert(`Error de red al asignar el estudiante: ${error.message}`);
+    }
+  };
   const handleProvinceChange = (event) => {
     const selectedValue = event.target.value; 
     setSelectedProvince(selectedValue);
     setSelectedCanton("");
     setSelectedDistrict("");
-    setSelectedInstitution("");
+    setSelectedInstitution(null);
   };
 
   const handleCantonChange = (event) => {
     const selectedValue = event.target.value; 
     setSelectedCanton(selectedValue);
     setSelectedDistrict("");
-    setSelectedInstitution("");
+    setSelectedInstitution(null);
   };
   const handleDistrictChange = (event) => {
     const selectedValue = event.target.value; 
     setSelectedDistrict(selectedValue);
-    setSelectedInstitution("");
+    setSelectedInstitution(null);
   };
   const handleInstitutionChange = (event) => {
     const selectedValue = event.target.value; 
     setSelectedInstitution(selectedValue);
   };
   const initialValues = {
-    name: '',
-    province: '',
-    canton: '',
-    district: '',
-    institution: ''
+    name: "",
+    lastName: "",
+    province: "",
+    canton: "",
+    district: "",
+    institution: ""
   };
 
-  // Validación de los campos (si es necesario)
-  const validate = values => {
-    const errors = {};
-    if (selectedProvince === "") {
-      errors.province = 'Provincia requerida.';
+  const handleSubmit = (values, setSubmitting) => {
+    const nombre = values.name;
+    const apellido = values.lastName;
+    let tname="";
+    if (nombre !== "" && apellido !== "") {
+      setName(nombre + " " + apellido);  
+      tname=nombre + " " + apellido;
+    } else if (nombre !== "") {
+      setName(nombre); 
+      tname=nombre;
+    } else if (apellido !== "") {
+      setName(apellido); 
+      tname=apellido;
+    } else {
+      setName("");
+      tname="";
     }
-    if (selectedCanton === "") {
-      errors.canton = 'Cantón requerido.';
-    }
-    if (selectedDistrict === "") {
-      errors.district = 'Distrito requerido.';
-    }
-    if (selectedInstitution === "") {
-      errors.institution = 'Institución requerida.';
-    }
-
-    return errors;
-  };
-
-  // Acción de envío (en este caso, solo se loguea los valores)
-  const handleSubmit = (values) => {
-    console.log('Filtros aplicados:', values);
-    fetchCount("",selectedInstitution,searchParams.get("group_id"));
-    getStudents("",selectedInstitution,searchParams.get("group_id"),currentPage,itemsPerPage)
-    
-    // Aquí podrías llamar a una API o realizar la lógica de búsqueda
+    setCurrentPage(1);
+    setSelectedFilteredInstitution(selectedInstitution);
+    fetchCount(tname, selectedInstitution, searchParams.get("group_id"))
+      .then(() => getStudents(tname, selectedInstitution, searchParams.get("group_id"), currentPage, itemsPerPage))
+      .finally(() => setSubmitting(false)); 
   };
 
   const getProvinces= async() => {
@@ -258,7 +278,7 @@ export default function LeesonsScreen() {
     }
     return response
   };
-  //UI for loading data
+
   if (loading) {
     return (
       <UIDisplayInfo
@@ -272,10 +292,10 @@ export default function LeesonsScreen() {
         <div className={styles.MainContainer}>
             <Formik 
             initialValues={initialValues}
-            validate={validate}
-            onSubmit={handleSubmit}
+            
+            onSubmit={(values, { setSubmitting }) => handleSubmit(values, setSubmitting)}
             >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, values }) => (
                 <Form>
                 <div className={styles.leftContainer}>
                     {/* Filtros de búsqueda */}
@@ -284,7 +304,7 @@ export default function LeesonsScreen() {
                         <div className={styles.inputGroup}>
                             <label>Nombre</label>
                             <Field 
-                                className={styles.inputField}
+                                className={styles.inputFieldRow}
                                 type="text" 
                                 name="name" 
                                 placeholder="Ingrese el nombre"
@@ -295,19 +315,14 @@ export default function LeesonsScreen() {
                         <div className={styles.inputGroup}>
                             <label>Apellido</label>
                             <Field 
-                                className={styles.inputField}
+                                className={styles.inputFieldRow}
                                 type="text" 
-                                name="Lastname" 
-                                placeholder="Ingrese el nombre"
+                                name="lastName" 
+                                placeholder="Ingrese el apellido"
                             />
-                            <ErrorMessage className="error-message" name="name" component="div" />
+                            <ErrorMessage className="error-message" name="lastName" component="div" />
                         </div>
                     </div>
-
-                    <div className={styles.inputGroup}>
-                        <h3>Ubicación de la Institución</h3>
-                    </div>
-  
                     <div className={styles.FormUbicationContainer}>
                       <div className={styles.inputGroup}>
                         <label>Provincia</label>
@@ -400,12 +415,17 @@ export default function LeesonsScreen() {
                         </Field>
                         <ErrorMessage className="error-message" name="institution" component="div" />
                       </div>
-                    </div>
-                    
-                    
-                    {/* Botón para aplicar filtros */}
-                    <div className="buttons-container">
-                      <button type="submit" className={buttonStyles.primary} disabled={isSubmitting||selectedProvince === ""||selectedCanton === ""||selectedDistrict === ""|| selectedInstitution === ""}>
+                    </div> 
+                    <div className={styles.buttonContainer}>
+                      <button type="submit" className={buttonStyles.primary} disabled={
+                            isSubmitting || 
+                            selectedInstitution === "" || 
+                            (
+                              
+                              (values.name.trim().length >= 0 && values.name.trim().length < 3 &&
+                              values.lastName.trim().length >= 0 && values.lastName.trim().length < 3)
+                            )
+                          }>
                           Aplicar Filtros
                       </button>
                     </div>
@@ -416,50 +436,65 @@ export default function LeesonsScreen() {
             <div className={styles.rightContainer}>
               {studentsDB.length > 0 ? (
                 <>
-                <div className={stylesTable.container}>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Nombre completo</th>
-                        <th>Asignar</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {studentsDB.map((student, index) => (
-                        <tr key={index}>
-                          <td>{student.name}</td>
-                          <td>
-                            <input
-                              style={{ width: '4vh', height: '4vh', margin: '1vw' }}
-                              type="checkbox"
-                              checked={checkedStudents.includes(student.user_id)}
-                              onChange={() => handleCheckboxChange(student.user_id)}
-                              alt={`Incluir a ${student.name} en la actividad.`} />
-                          </td>
+                <div className={styles.tableContainer}>
+                  <div className={stylesTable.container}>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Nombre completo</th>
+                          <th>Asignar</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className={stylesTable.buttonContainer}>
-                    <button
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      className={buttonStyles.primary}
-                    >
-                      Anterior
-                    </button>
-                    <span>
-                      Página {currentPage} de {totalPages}
-                    </span>
-                    <button
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                      className={buttonStyles.primary}
-                    >
-                      Siguiente
-                    </button>
+                      </thead>
+                      <tbody>
+                        {studentsDB.map((student, index) => (
+                          <tr key={index}>
+                            <td>{student.name}</td>
+                            <td>
+                              <input
+                                style={{ width: '4vh', height: '4vh', margin: '1vw' }}
+                                type="radio"
+                                name="selectedStudent" 
+                                checked={selectedStudent === student.user_id} 
+                                onChange={() => handleRadioChange(student.user_id)}
+                                alt={`Incluir a ${student.name} en el grupo.`}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
+                </div>
+                <div className={styles.buttonContainerMain}>
+                  <div className={styles.buttonContainer}>
+                      <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className={buttonStyles.primary}
+                      >
+                        Anterior
+                      </button>
+                      <span>
+                        Página {currentPage} de {totalPages}
+                      </span>
+                      <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className={buttonStyles.primary}
+                      >
+                        Siguiente
+                      </button>
+                  </div>
+                  <div className={stylesTable.buttonContainer}>
+                      <button
+                        onClick={handleAssignStudent}
+                        disabled={!selectedStudent}
+                        className={buttonStyles.primary}
+                      >
+                        Asignar Estudiante al Grupo
+                      </button>
+                  </div>
+                </div>
                 </>
                 ) : (
                   <></>

@@ -1,36 +1,51 @@
-.rightContainer, .leftContainer {
-  padding: 32px 0 0 32px;
-  width: 46vw;
+.rightContainer {
+  padding: 32px 0 0 0;
+  width: 55vw;
   margin: auto;
-  height: 76vh;
+  height: 90vh;
+  border-radius: 10px;
+  border: solid 1px #e6e6e6;
+}
+.leftContainer {
+  padding: 32px 32px 0 32px;
+  width: 35vw;
+  margin: auto;
+  height: 90vh;
   border-radius: 10px;
   border: solid 1px #e6e6e6;
 }
 .MainContainer {
-    margin: 20px auto;
+    display: flex;
     padding-left: 1vw;
     padding-right: 1vw;
-    display: flex;
+    justify-content: center;
+    gap:1vw; 
+    margin: 20px auto;
 }
 
 .FormContainer {
-    margin-top: 2vw;
-    width: 80%; 
+    width: 100%; 
     display: flex;
     flex-direction: row;
     text-align: left;
     align-items: flex-start;
-    justify-content:space-between;
+    padding-bottom: 1vw;
+    gap:2vw; 
 }
 .FormUbicationContainer {
-  width: 80%; 
+  width: 100%; 
+  height: 50vh;
   display: flex;
   flex-direction: column;
   text-align: left;
   align-items: flex-start;
-  justify-content:space-between;
+  gap:1vw; 
 }
-
+.tableContainer {
+  padding: 0 32px 0 32px;
+  margin: auto;
+  height: 65vh;
+}
 .lessonList {
     list-style-type: none;
     margin: 0;
@@ -49,13 +64,21 @@
     margin-bottom: 0;
 }
 
-.buttonContainer {
-    margin-top: 2vw;
+.buttonContainerMain {
     width: 100%;
     display: flex;
+    flex-direction: column;
     text-align: center;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-around;
+}
+.buttonContainer {
+  margin-top: 2vw;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  align-items: flex-end;
+  justify-content: space-around;
 }
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -79,23 +102,17 @@
   
   .inputField {
     padding: 8px;
+    width: 36vw;
     font-size: 1rem;
     border-radius: 5px;
     border: 1px solid #ccc;
   }
-  
-  button[type="submit"] {
-    padding: 10px 20px;
+  .inputFieldRow {
+    padding: 8px;
+    width: 15vw;
     font-size: 1rem;
-    background-color: #4caf50;
-    color: white;
-    border: none;
     border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #45a049;
+    border: 1px solid #ccc;
   }
   
   h2 {
