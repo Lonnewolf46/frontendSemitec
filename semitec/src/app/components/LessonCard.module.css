@@ -1,9 +1,3 @@
-.lessonCardContainer {
-    display: flex;
-    border-radius: 10px;
-    border: 1px solid #e6e6e6;
-}
-
 .container {
     display: flex;
     justify-content: space-between;
