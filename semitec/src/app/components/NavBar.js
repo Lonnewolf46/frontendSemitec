@@ -84,7 +84,7 @@ export default function NavBar({ menuList }) {
         >
           <div style={{ display: "flex", alignItems: "center" }}>
             {" "}
-            <Link href={"/login"}>
+            
               <svg
                 width="75"
                 height="38"
@@ -175,7 +175,7 @@ export default function NavBar({ menuList }) {
                   </clipPath>
                 </defs>
               </svg>
-            </Link>
+
             <div className={styles.navMenu}>
               {menuList.map((item, index) => (
                 <div
