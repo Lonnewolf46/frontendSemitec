@@ -7,6 +7,13 @@
     height: 11vh;
 }
 
+.lessonCardContainer {
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid #e6e6e6;
+}
+
+
 .itemInfo {
     padding: 10px 10px 20px 20px;
     width: 100%;
