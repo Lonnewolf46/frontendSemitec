@@ -20,7 +20,8 @@ export const lessonReducer = (state = initialState(), action = {}) => {
         done: "",
         current: state.words.charAt(0),
         next:
-          state.words.slice(1),
+          action.words.slice(1) +
+          (" " + action.words).repeat(action.iterations - 1),
         typed: "",
         mistake: "",
       };
@@ -30,7 +31,8 @@ export const lessonReducer = (state = initialState(), action = {}) => {
         done: "",
         current: action.words.charAt(0),
         next:
-          action.words.slice(1),
+        action.words.slice(1) +
+          (" " + action.words).repeat(action.iterations - 1),
         typed: "",
         mistake: "",
         words: action.words,
