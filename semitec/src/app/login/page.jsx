@@ -128,7 +128,7 @@ export default function Login({ }) {
                                 </div>
 
                                 <div className="anchor-container">
-                                    <Link href={"/guest/lessons"}> Ingresar como invitado</Link>
+                                    <Link href={"/guest/lessons/default"}> Ingresar como invitado</Link>
                                 </div>
                             </Form>
                         )}
