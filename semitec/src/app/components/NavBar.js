@@ -29,6 +29,13 @@ export default function NavBar({ menuList }) {
     setProfileOptionsMenuStatus((prev) => !prev);
   };
 
+  const onBlurOptionsMenu = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setProfileOptionsMenuStatus(false);
+    }
+  };
+
+
   const handleProfileOptions = (index) => {
     console.log("seleccionando opcion", index);
     if (index ===0){
@@ -43,6 +50,28 @@ export default function NavBar({ menuList }) {
     }
   }
 
+  const handleKeyDown = (event, index) => {
+    switch (event.key) {
+      case 'ArrowDown':
+        // Move focus to the next option (down)
+        const nextIndex = (index + 1) % options.length;
+        document.querySelectorAll('li')[nextIndex].focus();
+        break;
+      case 'ArrowUp':
+        // Move focus to the previous option (up)
+        const prevIndex = (index - 1 + options.length) % options.length;
+        document.querySelectorAll('li')[prevIndex].focus();
+        break;
+      case 'Enter':
+      case ' ':
+        // Trigger the option selection
+        handleProfileOptions(index);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div>
       <nav className={styles.navBar}>
@@ -55,7 +84,7 @@ export default function NavBar({ menuList }) {
         >
           <div style={{ display: "flex", alignItems: "center" }}>
             {" "}
-            <Link href={"/login"}>
+            
               <svg
                 width="75"
                 height="38"
@@ -146,7 +175,7 @@ export default function NavBar({ menuList }) {
                   </clipPath>
                 </defs>
               </svg>
-            </Link>
+
             <div className={styles.navMenu}>
               {menuList.map((item, index) => (
                 <div
@@ -212,12 +241,19 @@ export default function NavBar({ menuList }) {
                   isOpen={optionsMenuStatus}
                   openHandler={setProfileOptionsMenuStatus}
                 >
-                  <div>
+                  <div onBlur={onBlurOptionsMenu}>
                     <ul className={styles.options}>
                       {
-                      options.map((option, index)=><li className={styles.optionsText} aria-label={option} onClick={() => handleProfileOptions(index)}>
-                        {option}
-                      </li>)
+                      options.map((option, index)=>
+                        <li className={styles.optionsText} 
+                        aria-label={option} 
+                        tabIndex="0" 
+                        role="menuitem" 
+                        onClick={() => handleProfileOptions(index)}  
+                        onKeyDown={(e) => handleKeyDown(e, index)}
+                        >
+                          {option}
+                        </li>)
                       }
                     </ul>
                   </div>

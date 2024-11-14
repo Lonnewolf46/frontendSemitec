@@ -39,7 +39,7 @@ export default function Login({ }) {
     };
 
     return (
-        <div className="flex-container">
+        <div className="login-container">
             <section className="bg-size" alt="Imagen azul decorativa en el fondo">
                 <div className="details-container">
                     <h1 className="login-left-side-header">SEMITEC</h1>
