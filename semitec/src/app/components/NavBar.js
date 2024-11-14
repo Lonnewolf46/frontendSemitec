@@ -209,7 +209,7 @@ export default function NavBar({ menuList }) {
               <div>
                 <button
                   aria-label="Ver opciones de perfil de usuario"
-                  style={{ borderRadius: "100px", top: "55px", padding: "0", border: "0" }}
+                  style={{ cursor: "pointer", borderRadius: "100px", top: "55px", padding: "0", border: "0" }}
                   onClick={openOptionsMenu}
                 >
                   <svg

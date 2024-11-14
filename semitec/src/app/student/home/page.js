@@ -146,8 +146,6 @@ export default function StudentHome() {
       });
       const data = await res.json();
       if (res.ok && data.avg_accuracy_rate !== null) {
-        console.log(data);
-        console.log("recolected stats--------------------------------------------------------")
         setStats(data)
       }
     } catch (error) {
