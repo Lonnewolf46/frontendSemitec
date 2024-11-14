@@ -1,7 +1,8 @@
+import FAQs from "@/app/components/faqs";
 export default function GuestFAQs() {
     return (
       <main>
-        <h1>Guest FAQs</h1>
+        <FAQs></FAQs>
       </main>
     );
   }
