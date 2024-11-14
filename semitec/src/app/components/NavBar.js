@@ -2,17 +2,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import Logo from "../ui/logo.svg";
 import avatar from "@/app/ui/avatar.svg";
 import NavItem from "./NavItem";
 import styles from "./NavBar.module.css";
 import { useState } from "react";
 import DropdownButton from "./dropbutton";
+import ProfileDropdown from "./profileDropdown";
+
 
 export default function NavBar({ menuList }) {
   const [activeId, setActiveId] = useState(0);
+  const [optionsMenuStatus, setProfileOptionsMenuStatus] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const options = ["Ver Perfil", "Cerrar Sesión"];
 
   const handleProfileClick = () => {
     if (pathname.includes("/teacher")) {
@@ -21,6 +24,24 @@ export default function NavBar({ menuList }) {
       router.push("/student/profile");
     }
   };
+
+  const openOptionsMenu = () => {
+    setProfileOptionsMenuStatus((prev) => !prev);
+  };
+
+  const handleProfileOptions = (index) => {
+    console.log("seleccionando opcion", index);
+    if (index ===0){
+      openOptionsMenu()
+      handleProfileClick()
+    }
+    else
+    {
+      openOptionsMenu()
+      localStorage.removeItem("auth-token")
+      router.push("/login");
+    }
+  }
 
   return (
     <div>
@@ -156,36 +177,52 @@ export default function NavBar({ menuList }) {
           <div>
             {" "}
             {pathname.includes("teacher") || pathname.includes("student") ? (
-              <button
-                aria-label="Ver perfil de usuario"
-                style={{ borderRadius: "100px", padding: "0", border: "0" }}
-                onClick={handleProfileClick}
-              >
-                <svg
-                  width="64"
-                  height="64"
-                  viewBox="0 0 64 64"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+              <div>
+                <button
+                  aria-label="Ver opciones de perfil de usuario"
+                  style={{ borderRadius: "100px", top: "55px", padding: "0", border: "0" }}
+                  onClick={openOptionsMenu}
                 >
-                  <circle
-                    className="avatar-fill"
-                    r="30"
-                    cx="32"
-                    cy="32"
-                    fill="#F29325"
-                  />
-                  <g clipPath="url(#clip0_169_20134)">
-
-                    <path
-                      className="avatar-figure"
-                      d="M31.9996 31.9992C33.5909 31.9992 35.1171 31.3671 36.2423 30.2418C37.3675 29.1166 37.9996 27.5905 37.9996 25.9992C37.9996 24.4079 37.3675 22.8818 36.2423 21.7566C35.1171 20.6313 33.5909 19.9992 31.9996 19.9992C30.4083 19.9992 28.8822 20.6313 27.757 21.7566C26.6318 22.8818 25.9996 24.4079 25.9996 25.9992C25.9996 27.5905 26.6318 29.1166 27.757 30.2418C28.8822 31.3671 30.4083 31.9992 31.9996 31.9992ZM35.9996 25.9992C35.9996 27.0601 35.5782 28.0775 34.8281 28.8276C34.0779 29.5778 33.0605 29.9992 31.9996 29.9992C30.9388 29.9992 29.9214 29.5778 29.1712 28.8276C28.4211 28.0775 27.9996 27.0601 27.9996 25.9992C27.9996 24.9383 28.4211 23.9209 29.1712 23.1708C29.9214 22.4206 30.9388 21.9992 31.9996 21.9992C33.0605 21.9992 34.0779 22.4206 34.8281 23.1708C35.5782 23.9209 35.9996 24.9383 35.9996 25.9992ZM43.9996 41.9992C43.9996 43.9992 41.9996 43.9992 41.9996 43.9992H21.9996C21.9996 43.9992 19.9996 43.9992 19.9996 41.9992C19.9996 39.9992 21.9996 33.9992 31.9996 33.9992C41.9996 33.9992 43.9996 39.9992 43.9996 41.9992ZM41.9996 41.9912C41.9976 41.4992 41.6916 40.0192 40.3356 38.6632C39.0316 37.3592 36.5776 35.9992 31.9996 35.9992C27.4196 35.9992 24.9676 37.3592 23.6636 38.6632C22.3076 40.0192 22.0036 41.4992 21.9996 41.9912H41.9996Z"
-                      fill="white"
+                  <svg
+                    width="64"
+                    height="64"
+                    viewBox="0 0 64 64"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      className="avatar-fill"
+                      r="30"
+                      cx="32"
+                      cy="32"
+                      fill="#F29325"
                     />
-                  </g>
+                    <g clipPath="url(#clip0_169_20134)">
 
-                </svg>
-              </button>
+                      <path
+                        className="avatar-figure"
+                        d="M31.9996 31.9992C33.5909 31.9992 35.1171 31.3671 36.2423 30.2418C37.3675 29.1166 37.9996 27.5905 37.9996 25.9992C37.9996 24.4079 37.3675 22.8818 36.2423 21.7566C35.1171 20.6313 33.5909 19.9992 31.9996 19.9992C30.4083 19.9992 28.8822 20.6313 27.757 21.7566C26.6318 22.8818 25.9996 24.4079 25.9996 25.9992C25.9996 27.5905 26.6318 29.1166 27.757 30.2418C28.8822 31.3671 30.4083 31.9992 31.9996 31.9992ZM35.9996 25.9992C35.9996 27.0601 35.5782 28.0775 34.8281 28.8276C34.0779 29.5778 33.0605 29.9992 31.9996 29.9992C30.9388 29.9992 29.9214 29.5778 29.1712 28.8276C28.4211 28.0775 27.9996 27.0601 27.9996 25.9992C27.9996 24.9383 28.4211 23.9209 29.1712 23.1708C29.9214 22.4206 30.9388 21.9992 31.9996 21.9992C33.0605 21.9992 34.0779 22.4206 34.8281 23.1708C35.5782 23.9209 35.9996 24.9383 35.9996 25.9992ZM43.9996 41.9992C43.9996 43.9992 41.9996 43.9992 41.9996 43.9992H21.9996C21.9996 43.9992 19.9996 43.9992 19.9996 41.9992C19.9996 39.9992 21.9996 33.9992 31.9996 33.9992C41.9996 33.9992 43.9996 39.9992 43.9996 41.9992ZM41.9996 41.9912C41.9976 41.4992 41.6916 40.0192 40.3356 38.6632C39.0316 37.3592 36.5776 35.9992 31.9996 35.9992C27.4196 35.9992 24.9676 37.3592 23.6636 38.6632C22.3076 40.0192 22.0036 41.4992 21.9996 41.9912H41.9996Z"
+                        fill="white"
+                      />
+                    </g>
+
+                  </svg>
+                </button>
+                <ProfileDropdown
+                  isOpen={optionsMenuStatus}
+                  openHandler={setProfileOptionsMenuStatus}
+                >
+                  <div>
+                    <ul className={styles.options}>
+                      {
+                      options.map((option, index)=><li className={styles.optionsText} aria-label={option} onClick={() => handleProfileOptions(index)}>
+                        {option}
+                      </li>)
+                      }
+                    </ul>
+                  </div>
+                </ProfileDropdown>
+              </div>
             ) : (
               <></>
             )}
