@@ -1,0 +1,50 @@
+.formsLabel{
+    font-size: 1.3vw;
+    color: #212529;
+    text-align: left;
+}
+.sectionHeader{
+    font-size: 1.5vw;
+    font-weight: 100;
+    color: #555555;
+}
+
+.select {
+    width: 90%;
+    font-size: 1.3vw;
+    border-radius: 4px;
+    border: solid 1px #CED4DA;
+    padding: 0.5em;
+    margin-top: 0.5vw;
+}
+
+.radioContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+.radioContainer label {
+    margin-right: 10px;
+}
+
+.chartContainer {
+    margin-top: 5px;
+    max-height: 70vh;
+    width: 100%;
+    overflow: hidden;
+}
+  
+.highcharts-container {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.buttonContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}

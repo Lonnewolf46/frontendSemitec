@@ -1,0 +1,33 @@
+.mainWrapper {
+  margin: 20px auto;
+  padding-left: 1vw;
+  padding-right: 1vw;
+}
+
+.halfScreenContainer {
+  padding: 0 20px;
+  padding-bottom: 20px;
+  width: 45vw;
+  border-radius: 10px;
+  border: solid 1px #e6e6e6;
+}
+
+.column {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.halfScreenContainer h1 {
+  margin: 0 0 1vw 0;
+}
+
+.halfScreenContainer p {
+  font-size: 2vw;
+}

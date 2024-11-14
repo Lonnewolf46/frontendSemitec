@@ -1,0 +1,182 @@
+:root {
+  /* Your default theme */
+  --background: white;
+  --text: black;
+  --link: white;
+  --selected-text: blue;
+  --button-color: #824c0f;
+  --button-text: white;
+  --button-border: 0px;
+  --navbar-background: #007172;
+  --navbar-border: 0px;
+  --link-color: white;
+  --logo-color: white;
+  --avatar-stroke: #824c0f;
+
+  /* Accessibility bar */
+  --accesibility-bar-bg: #025259;
+  --accesibility-bar-btn-color: white;
+  --accesibility-bar-btn-border: 2px solid white;
+  --accesibility-bar-border: 0px;
+
+  /* Card container */
+  --card-container-bg: #ebebeb;
+}
+[data-theme="Predeterminado"] {
+  --background: white;
+  --foreground: black;
+}
+
+[data-theme="Amanecer"] {
+  --background: #fffaef;
+  --foreground: #3d3d3d;
+  --link-color: #1C5E75;
+  --button-color: #fffaef;
+  --button-text: #202020;
+  --button-border: 2px solid #202020;
+  --navbar-background: #fffaef;
+  --navbar-border: 2px solid #202020;
+  --logo-color: #202020;
+  --avatar-stroke: #202020;
+
+  --accesibility-bar-bg: #fffaef;
+  --accesibility-bar-btn-color: #202020;
+  --accesibility-bar-border: 2px solid #202020;
+  --accesibility-bar-btn-border: 2px solid #202020;
+
+  --card-container-bg: #fffaef;
+}
+
+[data-theme="Ceniza"] {
+  --background: #2D3236;
+  --foreground: #ffffff;
+  --link-color: #70EBDE;
+  --button-color: #2D3236;
+  --button-text: #B6F6F0;
+  --button-border: 2px solid #B6F6F0;
+  --navbar-background: #2D3236;
+  --navbar-border: 2px solid #B6F6F0;
+  --logo-color: #B6F6F0;
+  --avatar-stroke: #b6f6f0;
+
+  --accesibility-bar-bg: #2d3236;
+  --accesibility-bar-btn-color: #b6f6f0;
+  --accesibility-bar-border: 2px solid #b6f6f0;
+  --accesibility-bar-btn-border: 2px solid #b6f6f0;
+  --card-container-bg: #2d3236;
+}
+
+[data-theme="Grafito"] {
+  --background: #202020;
+  --foreground: #ffffff;
+  --link-color: #75E9FC;
+  --navbar-background: #202020;
+  --navbar-border: 2px solid #ffffff;
+  --button-color: #202020;
+  --button-text: #ffffff;
+  --button-border: 2px solid #ffffff;
+  --logo-color: #ffffff;
+  --avatar-stroke: #ffffff;
+
+  --accesibility-bar-bg: #202020;
+  --accesibility-bar-btn-color: #ffffff;
+  --accesibility-bar-border: 2px solid #ffffff;
+  --accesibility-bar-btn-border: 2px solid #ffffff;
+
+  --card-container-bg: #202020;
+}
+
+[data-theme="Noche"] {
+  --navbar-background: black;
+  --navbar-border: 2px solid #ffee32;
+  --background: black;
+  --foreground: white;
+  --button-color: black;
+  --button-text: #ffee32;
+  --button-border: 2px solid #ffee32;
+  --link-color: #8080ff;
+  --logo-color: #ffee32;
+  --avatar-stroke: #ffee32;
+
+  --accesibility-bar-bg: #000000;
+  --accesibility-bar-border: 2px solid #ffee32;
+  --accesibility-bar-btn-color: #ffee32;
+  --accesibility-bar-btn-border: 2px solid #ffee32;
+
+  --card-container-bg: #000000;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  margin: 0px;
+}
+
+button {
+  background-color: var(--button-color);
+  color: var(--button-text);
+  border: var(--button-border);
+}
+
+nav {
+  background-color: var(--navbar-background);
+  border: var(--navbar-border);
+}
+
+a {
+  color: var(--link-color);
+}
+
+menu {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.logo {
+  fill: var(--logo-color);
+}
+
+.avatar-fill {
+  fill: var(--button-color);
+  stroke: var(--avatar-stroke);
+}
+
+.avatar-figure {
+  fill: var(--button-text);
+}
+
+.bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 2.9vw;
+  background-color: var(--accesibility-bar-bg);
+  border: var(--accesibility-bar-border);
+}
+
+.bar button {
+  font-size: 1vw;
+  font-weight: bold;
+  width: 1.6vw;
+  height: 74%;
+  margin-right: 5px;
+  padding: 0px;
+  background-color: transparent;
+  border-radius: 3px;
+  color: var(--accesibility-bar-btn-color);
+  border: var(--accesibility-bar-btn-border);
+}
+
+.accessibility-bar-btn-content {
+  fill: var(--accesibility-bar-btn-color);
+}
+
+.card-container-theme {
+  background-color: var(--card-container-bg);
+  border: var(--button-border);
+}
+
+h1 {
+  margin: 0 0 1vw 0;
+  font-size: 3.4vw;
+}

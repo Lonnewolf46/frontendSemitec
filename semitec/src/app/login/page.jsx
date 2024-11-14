@@ -11,7 +11,7 @@ export default function Login({ }) {
 
     const login = async (credentials) => {
         try {
-            const res = await fetch("http://25.37.76.172:5000/login", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export default function Login({ }) {
                                 </div>
 
                                 <div className="anchor-container">
-                                    <Link href={"/guest/lessons"}> Ingresar como invitado</Link>
+                                    <Link href={"/guest/lessons/default"}> Ingresar como invitado</Link>
                                 </div>
                             </Form>
                         )}

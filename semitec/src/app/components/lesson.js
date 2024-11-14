@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useReducer, use } from "react";
+import { useEffect, useState, useReducer, useRef} from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Keyboard from "@/app/components/keyboard";
 import styles from "@/app/_styles/Lesson.module.css";
@@ -14,6 +14,8 @@ export default function Lesson() {
   const [start, setStart] = useState(false);
   const [showMetrics, setShowMetrics] = useState(false);
   const searchParams = useSearchParams();
+  const [isOnFocus, setIsOnFocus] = useState(false);
+  const focusRef = useRef(null);
 
   const [metrics, dispatchMetrics] = useReducer(
     metricsReducer,
@@ -28,7 +30,7 @@ export default function Lesson() {
   const getLesson = async (lesson_id) => {
     try {
       const res = await fetch(
-        `http://25.37.76.172:5000/lesson?lesson_id=${lesson_id}`
+        `${process.env.NEXT_PUBLIC_API_HOST}/lesson?lesson_id=${lesson_id}`
       );
       const data = await res.json();
       if (res.ok) {
@@ -36,7 +38,7 @@ export default function Lesson() {
 
         distpatchLessonProps({
           type: "set_data",
-          words: data.words,
+          words: data.content,
           iterations: data.iterations,
           min_time: data.min_time,
           min_mistakes: data.min_mistakes,
@@ -50,6 +52,7 @@ export default function Lesson() {
   // Get Lesson on first load
   useEffect(() => {
     getLesson(searchParams.get("lesson_id"));
+    focusRef.current.focus();
   }, []);
 
   // chronometer
@@ -63,24 +66,24 @@ export default function Lesson() {
     return () => clearInterval(chronometer);
   }, [start]);
 
-  const sayInstruccion = () => {
-    message[0] === "P"
-      ? setMesaje(
-          (prev) =>
-            `pulsa ${
-              lessonProps.current === " " ? "espacio" : lessonProps.current
-            }`
-        )
-      : setMesaje(
-          (prev) =>
-            `Pulsa ${
-              lessonProps.current === " " ? "espacio" : lessonProps.current
-            } `
-        );
+  const speak = (message) => {
+    if (!("speechSynthesis" in window)) {
+      alert("API de síntesis de voz no soportada en este navegador.");
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(message);
+    utterance.lang = "es-ES"; // Configura el idioma (por ejemplo, español)
+    window.speechSynthesis.speak(utterance);
   };
 
   useEffect(() => {
-    sayInstruccion();
+        if (isOnFocus) {
+          speak(`Pulsa ${
+              lessonProps.current === " " ? "espacio" : lessonProps.current
+            } `)
+        }
   }, [lessonProps]);
 
   const checkResults = () => {
@@ -125,7 +128,7 @@ export default function Lesson() {
 
     try {
       const res = await fetch(
-        "http://25.37.76.172:5000/student/lesson/results",
+        `${process.env.NEXT_PUBLIC_API_HOST}/student/lesson/results`,
         {
           method: "POST",
           headers: {
@@ -138,7 +141,7 @@ export default function Lesson() {
             mistakes: metrics.mistakes,
             accuracy_rate: metrics.accuracy_rate,
             ppm: metrics.pulsation_per_minute,
-            is_complete: metrics.is_complete,
+            is_completed: metrics.is_complete,
           }),
         }
       );
@@ -163,19 +166,21 @@ export default function Lesson() {
   };
 
   const handleBack = () => {
-    const match = pathname.match(/^\/[^\/]+\/lessons/)
-    router.push(match[0])
-  }
+    const match = pathname.match(/^\/[^\/]+\/lessons/);
+    router.push(match[0]);
+  };
   return (
     <div
+      ref={focusRef}
       tabIndex={0}
-      aria-label="Pantalla de lección. Ingrese al modo foco para comenzar"
+      aria-label="Pantalla de lección" 
       onKeyDown={handleKeyDown}
+      onFocus={() => setIsOnFocus(true)}
       className={styles.container}
     >
       <div className={styles.text}>
         <span aria-hidden="true" className={styles.done}>
-          {(lessonProps.done).endsWith(' ') && <>&nbsp;</>}
+          {lessonProps.done.endsWith(" ") && <>&nbsp;</>}
           {lessonProps.done}
         </span>
         <span
@@ -184,7 +189,7 @@ export default function Lesson() {
           aria-relevant="all"
           style={{ fontSize: "0px", width: "0px" }}
         >
-          {message}
+          {/*message*/}
         </span>
         <span aria-hidden="true" className={styles.current}>
           {lessonProps.current}
@@ -198,7 +203,10 @@ export default function Lesson() {
         showMetrics={showMetrics}
         handleContinue={handleContinue}
         handleBack={handleBack}
-        restrictions={{min_time: lessonProps.min_time, min_mistakes: lessonProps.min_mistakes}}
+        restrictions={{
+          min_time: lessonProps.min_time,
+          min_mistakes: lessonProps.min_mistakes,
+        }}
       />
       <div aria-hidden="true" className={styles.typingArea}>
         <span className={styles.typed}>{lessonProps.typed}</span>

@@ -1,20 +1,57 @@
-.rightContainer, .leftContainer {
-    padding: 32px 0 0 32px;
-    width: 46vw;
-    margin: auto;
-    height: 76vh;
-    border-radius: 10px;
-    border: solid 1px #e6e6e6;
+.mainWrapper {
+    display: flex;
+    justify-content: center;
+    gap:1vw; 
+    margin: 20px auto;
 }
 
-.lessonsMainContainer {
-    margin: 20px auto;
-    padding-left: 1vw;
-    padding-right: 1vw;
-    display: flex;
+.halfScreenContainer {
+  padding: 0 20px;
+  padding-bottom: 20px;
+  width: 45vw;
+  border-radius: 10px;
+  border: solid 1px #e6e6e6;
 }
+
+.column {
+    display: flex;
+    gap: 20px;
+}
+
+.searchForm {
+    display: flex;
+    align-items: center;
+}
+
+.labelDiv {
+    width: 30%;
+}
+
+.labelDiv label {
+    font-size: 1.5vw;
+}
+
+.inputDiv {
+    display: flex;
+    width: 70%;
+}
+
+.inputDiv input {
+    padding: 10px;
+    border: 1px solid grey;
+    border-radius: 5px 0 0 5px;
+    flex-grow: 1;
+    font-size: 1.2vw;
+}
+
+.inputDiv button {
+    border-radius: 0 5px 5px 0;
+}
+
 
 .lessonListContainer {
+    flex-direction: column;
+    gap: 20px;
     max-height: 85%;
     overflow-y: auto;
 }
@@ -22,7 +59,6 @@
 
 .lessonList {
     list-style-type: none;
-    margin: 0;
     padding-left: 0;
 }
 
@@ -36,4 +72,19 @@
 .lessonList li:last-child {
     border-bottom: none;
     margin-bottom: 0;
+}
+
+.buttonContainer {
+    margin-top: 2vw;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: flex-end;
+    justify-content: space-around;
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

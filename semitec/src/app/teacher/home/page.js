@@ -1,22 +1,49 @@
 "use client";
 import { useEffect, useState } from "react";
-import TeacherGroupsTable from "@/app/components/teacher-groups-table";
-import styles from "../../components/LessonsScreen.module.css";
+import styles from "./styles.module.css";
 import WelcomeCard from "@/app/components/welcome-card";
+import ActivityManagementCard from "@/app/components/dashboard-cards/activity-management-card";
+import RecentActivityCard from "@/app/components/dashboard-cards/recent-activity-card";
+import { useRouter } from "next/navigation";
 
 export default function TeacherHome() {
   const [username, setUsername] = useState("");
+  const [recentActivity, setRecentActivity] = useState([]);
+  const router = useRouter();
   const getUsername = async () => {
     try {
-      const res = await fetch("http://25.37.76.172:5000/teacher/username", {
-        headers: {
-          "auth-token": localStorage.getItem("auth-token"),
-        },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_HOST}/teacher/username`,
+        {
+          headers: {
+            "auth-token": localStorage.getItem("auth-token"),
+          },
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         console.log(data);
-        setUsername((data.username).split(" ")[0]);
+        setUsername(data.username.split(" ")[0]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getRecentActivity = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_HOST}/teacher/recent-activity`,
+        {
+          headers: {
+            "auth-token": localStorage.getItem("auth-token"),
+          },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setRecentActivity(data);
+        console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -25,17 +52,51 @@ export default function TeacherHome() {
 
   useEffect(() => {
     getUsername();
+    getRecentActivity();
   }, []);
 
   return (
-    <main>
-      <div className={styles.lessonsMainContainer}>
-        <div className={styles.leftContainer}>
-          <WelcomeCard username={username} />
-        </div>
-        <section className={styles.rightContainer}>
-          <h1 style={{ fontSize: "2.7vw"}}>Mis grupos</h1>
-          <TeacherGroupsTable />
+    <main className={styles.mainWrapper}>
+      <section>
+        <WelcomeCard username={username} />
+      </section>
+      <div className={styles.column}>
+        <section className={styles.halfScreenContainer}>
+          <h1>Gestor de actividades</h1>
+          <div className={styles.cardWrapper}>
+            <ActivityManagementCard
+              text="Actividades creadas"
+              buttonText="Ir"
+              handleClick={() => router.push("/teacher/lessons/assignment")}
+            />
+            <ActivityManagementCard
+              text="Practicas predeterminadas"
+              buttonText="Ir"
+              handleClick={() => router.push("/teacher/lessons/default")}
+            />
+            <ActivityManagementCard
+              text="Actividades públicas"
+              buttonText="Ir"
+              handleClick={() => router.push("/teacher/lessons/public")}
+            />
+          </div>
+        </section>
+        <section className={styles.halfScreenContainer}>
+          <h1>Actividad reciente</h1>
+          <div className={styles.cardWrapper}>
+            {recentActivity.length === 0 && (
+              <p>
+                No hay actividad reciente que mostrar. Cuando un alumno complete
+                una actividad, la información se mostrará aquí.{" "}
+              </p>
+            )}
+            {recentActivity.map((activity) => (
+              <RecentActivityCard
+                title={activity.message}
+                subtitle={activity.date}
+              />
+            ))}
+          </div>
         </section>
       </div>
     </main>

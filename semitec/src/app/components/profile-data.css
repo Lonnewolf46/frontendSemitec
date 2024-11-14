@@ -1,20 +1,17 @@
 .flex-container{
     display: block;
     width: 100%;
-    margin: 0 auto 15vh;
+    margin: 0 auto 2vh;
 }
 
 .data-container{
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    background-color: rgba(0, 0, 0, 0.08); 
-    border: none;
-    color: black;
     padding: 15px 32px;
     text-align: left;
     font-size: 16px;
-    width: 25vw;
+    width: 60vh;
     border-radius: 25px;
     margin: 0 auto;
     padding-bottom: 2%;
@@ -51,7 +48,6 @@
 .id-format{
     display: inherit;
     font-size: 2.5vh;
-    color: darkgrey;
     width: 100%;
     justify-content: center;
 }

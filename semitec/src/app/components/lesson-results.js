@@ -52,10 +52,10 @@ export default function LessonResults({
       </h1>
       <div className={styles.contentWrapper}>
         <p>{message}</p>
-        <p><strong>Tiempo</strong>: {metrics.time_taken} s</p>
+        <p><strong>Tiempo</strong>: {metrics.time_taken} segundos</p>
         <p><strong>Errores</strong>: {metrics.mistakes}</p>
         <p><strong>Precisión</strong>: {metrics.accuracy_rate} %</p>
-        <p><strong>PPM</strong>: {metrics.pulsation_per_minute}</p>
+        <p><strong>Pulsaciones por minuto</strong>: {metrics.pulsation_per_minute}</p>
         <p><strong>Pulsaciones válidas</strong>: {metrics.valid_keystrokes}</p>
       </div>
       <div className={styles.interactionContainer}>

@@ -18,7 +18,12 @@ export default function LessonInfo({ lesson }) {
       <h2>Palabras</h2>
       <p>{lesson.words}</p>
       <h2>Descripción</h2>
-      <p>{lesson.description}</p>
+      <p>En esta lección aborda las palabras {lesson.content} que practicaras a travéz de {lesson.iterations}. {lesson.description}</p>
+  
+      <h2>Cantidad mínima de errores permitidos</h2>
+      <p>{lesson.min_mistakes}</p>
+      <h2>Tiempo máximo para terminar la lección</h2>
+      <p>{lesson.min_time} segundos</p>
     </div>
   );
 }

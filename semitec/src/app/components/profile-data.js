@@ -9,23 +9,21 @@ import avatar from "@/app/ui/avatar.svg";
 export default function Profile({
   username,
   institution,
-  user_code,
   user_type,
   email,
   country,
   province,
   canton,
-  district,
+  district
 }) {
   return (
     <>
       <div className="flex-container">
         <div className="icon"></div>
-        <div className={"data-container"}>
+        <div className={"data-container card-container-theme"}>
           <div className="header-format">
             <div className="name-format">{username}</div>
             <div className="institution-format">{institution}</div>
-            <div className="id-format">#{user_code}</div>
           </div>
 
           <div>

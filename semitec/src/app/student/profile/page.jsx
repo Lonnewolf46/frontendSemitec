@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import Profile from "@/app/components/profile-data"
+import ProfileEdit from "@/app/components/profile-edit";
+import buttonStyles from "@/app/_styles/Button.module.css"
 
 export default function profile_student() {
   const [username, setUsername] = useState("");
@@ -9,13 +11,17 @@ export default function profile_student() {
   const [province, setProvince] = useState("");
   const [country, setCountry] = useState("");
   const [email, setEmail] = useState("");
-  const [user_code, setUserCode] = useState("");
-  const [user_type, setUserType] = useState("");
+  const [userType, setUserType] = useState("");
   const [district, setDistrict] = useState("");
+  const [otherSigns, setOtherSigns] = useState("");
+  const [dateBirth, setDateBirth] = useState("");
+  const [edLevel, setEdLevel] = useState("");
+  const [view, setView] = useState(true);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const getData = async () => {
     try {
-      const res = await fetch("http://25.37.76.172:5000/student/profile", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/profile`, {
         headers: {
           "auth-token": localStorage.getItem("auth-token"),
         },
@@ -30,11 +36,18 @@ export default function profile_student() {
         setProvince(data.province);
         setCountry(data.country);
         setEmail(data.email);
-        setUserCode(data.user_code);
         setUserType(data.user_type);
+        setOtherSigns(data.other_signs);
+        setEdLevel(data.education_level);
+        setDateBirth(data.date_birth);
+        setDataLoaded(true);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleEditClick = () => {
+    setView(false);
   };
 
   useEffect(() => {
@@ -42,9 +55,32 @@ export default function profile_student() {
   }, []);
 
 
-  return (
-    <main>
-      <Profile username={username} institution={institution} user_code={user_code} user_type={user_type} email={email} country={country} province={province} canton={canton} district={district}/>
-    </main>
-  );
+  if(view){
+    return (
+      <main>
+        <Profile username={username} institution={institution} user_type={userType} email={email} country={country} province={province} canton={canton} district={district}/>
+        <div style={{display:'flex', justifyContent:'center', margin: '0 auto 10vh'}}>
+          <button className={buttonStyles.primary} onClick={handleEditClick} disabled={!dataLoaded}>Editar perfil</button>
+        </div>
+      </main>
+      
+    );
+  }
+  else if(!view){
+      return(
+      <main>
+        <ProfileEdit
+          inUsername={username}
+          inInstitution={institution}
+          inEducationalLevel={edLevel}
+          inDateOfBirth={dateBirth}
+          inEmail={email}
+          inCountry={country}
+          inProvince={province}
+          inCanton={canton}
+          inDistrict={district}
+          inOtherSigns={otherSigns}/>
+      </main>
+      )
+    }
   }

@@ -17,7 +17,7 @@ export default function LeesonsScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
   const getLessons = async () => {
     try {
-      const response = await fetch("http://25.37.76.172:5000/lessons");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/lessons/public/total`);
       const data = await response.json();
       setLessons(data);
     } catch (error) {
