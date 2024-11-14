@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./view-groups.module.css";
+import styles from "./student-stats.module.css";
 import buttonStyles from "@/app/_styles/Button.module.css";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
