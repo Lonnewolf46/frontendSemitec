@@ -89,7 +89,16 @@
     align-items: flex-start;
     gap: 20px;
   }
-  
+  .emptyTable {
+    text-align: center;
+    padding: 20px;
+    color: #555;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-width: 400px;
+    margin: 20px auto;
+  }
   .inputGroup {
     display: flex;
     flex-direction: column;
