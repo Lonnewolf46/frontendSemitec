@@ -26,6 +26,7 @@ function DropdownButton({ text, items }) {
              className={`${styles.navDropButton} ${styles.navItem}`}
              onClick={() => setIsOpen((prevState) => !prevState)}
              onKeyDown={handleKeyDown}
+             aria-label={isOpen ? 'Contraer menú de actividades' : 'Expander menú de actividades'}
             >
               <div className={styles.buttonContent}>
               <span>{text}</span>

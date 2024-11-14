@@ -25,7 +25,7 @@ export function AccessibilityBar() {
   };
 
   return (
-    <div className="bar">
+    <div className={styles.bar}>
       <button aria-label="Disminuir tamaño de letra">
         <svg
           className="accessibility-bar-btn-content"
