@@ -121,13 +121,12 @@ export default function TeacherLessonAssign() {
       </UIDisplayInfo>
     )
   }
-//<GroupsScreen usage={"Assignment"} />
   return (
     <main>
       <div style={{textAlign:'center', margin: '0'}}>
         <h1 className={styles.title} style={{marginBottom: '0'}}>Asignar a estudiantes</h1>
       </div>
-      
+        <GroupsScreen usage={"Assignment"} />
       <div className={styles.buttonContainer}>
           <button className={buttonStyles.secondary} onClick={handleOnCancelClick}>
             Regresar
