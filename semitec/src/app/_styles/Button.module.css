@@ -6,12 +6,32 @@
   cursor: pointer;
 }
 
+.primaryALT { 
+  padding: 10px 10px;
+  font-size: 1.2vw;
+  border-radius: 4px;
+  min-height: 5vh;
+  cursor: pointer;
+  border-width: 4px;
+  background-color: var(--buttonAlt-color);
+  border: var(--buttonAlt-border);
+  color: var(--buttonAlt-text);
+  transition: background-color 0.3s ease;
+}
+.primaryALT:hover {
+  background-color: var(--buttonAlt-hover);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.primaryALT:active {
+  background-color: var(--buttonAlt-active);
+}
+
 .secondary {
   background-color: #676767;
   border: 0px;
   color: white;
   padding: 10px 30px;
-  font-size: 20px;
+  font-size: 1.2vw;
   border-radius: 4px;
   cursor: pointer;
 }
