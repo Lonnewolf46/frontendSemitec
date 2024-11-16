@@ -9,13 +9,47 @@ import CryptoJS from 'crypto-js';
 import { useEffect } from "react";
 
 export default function TeacherLessonAssign() {
+  const LESSON_KEY = "lesson";
+  const EXPIRY_TIME = 10 * 1000;
+
   const router = useRouter();
   const [submiting, setSubmitting] = useState(false);
   const [validEntry, setValidEntry] = useState();
+
+  const encryptData = (data) => {
+    return CryptoJS.AES.encrypt(JSON.stringify(data), process.env.NEXT_PUBLIC_ENCRYPT_KEY).toString();
+  };
+
   const decryptData = (cipherText) => {
     const bytes = CryptoJS.AES.decrypt(cipherText, process.env.NEXT_PUBLIC_ENCRYPT_KEY);
     return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
   };
+
+  const checkLessonTimeout = () => {
+    const lessonContent = sessionStorage.getItem(LESSON_KEY);
+    if(lessonContent){
+      const now = new Date().getTime();
+      const data = JSON.parse(decryptData(lessonContent));
+      if (now > data.expiry) {
+        sessionStorage.removeItem(LESSON_KEY);
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
+    else{
+      return false;
+    }
+  }
+
+  const updateLessonExpiry = () => {
+    const lessonContent = sessionStorage.getItem(LESSON_KEY);
+    const now = new Date().getTime();
+    const data = JSON.parse(decryptData(lessonContent));
+    data.expiry = now + EXPIRY_TIME;
+    sessionStorage.setItem(LESSON_KEY, encryptData(JSON.stringify(data)));
+  }
 
   const createAssignLessonAPI = async (inBody) => {
     try {
@@ -49,9 +83,9 @@ export default function TeacherLessonAssign() {
   const createAssignLesson = async() =>{
     setSubmitting(true);
     const saved = sessionStorage.getItem('checkedStudents');
-    const lessonContent = sessionStorage.getItem('lesson');
+    const lessonContent = sessionStorage.getItem(LESSON_KEY);
     const decryptedArray = decryptData(saved);
-    const decryptedLesson = JSON.parse(decryptData(lessonContent));//Parsing into an object
+    const decryptedLesson = decryptData(lessonContent);
     
     //Check if there are students that were assigned and check for an existing lesson to assign them to.
     if(decryptedArray.length > 0 && decryptedLesson && typeof decryptedLesson === 'object'){
@@ -66,17 +100,17 @@ export default function TeacherLessonAssign() {
 
   const handleOnCancelClick = () =>{
     sessionStorage.removeItem('checkedStudents');
-    sessionStorage.removeItem('lesson');
+    updateLessonExpiry();
     router.push("/teacher/lessons/create");
   }
 
   useEffect(()=>{
-    const studentId = sessionStorage.getItem('lesson');
-    if (studentId) {
+    const valid = checkLessonTimeout();
+    if (valid) {
       setValidEntry(true);
-      } else {
+    } else {
         setValidEntry(false);
-      }
+    }
   },[]);
   
   if(!validEntry){
@@ -87,16 +121,16 @@ export default function TeacherLessonAssign() {
       </UIDisplayInfo>
     )
   }
-
+//<GroupsScreen usage={"Assignment"} />
   return (
     <main>
       <div style={{textAlign:'center', margin: '0'}}>
         <h1 className={styles.title} style={{marginBottom: '0'}}>Asignar a estudiantes</h1>
       </div>
-      <GroupsScreen usage={"Assignment"} />
+      
       <div className={styles.buttonContainer}>
           <button className={buttonStyles.secondary} onClick={handleOnCancelClick}>
-            Cancelar
+            Regresar
           </button>
           <button id="validate-button" className={buttonStyles.primary} onClick={createAssignLesson} disabled={submiting}>
             Asignar
