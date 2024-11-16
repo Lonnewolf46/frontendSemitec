@@ -39,18 +39,26 @@ export default function CreatLesson() {
     const lessonContent = sessionStorage.getItem(LESSON_KEY);
     if(lessonContent){
       const now = new Date().getTime();
-      const data = JSON.parse(decryptData(lessonContent));
-      if (now > data.expiry) {
+      //Try to manipulate the data. Catch any errors.
+      try{
+        const data = JSON.parse(decryptData(lessonContent));
+        if (now > data.expiry) {
+          sessionStorage.removeItem(LESSON_KEY);
+          return false;
+        }
+        else{
+          setName(data.name);
+          setDescription(data.description);
+          setContent(data.content);
+          setMaxTime(data.max_time);
+          setMaxMistakes(data.max_mistakes);
+          setIterations(data.iterations);
+        }
+      }
+      catch(error){
+        //Catch errors trying to parse the encrypted data.
         sessionStorage.removeItem(LESSON_KEY);
         return false;
-      }
-      else{
-        setName(data.name);
-        setDescription(data.description);
-        setContent(data.content);
-        setMaxTime(data.max_time);
-        setMaxMistakes(data.max_mistakes);
-        setIterations(data.iterations);
       }
     }
   }

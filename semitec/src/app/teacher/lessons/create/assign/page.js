@@ -44,11 +44,16 @@ export default function TeacherLessonAssign() {
   }
 
   const updateLessonExpiry = () => {
-    const lessonContent = sessionStorage.getItem(LESSON_KEY);
-    const now = new Date().getTime();
-    const data = JSON.parse(decryptData(lessonContent));
-    data.expiry = now + EXPIRY_TIME;
-    sessionStorage.setItem(LESSON_KEY, encryptData(JSON.stringify(data)));
+    try{
+      const lessonContent = sessionStorage.getItem(LESSON_KEY);
+      const now = new Date().getTime();
+      const data = JSON.parse(decryptData(lessonContent));
+      data.expiry = now + EXPIRY_TIME;
+      sessionStorage.setItem(LESSON_KEY, encryptData(JSON.stringify(data)));
+    } catch(error) {
+      //The lesson data was corrupted or broken, deleting it.
+      sessionStorage.removeItem(LESSON_KEY);
+    }
   }
 
   const createAssignLessonAPI = async (inBody) => {
@@ -80,20 +85,37 @@ export default function TeacherLessonAssign() {
     }
   };
 
+  //Logic:
+  //1- Check if there are items in the sessionStorage
+  //2- Try to extract the contents, if it fails; notify the user. Posibily due to user manipulation.
+  //3- Check if there are students that were assigned and check for an existing lesson to assign them to.
   const createAssignLesson = async() =>{
     setSubmitting(true);
     const saved = sessionStorage.getItem('checkedStudents');
     const lessonContent = sessionStorage.getItem(LESSON_KEY);
-    const decryptedArray = decryptData(saved);
-    const decryptedLesson = decryptData(lessonContent);
-    
-    //Check if there are students that were assigned and check for an existing lesson to assign them to.
-    if(decryptedArray.length > 0 && decryptedLesson && typeof decryptedLesson === 'object'){
-      decryptedLesson.students_ids = decryptedArray;
-      const fullData = JSON.stringify(decryptedLesson);
-      await createAssignLessonAPI(fullData);
-    } else if(decryptedArray.length === 0) {
-      alert("Elija al menos a 1 estudiante para asignar una lección"); 
+    //1
+    if(saved.length > 0 && lessonContent.length > 0){
+      try{
+        const decryptedArray = decryptData(saved);
+        const decryptedLesson = decryptData(lessonContent);
+
+        //3
+        if(decryptedArray.length > 0 && decryptedLesson && typeof decryptedLesson === 'object'){
+          decryptedLesson.students_ids = decryptedArray;
+          const fullData = JSON.stringify(decryptedLesson);
+          await createAssignLessonAPI(fullData);
+          
+        } else if(decryptedArray.length === 0) {
+          alert("Elija al menos a 1 estudiante para asignar una lección"); 
+        }
+
+        //2
+      } catch(error) {
+        alert("Ha ocurrido un error inesperado irrecuperable. Por favor, cree la lección de nuevo.");
+        sessionStorage.removeItem('checkedStudents');
+        sessionStorage.removeItem(LESSON_KEY);
+        router.push("/teacher/home");
+      }
     }
     setSubmitting(false);
   }
