@@ -39,7 +39,7 @@ function DropdownButton({ text, items }) {
             <Link
               key={index}
               className={styles.navItem}
-              style={{ padding: '0.5vw', color: 'var(--text)' }} 
+              style={{ padding: '0.5vw', color: 'var(--foreground)' }} 
               href={item.href}
               onClick={() => setIsOpen((prevState) => !prevState)}
              >
