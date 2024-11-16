@@ -97,12 +97,11 @@ export default function TeacherLessonAssign() {
     if(saved.length > 0 && lessonContent.length > 0){
       try{
         const decryptedArray = decryptData(saved);
-        const decryptedLesson = decryptData(lessonContent);
-
+        const descrypedParsedLesson = JSON.parse(decryptData(lessonContent));
         //3
-        if(decryptedArray.length > 0 && decryptedLesson && typeof decryptedLesson === 'object'){
-          decryptedLesson.students_ids = decryptedArray;
-          const fullData = JSON.stringify(decryptedLesson);
+        if(decryptedArray.length > 0){
+          descrypedParsedLesson.students_ids = decryptedArray;
+          const fullData = JSON.stringify(descrypedParsedLesson);
           await createAssignLessonAPI(fullData);
           
         } else if(decryptedArray.length === 0) {
@@ -114,7 +113,7 @@ export default function TeacherLessonAssign() {
         alert("Ha ocurrido un error inesperado irrecuperable. Por favor, cree la lección de nuevo.");
         sessionStorage.removeItem('checkedStudents');
         sessionStorage.removeItem(LESSON_KEY);
-        router.push("/teacher/home");
+        router.push("/teacher/lessons/create");
       }
     }
     setSubmitting(false);
@@ -131,7 +130,7 @@ export default function TeacherLessonAssign() {
     if (valid) {
       setValidEntry(true);
     } else {
-        setValidEntry(false);
+      setValidEntry(false);
     }
   },[]);
   
