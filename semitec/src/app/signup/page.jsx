@@ -1,6 +1,6 @@
 'use client';
-import {React, useState, useEffect, use} from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import {React, useState, useEffect, use, useRef} from 'react';
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from 'formik';
 import { useRouter } from "next/navigation";
 import './Signup.css';
 import doggo from "@/app/ui/semitec-doggo.gif";
@@ -58,10 +58,10 @@ export default function SignUp() {
           }) 
           })
           const data = await response.json()
-          setSignUpStage(stage+1)
+          setSignUpStage(4)
     } catch (error){
         console.log(error)
-        setSignUpStage(stage+2)
+        setSignUpStage(5)
     }
   }
 
@@ -90,10 +90,10 @@ export default function SignUp() {
           })
           const data = await response.json()
           console.log(data)
-          setSignUpStage(stage+1)
+          setSignUpStage(4)
         } catch (error){
             console.log(error)
-            setSignUpStage(stage+2)
+            setSignUpStage(5)
 }}}
 
   const getCountries = () => {
@@ -173,6 +173,104 @@ export default function SignUp() {
     }
     return response
   };
+
+  const validateDate = () => {
+    if(selectedUserType && selectedUserType == 1){
+      return !!selectedBirthDate
+    }else{
+      return !!selectedUserType
+    }
+  }
+
+  const checkLocations = (otherSigns) => {
+    console.log('checking')
+    console.log(otherSigns)
+    /*if (selectedCountry && selectedProvince && selectedCanton && selectedDistrict && values.other_signs !== ''){
+      console.log('is valid')
+      return true
+    }else{
+      console.log('not valid')
+      return false
+    }*/
+  }
+
+  const validateStage1 = (values) => {
+    const errors = {};
+    {   
+        if (!values.email) {
+        errors.email = 'Correo requerido.';
+        } else if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+        ) {
+        errors.email = 'Correo inválido.';
+        } else if (
+        (values.email).length > 32
+        ) {
+        errors.email = 'Máximo de caracteres excedido, ingresá un correo más corto.';
+        }
+
+        if (!values.password) {
+            errors.password = 'Contraseña requerida.';
+          } else if(
+            (values.password).length > 15
+          ){ 
+          errors.password = 'Máximo de caracteres excedido.'
+        } 
+
+        if (!values.fullname) {
+          errors.fullname = 'Nombre requerido.';
+        } else if(
+          (values.fullname).length > 48
+        ){ 
+        errors.fullname = 'Máximo de caracteres excedido.'
+        } 
+
+        if (!values.user_type) {
+          errors.user_type = 'Tipo de usuario requerido.';
+        } 
+        return errors;
+      }
+  }
+
+  const validateStage2 = (values) => {
+    const errors = {};
+      if (!values.country) {
+        errors.country = 'País requerido.';
+      } 
+
+      if (!values.province) {
+        errors.province = 'Provincia requerida.';
+      } 
+
+      if (!values.canton) {
+        errors.canton = 'Cantón requerido.';
+      } 
+
+      if (!values.district) {
+        errors.district = 'Distrito requerido.';
+      } 
+
+      if (!values.other_signs) {
+        errors.other_signs = 'Otras señas requeridas.';
+      } else if(
+        (values.other_signs).length > 500
+      ){ 
+      errors.other_signs = 'Máximo de caracteres excedido, por favor se más breve.'
+      } 
+      return errors;
+  }
+
+  const validateStage3 = (values) => {
+    const errors = {};
+    if (!values.education_level) {
+      errors.education_level = 'Nivel de educación requerido.';
+    } 
+
+    if (!values.institution) {
+      errors.institution = 'Institución requerida.';
+    } 
+    return errors;
+  }
 
   useEffect( () => {
     getUserTypes()
@@ -268,7 +366,8 @@ export default function SignUp() {
     })
     
   }, [])
-  
+
+
 
   return (
 
@@ -277,77 +376,25 @@ export default function SignUp() {
             <div className='logo-img'/>
 
             <Formik 
+              validateOnMount={true}
+              enableReinitialize={false}
               initialValues={{fullname: '',  email: '', password: '', user_type: '', country:'', province:'', canton:'', district: '', other_signs: '', education_level: '', institution:''}}
-              validate={values => {
-                const errors = {}; 
-                if (!values.email) {
-                    errors.email = 'Correo requerido.';
-                    } else if (
-                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                    ) {
-                    errors.email = 'Correo inválido.';
-                    } else if (
-                    (values.email).length > 32
-                    ) {
-                    errors.email = 'Máximo de caracteres excedido, ingresá un correo más corto.';
-                    }
-
-                if (!values.password) {
-                    errors.password = 'Contraseña requerida.';
-                  } else if(
-                    (values.password).length > 15
-                  ){ 
-                  errors.password = 'Máximo de caracteres excedido.'
-                } 
-
-                if (!values.fullname) {
-                  errors.fullname = 'Nombre requerido.';
-                } else if(
-                  (values.fullname).length > 48
-                ){ 
-                errors.fullname = 'Máximo de caracteres excedido.'
-                } 
-
-                if (!values.user_type) {
-                  errors.user_type = 'Tipo de usuario requerido.';
-                } 
-
-                if (!values.country) {
-                  errors.country = 'País requerido.';
-                } 
-
-                if (!values.province) {
-                  errors.province = 'Provincia requerida.';
-                } 
-
-                if (!values.canton) {
-                  errors.canton = 'Cantón requerido.';
-                } 
-
-                if (!values.district) {
-                  errors.district = 'Distrito requerido.';
-                } 
-
-                if (!values.other_signs) {
-                  errors.other_signs = 'Otras señas requeridas.';
-                } else if(
-                  (values.other_signs).length > 500
-                ){ 
-                errors.other_signs = 'Máximo de caracteres excedido, por favor se más breve.'
-                } 
-
-                if (!values.education_level) {
-                  errors.education_level = 'Nivel de educación requerido.';
-                } 
-
-                if (!values.institution) {
-                  errors.institution = 'Institución requerida.';
-                } 
-                
+              validate={(values) => {
+                let errors = {};
+                switch (stage) {
+                  case 1:
+                    errors = validateStage1(values);
+                    break;
+                  case 2:
+                    errors = validateStage2(values);
+                    break;
+                  case 3:
+                    errors = validateStage3(values);
+                    break;
+                }
                 return errors;
               }}
               onSubmit={(values) => {
-                                      console.log(values)
                                       {
                                         selectedUserType==1?
                                         signupStudent(values):
@@ -356,7 +403,7 @@ export default function SignUp() {
                                   }}
               >
               
-              {({ submitForm, setFieldValue }) => (
+              {({ submitForm, setFieldValue, isValid, validateForm }) => (
                 <Form>
                   <div className={stage === 1 ? 'personal' : 'hidden'}>
                       <h1 className='signup-header'>Registrarme (Paso 1 de 3)</h1>
@@ -399,8 +446,9 @@ export default function SignUp() {
                           
                           selectedUserType && selectedUserType==1?
                           <>
-                          <text className='login-text'>Fecha de nacimiento</text>
+                          <h2 className='login-text'>Fecha de nacimiento</h2>
                             <input
+                                className='datePicker'
                                 type="date"
                                 id="birth_date"
                                 name="birth_date"
@@ -410,13 +458,14 @@ export default function SignUp() {
                                 required 
                             />
                           <ErrorMessage className='error-message' name="birth_date" component="div"/>
-                          </>:
+                          </>
+                          :
                           <></>
-                        }
-
+                        } 
+ 
                         <div className='buttons-container'>
                           <a className="anchor-button" href={'/login'}> Volver </a>
-                          <button className="button" onClick={() => setSignUpStage(stage+1)}> Siguiente </button>
+                          <button type='button' className="button" disabled={!(isValid && validateDate())} onClick={() => setSignUpStage(2)}> Siguiente </button>
                         </div>
                   </div>
 
@@ -552,8 +601,30 @@ export default function SignUp() {
                     }
 
                     <div className='buttons-container'>
-                          <button className="button" onClick={() => setSignUpStage(stage-1)}> Volver </button>
-                          <button className="button" onClick={() => setSignUpStage(stage+1)}> Siguiente </button>
+                          <button type='button' className="button" onClick={() => setSignUpStage(1)}> Volver </button>
+                          <button type='button' 
+                          className="button" 
+                          disabled={!isValid} 
+                          onClick={async () => {
+                            try {
+                              // Manually trigger validation
+                              const formErrors = await validateForm(); // Trigger form validation
+                        
+                              console.log('Validation errors from validateForm:', formErrors);
+                        
+                              // If no errors, proceed to the next stage
+                              if (Object.keys(formErrors).length === 0) {
+                                setSignUpStage((prev) => prev + 1);  // Proceed to the next stage
+                              } else {
+                                // Validation failed, show errors in the console (or log)
+                                console.log('Validation errors found:', formErrors);
+                              }
+                            } catch (err) {
+                              console.error('Error during form validation:', err);
+                            }
+                          }}> 
+                          Siguiente 
+                          </button>
                       </div>
                     </div>
 
@@ -598,7 +669,7 @@ export default function SignUp() {
                     <br></br>
                     <br></br>
                     <div className='buttons-container'>
-                      <button className="button" type="button" onClick={() => setSignUpStage(stage-1)}> Volver </button>
+                      <button className="button" type="button" onClick={() => setSignUpStage(2)}> Volver </button>
                       <button className="button" type="submit"> Registrarme </button>
                     </div>
                     
