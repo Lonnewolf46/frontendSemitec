@@ -8,7 +8,7 @@
 .containerTitle{
     padding-bottom: 2px;
     font-size: 1.5vw;
-    border-bottom: solid 15px #007172;
+    border-bottom: solid 15px var(--navbar-background);
     display: inline-block;
 }
 .containerImage{
@@ -57,7 +57,7 @@
 
 .biographySectionHeader{
     font-size: 1.25vw;
-    color: #007172;
+    color: var(--foreground);
     display: flex;
     justify-content: center;
     margin-bottom: -2vw;

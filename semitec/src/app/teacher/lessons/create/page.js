@@ -247,9 +247,10 @@ export default function CreatLesson() {
                 available_lexemes.map((lexeme, index) => (
                   <button
                     className={styles.buttnedText}
+                    style={{background:"var(--background)"}}
                     key={index}
                     onClick={() => handleClickLex(lexeme)}> 
-                    <p className={styles.formsLabel} style={{margin:'0'}}>{lexeme}</p>
+                    <p style={{color:"var(--foreground)", margin:'0'}}>{lexeme}</p>
                   </button>
                 ))
               )}
