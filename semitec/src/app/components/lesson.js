@@ -195,6 +195,7 @@ export default function Lesson() {
           {lessonProps.current}
         </span>
         <span aria-hidden="true" className={styles.next}>
+          {lessonProps.next.startsWith(" ") && <>&nbsp;</>}
           {lessonProps.next}
         </span>
       </div>
