@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from "./AccessibilityBar.module.css";
 import Image from "next/image";
 import voiceSpeed from "../ui/speed.svg";

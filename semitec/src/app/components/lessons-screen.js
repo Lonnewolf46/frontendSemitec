@@ -131,6 +131,7 @@ export default function LeesonsScreen({
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
+      setActiveIndex(0);
     }
   };
 
@@ -195,7 +196,7 @@ export default function LeesonsScreen({
           <ul className={styles.lessonList}>
             {lessons.map((lesson, index) => (
               <li
-                tabIndex={index}
+                tabIndex={0}
                 key={index}
                 onClick={() => {
                   setActiveIndex(index);
