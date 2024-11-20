@@ -94,28 +94,33 @@ export default function TeacherLessonAssign() {
     const saved = sessionStorage.getItem('checkedStudents');
     const lessonContent = sessionStorage.getItem(LESSON_KEY);
     //1
-    if(saved.length > 0 && lessonContent.length > 0){
-      try{
-        const decryptedArray = decryptData(saved);
-        const descrypedParsedLesson = JSON.parse(decryptData(lessonContent));
-        //3
-        if(decryptedArray.length > 0){
-          descrypedParsedLesson.students_ids = decryptedArray;
-          const fullData = JSON.stringify(descrypedParsedLesson);
-          await createAssignLessonAPI(fullData);
-          
-        } else if(decryptedArray.length === 0) {
-          alert("Elija al menos a 1 estudiante para asignar una lección"); 
-        }
+    if(saved){
+      if(saved.length > 0 && lessonContent.length > 0){
+        try{
+          const decryptedArray = decryptData(saved);
+          const descrypedParsedLesson = JSON.parse(decryptData(lessonContent));
+          //3
+          if(decryptedArray.length > 0){
+            descrypedParsedLesson.students_ids = decryptedArray;
+            const fullData = JSON.stringify(descrypedParsedLesson);
+            await createAssignLessonAPI(fullData);
+            
+          } else if(decryptedArray.length === 0) {
+            alert("Elija al menos a 1 estudiante para asignar una lección"); 
+          }
 
-        //2
-      } catch(error) {
-        alert("Ha ocurrido un error inesperado irrecuperable. Por favor, cree la lección de nuevo.");
-        sessionStorage.removeItem('checkedStudents');
-        sessionStorage.removeItem(LESSON_KEY);
-        router.push("/teacher/lessons/create");
+          //2
+        } catch(error) {
+          alert("Ha ocurrido un error inesperado irrecuperable. Por favor, cree la lección de nuevo.");
+          sessionStorage.removeItem('checkedStudents');
+          sessionStorage.removeItem(LESSON_KEY);
+          router.push("/teacher/lessons/create");
+        }
       }
-    }
+  }
+  else{
+    alert("No se puede crear una tarea sin estudiantes.");
+  }
     setSubmitting(false);
   }
 
