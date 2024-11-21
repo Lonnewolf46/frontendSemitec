@@ -46,8 +46,8 @@ export default function StudentHome() {
   const [username, setUsername] = useState("");
   const [stats, setStats] = useState({avg_time_taken: 0, avg_mistakes: 0, avg_accuracy_rate: 0, avg_pulsation_per_minute:0 })
   const [metricsHistory, setAccuracyHistory] = useState([])
-  const [medium_accuracy, setAccuracy] = useState();
-  const [medium_ppm, setPPM] = useState()
+  const [medium_accuracy, setAccuracy] = useState(0);
+  const [medium_ppm, setPPM] = useState(0)
   const [nextLessonId, setNextLessonId] = useState();
   const [assignedLessons, setAssignedLessons] = useState();
   const [nextAssignedLessonId, setNextAssignedLessonId] = useState();
@@ -200,16 +200,22 @@ export default function StudentHome() {
           
           const data = await response.json()
           console.log(data)
-          const initialValue = 0;
-          let sum_ppm = data.reduce(
-            (accumulator, currentValue) => accumulator + currentValue.pulsation_per_minute,
-            initialValue,
-          );
+          {
+            data.length !== null
+              {
+                const initialValue = 0;
+                let sum_ppm = data.reduce(
+                  (accumulator, currentValue) => accumulator + currentValue.pulsation_per_minute,
+                  initialValue,
+                );
 
-          let sum_accuracy = data.reduce(
-            (accumulator, currentValue) => accumulator + currentValue.accuracy_rate,
-            initialValue,
-          );
+                let sum_accuracy = data.reduce(
+                  (accumulator, currentValue) => accumulator + currentValue.accuracy_rate,
+                  initialValue,
+                );
+              }
+          }
+          
           
           sum_accuracy /= data.length
           sum_ppm /= data.length
@@ -303,10 +309,26 @@ export default function StudentHome() {
         </div>
         <div className={styles.right_section}>
           <section className={styles.container}>
-            <div style={{ marginTop: "5px", height: "35vh", alignContent: "center" }}>
-                <HighchartsReact highcharts={Highcharts} options={options} />
-            </div>
+            {
+              metricsHistory.length!==0 ?
+              <div style={{ marginTop: "5px", height: "35vh", alignContent: "center" }}>
+                  <HighchartsReact highcharts={Highcharts} options={options} />
+              </div>
+              :<>
+              <div style={{ marginTop: "5px", height: "35vh", alignContent: "start" }}>
+                <h1 style={{
+                  fontSize: "3vw"
+                }}>
+              Estadísticas últimas 10 lecciones</h1>
+                <h2 style={{
+                  fontWeight: 150
+                }}>Empezá a practicar para visualizar aquí las estadísticas de tus últimas 10 lecciones.</h2>
+              </div>
+              </>
+            }
           </section>
+
+
           <section className={styles.container}>
             <h1 style={{marginTop: "5vh", marginBottom:"0"}}>Estadísticas</h1>
               <div style={{
