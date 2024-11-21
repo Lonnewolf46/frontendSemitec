@@ -46,8 +46,8 @@ export default function StudentHome() {
   const [username, setUsername] = useState("");
   const [stats, setStats] = useState({avg_time_taken: 0, avg_mistakes: 0, avg_accuracy_rate: 0, avg_pulsation_per_minute:0 })
   const [metricsHistory, setAccuracyHistory] = useState([])
-  const [medium_accuracy, setAccuracy] = useState(0);
-  const [medium_ppm, setPPM] = useState(0)
+  const [medium_accuracy, setAccuracy] = useState();
+  const [medium_ppm, setPPM] = useState()
   const [nextLessonId, setNextLessonId] = useState();
   const [assignedLessons, setAssignedLessons] = useState();
   const [nextAssignedLessonId, setNextAssignedLessonId] = useState();
@@ -129,7 +129,6 @@ export default function StudentHome() {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
         setUsername(data.username.split(" ")[0]);
       }
     } catch (error) {
@@ -163,7 +162,8 @@ export default function StudentHome() {
             }
           })
           const data = await response.json()
-          setNextAssignedLessonId(data[0].lesson_id)
+          if (data.length!==0)
+            setNextAssignedLessonId(data[0].lesson_id)
 
     } catch (error){
         console.log(error)
@@ -180,7 +180,6 @@ export default function StudentHome() {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
         setAccuracyHistory(data)
       }
     } catch (error) {
@@ -199,9 +198,8 @@ export default function StudentHome() {
           })
           
           const data = await response.json()
-          console.log(data)
           {
-            data.length !== null
+            if (data.length !== 0)
               {
                 const initialValue = 0;
                 let sum_ppm = data.reduce(
@@ -213,14 +211,21 @@ export default function StudentHome() {
                   (accumulator, currentValue) => accumulator + currentValue.accuracy_rate,
                   initialValue,
                 );
+
+                sum_accuracy /= data.length
+                sum_ppm /= data.length
+                setPPM(sum_ppm.toFixed(0))
+                setAccuracy(sum_accuracy.toFixed(0))
               }
+            else
+            {
+              setPPM(0)
+              setAccuracy(0)
+            }
           }
           
           
-          sum_accuracy /= data.length
-          sum_ppm /= data.length
-          setPPM(sum_ppm.toFixed(0))
-          setAccuracy(sum_accuracy.toFixed(0))
+          
     } catch (error){
         console.log(error)
     }
@@ -278,14 +283,12 @@ export default function StudentHome() {
     getAssignedLessons();
     getNextAssignedLesson();
     accessibility(Highcharts);
-    console.log(`${medium_accuracy}%`)
-    console.log(medium_ppm)
   }, []);
 
   return (
     <main>
     <div className={styles.main_container}>
-        <div className={styles.left_section}>
+        <div className={styles.halfScreenContainer}>
           <WelcomeCard username={username} />
           <section
             style={{
@@ -303,12 +306,10 @@ export default function StudentHome() {
               <NextLessonCard handleStartLesson={handleStartLesson} lesson_id={nextLessonId + 1}/>
               </div>
             </section>
-            
-          
           </div>
         </div>
-        <div className={styles.right_section}>
-          <section className={styles.container}>
+        <div className={styles.halfScreenContainer}>
+          <section className={styles.halfScreenContainer}>
             {
               metricsHistory.length!==0 ?
               <div style={{ marginTop: "5px", height: "35vh", alignContent: "center" }}>
