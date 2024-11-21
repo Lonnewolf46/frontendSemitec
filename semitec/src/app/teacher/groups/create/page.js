@@ -1,13 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "@/app/_styles/CreateGroup.module.css";
-
+import Popup from "@/app/components/modularPopup/modularpopup";
 import buttonStyles from "@/app/_styles/Button.module.css";
+
 export default function CreateGroup() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [groupCode, setGroupCode] = useState("");
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [modalMessage, setModalMessage] = useState();
 
   const createGroup = async () => {
     try {
@@ -32,10 +35,24 @@ export default function CreateGroup() {
       }
       }
     } catch (error) {
-      alert("Ha ocurrido un error al crear el grupo.")
+      setModalMessage("Ha ocurrido un error al crear el grupo.");
+      setShowOverlay(true);
     }
   };
 
+  //Watch for the event of escape key when the dialog is opened, then remove the listener.
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setShowOverlay(false);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+  
   const handleChangeName = (event) => {
     setName(event.target.value);
   };
@@ -44,6 +61,10 @@ export default function CreateGroup() {
     event.preventDefault();
     createGroup();
   };
+  
+  const handleOverlayClickYes = () =>{
+    setShowOverlay(false);
+  }
 
   const handleOnExitClick = () => {
     router.push(`/teacher/groups`);
@@ -97,6 +118,12 @@ export default function CreateGroup() {
         Regresar
       </button>
     </div>
+      <Popup
+        title="Confirmación"
+        message={modalMessage}
+        onConfirm={handleOverlayClickYes}
+        show={showOverlay}
+        showCancel={false}/>
     </>
     
   );
