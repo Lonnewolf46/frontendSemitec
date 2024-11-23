@@ -39,13 +39,25 @@
 .inputDiv input {
     padding: 10px;
     border: 1px solid grey;
+    border-right: none;
     border-radius: 5px 0 0 5px;
     flex-grow: 1;
     font-size: 1.2vw;
 }
 
-.inputDiv button {
+.inputDiv:focus-within input {
+    outline: none;
+}
+
+.searchButton {
     border-radius: 0 5px 5px 0;
+}
+
+.clearButton {
+    border: solid 1px gray;
+    border-left: none;
+    border-radius: 0 0 0 0;
+    background-color:white;
 }
 
 

@@ -96,6 +96,12 @@ export default function LeesonsScreen({
     }
   };
 
+  const handleClear = async (event) => {
+    event.preventDefault();
+    getLessons(currentPage, itemsPerPage);
+    setLessonCode("")
+  }
+
   const getLessonsByCode = async (lessonCode) => {
     try {
       const response = await fetch(
@@ -165,7 +171,23 @@ export default function LeesonsScreen({
               value={lessonCode}
               onChange={handleCodeChange}
             />
-            <button onClick={handleSearch}>
+            {lessonCode && (
+              <button className={styles.clearButton}
+              onClick={handleClear}>
+                <svg
+                  className="accesibility-bar-btn-content"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="100%"
+                  viewBox="0 -960 960 960"
+                  width="2vw"
+                  fill="gray"
+                >
+                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                </svg>
+              </button>
+            )}
+            <button className={styles.searchButton}
+            onClick={handleSearch}>
               <svg
                 className="accessibility-bar-btn-content"
                 xmlns="http://www.w3.org/2000/svg"
