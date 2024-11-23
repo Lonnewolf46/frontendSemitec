@@ -114,6 +114,10 @@ export default function GroupsTable({usage}) {
     setOrderVisible(false);
     getGroups(currentPage,itemsPerPage);
   }
+  
+  const handleDeleteSuccess = () => { // Re-fetch groups when a deletion is successful
+    getGroups(currentPage,itemsPerPage); }
+
   //UI for loading data
   if (loading) {
     return (
@@ -175,7 +179,7 @@ export default function GroupsTable({usage}) {
                 router.push(`/student/groups/join`)
               }}
             >
-            Unirme a grupo
+            Unirse a grupo
             </button>
             </div>
         </>
@@ -336,7 +340,7 @@ export default function GroupsTable({usage}) {
       </div>
 
       <div className={styles.rightContainer}>
-        <GroupInfo pGroup={groups[activeIndex]} pTableType={pagePurpose}/>
+        <GroupInfo pGroup={groups[activeIndex]} pTableType={pagePurpose} onDeleteSuccess={handleDeleteSuccess}/>
       </div>
     </div>
   );

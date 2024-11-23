@@ -18,16 +18,21 @@ export default function JoinGroup() {
             "Content-Type": "application/json",
             "auth-token": localStorage.getItem("auth-token"),
           },
-          body: JSON.stringify({ group_code: groupCode }),
+          body: JSON.stringify({ var_group_code: groupCode }),
         }
       );
       const data = await response.json();
       console.log(data);
-      if (response.ok) {
+      if (data[0].insert_student_in_group) {
+        alert("Exito")
         router.push("/student/groups");
+      }
+      else{
+        alert("No fue posible unirte al grupo. Es posible que ya estés dentro de ese grupo");
       }
     } catch (error) {
       console.log(error);
+      alert("Algo salió mal")
     }
   };
 
@@ -46,7 +51,7 @@ export default function JoinGroup() {
       <form className={styles.wrapper} onSubmit={handleJoinGroup}>
         <h1 className={styles.title}>Unirse a un grupo</h1>
         <div className={styles.formContainer}>
-          <label htmlFor="code">Código</label>
+          <label htmlFor="code">Código del grupo</label>
           <input
             onChange={handleCodeInputChange}
             required
