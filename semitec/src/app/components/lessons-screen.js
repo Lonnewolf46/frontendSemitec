@@ -80,7 +80,7 @@ export default function LeesonsScreen({
     const isValid =
       /^[a-zA-Z0-9]*$/.test(event.target.value) && value.length <= 7;
     if (isValid) {
-      setLessonCode(value);
+      setLessonCode(value.toUpperCase());
       setError("");
     } else {
       setError("Solo se permiten de 4 a 7 caracteres alfanuméricos.");
