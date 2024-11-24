@@ -80,7 +80,7 @@ export default function LeesonsScreen({
     const isValid =
       /^[a-zA-Z0-9]*$/.test(event.target.value) && value.length <= 7;
     if (isValid) {
-      setLessonCode(value);
+      setLessonCode(value.toUpperCase());
       setError("");
     } else {
       setError("Solo se permiten de 4 a 7 caracteres alfanuméricos.");
@@ -95,6 +95,12 @@ export default function LeesonsScreen({
       setError("El código debe tener de 4 a 7 caracteres.");
     }
   };
+
+  const handleClear = async (event) => {
+    event.preventDefault();
+    getLessons(currentPage, itemsPerPage);
+    setLessonCode("")
+  }
 
   const getLessonsByCode = async (lessonCode) => {
     try {
@@ -165,7 +171,23 @@ export default function LeesonsScreen({
               value={lessonCode}
               onChange={handleCodeChange}
             />
-            <button onClick={handleSearch}>
+            {lessonCode && (
+              <button className={styles.clearButton}
+              onClick={handleClear}>
+                <svg
+                  className="accesibility-bar-btn-content"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="100%"
+                  viewBox="0 -960 960 960"
+                  width="2vw"
+                  fill="gray"
+                >
+                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                </svg>
+              </button>
+            )}
+            <button className={styles.searchButton}
+            onClick={handleSearch}>
               <svg
                 className="accessibility-bar-btn-content"
                 xmlns="http://www.w3.org/2000/svg"
