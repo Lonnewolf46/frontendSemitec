@@ -1,12 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import buttonStyles from "@/app/_styles/Button.module.css";
 import styles from "@/app/_styles/JoinGroup.module.css";
+import Dialog from "@/app/components/modularPopup/modularpopup";
 
 export default function JoinGroup() {
   const router = useRouter();
   const [groupCode, setGroupCode] = useState("");
+  //DialogControl
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [modalTitle, setDialogTitle] = useState();
+  const [modalMessage, setDialogMessage] = useState();
+  const [opCompleteStatus, setOpCompleteStatus] = useState();//Used to change the modal dynamically depending on the response.
 
   const join = async () => {
     try {
@@ -24,15 +30,20 @@ export default function JoinGroup() {
       const data = await response.json();
       console.log(data);
       if (data[0].insert_student_in_group) {
-        alert("Exito")
-        router.push("/student/groups");
+        setDialogTitle("Éxito");
+        setDialogMessage("Ahora eres parte del grupo.");
+        setDialogVisible(true);
+        setOpCompleteStatus(true);
       }
       else{
-        alert("No fue posible unirte al grupo. Es posible que ya estés dentro de ese grupo");
+        setDialogTitle("Fallo");
+        setDialogMessage("No fue posible unirte al grupo. Es posible que ya estés en el grupo o el código sea incorrecto.");
+        setDialogVisible(true);
       }
     } catch (error) {
-      console.log(error);
-      alert("Algo salió mal")
+      setDialogTitle("Fallo de conexión");
+      setDialogMessage("Ha ocurrido un error al intentar unirte al grupo.");
+      setDialogVisible(true);
     }
   };
 
@@ -42,9 +53,31 @@ export default function JoinGroup() {
   };
 
   const handleCodeInputChange = (event) => {
-    console.log(groupCode);
     setGroupCode(event.target.value);
   };
+
+  const handleDialogAccept = () => {
+    if(opCompleteStatus){
+      setDialogVisible(false);
+      router.push("/student/groups");
+    }
+    else{
+      setDialogVisible(false);
+    }
+  }
+
+  //Watch for the event of escape key when the dialog is opened, then remove the listener.
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setDialogVisible(false);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -66,6 +99,13 @@ export default function JoinGroup() {
           </button>
         </div>
       </form>
+      <Dialog
+        title={modalTitle}
+        message={modalMessage}
+        onConfirm={handleDialogAccept}
+        show={dialogVisible}
+        showCancel={false}
+      />
     </div>
   );
 }
