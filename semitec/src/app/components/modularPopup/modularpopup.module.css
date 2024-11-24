@@ -1,0 +1,20 @@
+.dialog {
+    border: none;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    background: white;
+    text-align: center;
+  }
+  
+  .multipleButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .singleButton{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  

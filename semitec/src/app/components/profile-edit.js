@@ -3,7 +3,8 @@ import styles from "./profile-edit.module.css";
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import buttonStyles from "@/app/_styles/Button.module.css";
-import InfoComponent from "@/app/components/UIStateDisplay"
+import InfoComponent from "@/app/components/UIStateDisplay";
+import Dialog from "./modularPopup/modularpopup";
 
 export default function ProfileEdit({
     inUsername,
@@ -44,6 +45,11 @@ export default function ProfileEdit({
     const [loading, setLoadingStatus] = useState(false);
     const [loadError, setLoadError] = useState(false);
     const [minorError, setMinorError] = useState(false);
+
+    //Dialog
+    const [showOverlay, setShowOverlay] = useState(false);
+    const [modalTitle, setModalTitle] = useState();
+    const [modalMessage, setModalMessage] = useState();
 
     const firstLoad = async() => {
         setLoadingStatus(true);
@@ -207,15 +213,19 @@ export default function ProfileEdit({
             );
             const data = await response.json();
             if(data.update_teacher){
-                alert("Información actualizada con éxito");
+                setModalTitle("Éxito");
+                setModalMessage("Información actualizada con éxito");
+                setShowOverlay(true);
             }
             else{
-                console.log(data);
-                alert("Ha ocurrido un error al intentar actualizar la información.");
+                setModalTitle("Fallo");
+                setModalMessage("Ha ocurrido un error al intentar actualizar la información.");
+                setShowOverlay(true);
             }
         }catch(error){
-            console.log(data);
-            alert("Ha ocurrido un error al intentar actualizar la información.");
+            setModalTitle("Fallo");
+            setModalMessage("Ha ocurrido un error al intentar actualizar la información.");
+            setShowOverlay(true);
         }
     }
 
@@ -248,15 +258,19 @@ export default function ProfileEdit({
             );
             const data = await response.json();
             if(data.update_student){
-                alert("Información actualizada con éxito");
+                setModalTitle("Éxito");
+                setModalMessage("Información actualizada con éxito");
+                setShowOverlay(true);
             }
             else{
-                console.log(data);
-                alert("Ha ocurrido un error al intentar actualizar la información.");
+                setModalTitle("Fallo");
+                setModalMessage("Ha ocurrido un error al intentar actualizar la información.");
+                setShowOverlay(true);
             }
         }catch(error){
-            console.log(data);
-            alert("Ha ocurrido un error al intentar actualizar la información.");
+            setModalTitle("Fallo");
+            setModalMessage("Ha ocurrido un error al intentar actualizar la información.");
+            setShowOverlay(true);
         }
     }
 
@@ -363,6 +377,10 @@ export default function ProfileEdit({
         setSelectedEducationLevel(event.target.value);
     }
 
+    const handleOverlayAccept = () => {
+        setShowOverlay(false);
+    }
+
     //Initializing
     useEffect(() => {
         setLoadingStatus(true);
@@ -372,14 +390,19 @@ export default function ProfileEdit({
         firstLoad();
     }, [])
 
-    /*//TEMP
-    useEffect(() => { if (selectedCountry) { console.log(`Selected Country ID: ${selectedCountry}`); } }, [selectedCountry]);
-    useEffect(() => { if (selectedProvince) { console.log(`Selected Province ID: ${selectedProvince}`); } }, [selectedProvince]);
-    useEffect(() => { if (selectedCanton) { console.log(`Selected Canton ID: ${selectedCanton}`); } }, [selectedCanton]);
-    useEffect(() => { if (selectedDistrict) { console.log(`Selected District ID: ${selectedDistrict}`); } }, [selectedDistrict]);
-    useEffect(() => { if (selectedEducationLevel) { console.log(`Selected EDLEVEL ID: ${selectedEducationLevel}`); } }, [selectedEducationLevel]);
-    //TEMP END
-    */
+    //Watch for the event of escape key when the dialog is opened, then remove the listener.
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+        if (event.key === 'Escape') {
+            setShowOverlay(false);
+        }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+    
     useEffect(() => {
     if (userInteraction && selectedCountry){
         getProvinces(selectedCountry)
@@ -665,13 +688,20 @@ export default function ProfileEdit({
                 )}
                 <div className={styles.buttonContainer}>
                     <button className={buttonStyles.secondary} onClick={handleCancel}>
-                        Cancelar
+                        Regresar
                     </button>
                     <button id="validate-button" className={buttonStyles.primary} onClick={validateForms} disabled={minorError}>
                         Guardar cambios
                     </button>
                 </div>
             </div>
+        <Dialog
+          title={modalTitle}
+          message={modalMessage}
+          onConfirm={handleOverlayAccept}
+          show={showOverlay}
+          showCancel={false}
+        />
         </div>
     );
 }

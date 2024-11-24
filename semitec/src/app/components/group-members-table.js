@@ -5,6 +5,7 @@ import styles from "@/app/_styles/GroupsTable.module.css";
 import buttonStyles from "@/app/_styles/Button.module.css";
 import Image from "next/image";
 import UIDisplayInfo from "./UIStateDisplay"
+import Dialog from "./modularPopup/modularpopup";
 import view from "@/app/ui/see.svg";
 import profile from "@/app/ui/avatarFill.svg";
 import deleteUser from "@/app/ui/trashcan.svg";
@@ -15,11 +16,19 @@ export default function StudentsTable({ group_id, actions }) {
   const router = useRouter();
   const [groupID, setGroupId] = useState(group_id);
   const [students, setStudents] = useState([]);
+  const [selectedStudent, setSStudent] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1); 
   const [totalPages, setTotalPages] = useState(1);
+  //Status and loading
   const [loading, setLoadingData] = useState(true); 
   const [errorLoading, setErrorLoad] = useState(false);
+  //Dialog control
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [modalTitle, setModalTitle] = useState();
+  const [modalMessage, setModalMessage] = useState();
+  const [opCompleteStatus, setOpCompleteStatus] = useState();//Used to change the modal dynamically depending on the response.
+  const [showCancelDialog, setShowCancel] = useState(true);
   const itemsPerPage = 6;
 
   const encryptData = (data) => {
@@ -95,16 +104,24 @@ export default function StudentsTable({ group_id, actions }) {
         }
       );
       const data = await response.json();
-      console.log(data);
       if (data[0].delete_student_from_group) {
         getStudents(groupID,currentPage,itemsPerPage);
-        alert("Estudiante eliminado del grupo con éxito.");
+        setModalTitle("Éxito");
+        setModalMessage("Estudiante eliminado del grupo con éxito.");
+        setShowCancel(false);
+        setOpCompleteStatus(true);//Signaling the end of the request
       }
       else{
-        alert("No se ha podido borrar al estudiante.")
+        setModalTitle("Fallo");
+        setModalMessage("No se ha podido borrar al estudiante.")
+        setShowCancel(false);
+        setOpCompleteStatus(true);//Signaling the end of the request
       }
     } catch (error) {
-      alert("Ha ocurrido un error al intentar eliminar al estudiante.");
+      setModalTitle("Fallo");
+      setModalMessage("Ha ocurrido un error al intentar eliminar al estudiante.");
+      setShowCancel(false);
+      setOpCompleteStatus(true);//Signaling the end of the request
     }
   }
 
@@ -114,8 +131,27 @@ export default function StudentsTable({ group_id, actions }) {
     router.push("/teacher/groups/stats");
   }
 
-  const handleDeleteClick = (student_id) =>{
-    removeStudent(group_id,student_id);
+  const handleDeleteClick = (student_id, student_name) =>{
+    setOpCompleteStatus(false);//Signaling the begin of the request, so the Accept of the modal behaves accordingly
+    setShowCancel(true);
+    setModalTitle("Confirmación");
+    setModalMessage(`¿Seguro que desea eliminar al estudiante ${student_name} del grupo?`);
+    setSStudent(student_id);
+    setShowOverlay(true);
+  }
+
+  const handleOverlayAccept = () => {
+    if(opCompleteStatus){
+      setShowOverlay(false);
+      return;
+    }
+    else{
+      removeStudent(group_id,selectedStudent);
+    }
+  }
+
+  const handleOverlayCancel = () => {
+    setShowOverlay(false);
   }
 
   useEffect(() => {
@@ -129,6 +165,19 @@ export default function StudentsTable({ group_id, actions }) {
     fetchCount();
     setCurrentPage(1);
   }, [group_id]);
+
+  //Watch for the event of escape key when the dialog is opened, then remove the listener.
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setShowOverlay(false);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -213,7 +262,7 @@ export default function StudentsTable({ group_id, actions }) {
                   </td>
                   <td>
                     <button aria-label={`Eliminar estudiante: ${student.student_name}`}
-                      onClick={() => handleDeleteClick(student.student_id) }>
+                      onClick={() => handleDeleteClick(student.student_id, student.student_name) }>
                       <Image src={deleteUser} alt="" />
                     </button>
                   </td>
@@ -245,6 +294,15 @@ export default function StudentsTable({ group_id, actions }) {
         >
           Siguiente
         </button>
-      </div></>
+      </div>
+        <Dialog
+          title={modalTitle}
+          message={modalMessage}
+          onCancel={handleOverlayCancel}
+          onConfirm={handleOverlayAccept}
+          show={showOverlay}
+          showCancel={showCancelDialog}
+          />
+      </>
   );
 }
