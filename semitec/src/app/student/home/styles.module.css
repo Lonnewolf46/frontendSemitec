@@ -46,3 +46,29 @@
     margin-top: 2vw;
     margin-bottom: 0;
 }
+
+  .mainWrapper {
+    margin: 20px auto;
+    padding-left: 1vw;
+    padding-right: 1vw;
+  }
+
+.section {
+    padding: 0 0 0 0;
+    width: 46vw;
+    margin: auto;
+}
+
+.halfScreenContainer h1 {
+    margin: 0 0 1vw 0;
+}
+  
+.halfScreenContainer p {
+    font-size: 2vw;
+}
+
+.column {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+}
