@@ -6,6 +6,7 @@ import CryptoJS from 'crypto-js';
 
 export default function GroupInfo() {
   const [studentId, setStudentID] = useState();
+  const [studentName, setStudentName] = useState();
 
   const decryptData = (cipherText) => {
     const bytes = CryptoJS.AES.decrypt(cipherText, process.env.NEXT_PUBLIC_ENCRYPT_KEY);
@@ -13,10 +14,13 @@ export default function GroupInfo() {
   };
   
   useEffect(()=>{
-    const studentId = sessionStorage.getItem('student');
-    if (studentId) {
-       setStudentID(decryptData(studentId))
+    const _studentId = sessionStorage.getItem('student');
+    const _studentName = sessionStorage.getItem('studentName');
+    if (_studentId && _studentName) {
+       setStudentID(decryptData(_studentId))
        sessionStorage.removeItem('student');
+       setStudentName(_studentName);
+       sessionStorage.removeItem('studentName');
       } else { // Handle permission denied case
         //console.error('Permission denied'); // Optionally, redirect or show an error message
       }
@@ -32,7 +36,7 @@ export default function GroupInfo() {
   }
   return (
     <div>
-      <StudentStats student_ID={studentId}></StudentStats>
+      <StudentStats student_ID={studentId} student_Name={studentName}></StudentStats>
     </div>
   );
 }

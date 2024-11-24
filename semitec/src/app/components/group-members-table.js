@@ -108,10 +108,9 @@ export default function StudentsTable({ group_id, actions }) {
     }
   }
 
-  const handleStatsClick = (studentID) => {
-    sessionStorage.setItem('student',
-      encryptData(studentID)
-    );
+  const handleStatsClick = (studentID, studentName) => {
+    sessionStorage.setItem('student', encryptData(studentID));
+    sessionStorage.setItem('studentName', `: ${studentName}`);
     router.push("/teacher/groups/stats");
   }
 
@@ -201,7 +200,7 @@ export default function StudentsTable({ group_id, actions }) {
                 <>
                   <td>
                     <button aria-label={`Ver estadísticas del estudiante: ${student.student_name}`}
-                      onClick={() => handleStatsClick(student.student_id)}>
+                      onClick={() => handleStatsClick(student.student_id, student.student_name)}>
                       <Image src={view} alt="" />
                     </button>
                   </td><td>

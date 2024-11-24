@@ -118,12 +118,12 @@ export default function StatsDetailed({lessonId, studentId}) {
 
     const getLessonMetrics = async() =>{
         try {
-            console.log(`Obtained: ${lessonId}, ${userID}`);
             //If the user is a teacher, then the student_ID must come from another screen.
             //If the user is a student, then the student_ID is provided on the header.
             let response;
-        if(userType === "teacher"){
-            response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${userType}/lessons/studentstats?user_id=${userID}`,{
+        //Teacher
+        if(studentId){
+            response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/lessons/studentstats?user_id=${userID}`,{
                 method: "POST",
                 headers: {
                     "auth-token": localStorage.getItem("auth-token"),
@@ -134,8 +134,9 @@ export default function StatsDetailed({lessonId, studentId}) {
                 })
               });
         }
+        //Student
         else{
-            response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${userType}/lessons/studentstats`,{
+            response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/studentstats`,{
                 method: "POST",
                 headers: {
                     "auth-token": localStorage.getItem("auth-token"),
