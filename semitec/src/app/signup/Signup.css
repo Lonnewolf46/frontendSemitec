@@ -13,6 +13,10 @@
     display: inherit;
 }
 
+.datePicker{
+    font-size: 1.3vw;
+}
+
 .hidden {
     visibility: hidden;
     height: 0;
