@@ -23,14 +23,19 @@ export default function LeesonsScreen({
   const [error, setError] = useState("");
   const itemsPerPage = 4;
 
-  const fetchData = async () => {
+  const fetchData = async (var_name) => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_HOST}${lessonCountRoute}`,
         {
+          method: "POST",
           headers: {
             "auth-token": localStorage.getItem("auth-token"),
+            "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            var_name: var_name,
+          }),
         }
       );
 
@@ -41,14 +46,14 @@ export default function LeesonsScreen({
         console.log(calculatedTotalPages);
         setTotalPages(calculatedTotalPages);
       } else {
-        console.error("Error al obtener el total de lecciones:", data.message);
+        console.error("Error al obtener el total de lecciones:", data);
       }
     } catch (error) {
       console.error("Error al llamar al endpoint:", error);
     }
   };
 
-  const getLessons = async (var_page_number, var_page_size) => {
+  const getLessons = async (var_page_number, var_page_size, var_name) => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_HOST}${pagedLessonsRoute}`,
@@ -61,6 +66,7 @@ export default function LeesonsScreen({
           body: JSON.stringify({
             var_page_number: var_page_number,
             var_page_size: var_page_size,
+            var_name: var_name,
           }),
         }
       );
@@ -89,17 +95,21 @@ export default function LeesonsScreen({
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    if (lessonCode.length >= 4 && lessonCode.length <= 7) {
-      getLessonsByCode(lessonCode);
+    if (lessonCode.length >= 1 && lessonCode.length <= 7) {
+      fetchData(lessonCode);
+      getLessons(currentPage, itemsPerPage, lessonCode);
     } else {
       setError("El código debe tener de 4 a 7 caracteres.");
     }
   };
 
-  const handleClear = async (event) => {
+  const handleClear = (event) => {
+    console.log("clearing");
     event.preventDefault();
-    getLessons(currentPage, itemsPerPage);
-    setLessonCode("")
+    setLessonCode("");
+    setCurrentPage(1);
+    fetchData();
+    getLessons(1, itemsPerPage, "");
   }
 
   const getLessonsByCode = async (lessonCode) => {
@@ -127,12 +137,17 @@ export default function LeesonsScreen({
   };
 
   useEffect(() => {
-    getLessons(currentPage, itemsPerPage);
+    getLessons(currentPage, itemsPerPage, lessonCode);
   }, [currentPage]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (lessonCode.length === 0){
+
+    console.log(lessonCode);
+      fetchData("");
+      getLessons(1, itemsPerPage, "");
+    }
+  }, [lessonCode]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -172,7 +187,8 @@ export default function LeesonsScreen({
               onChange={handleCodeChange}
             />
             {lessonCode && (
-              <button className={styles.clearButton}
+              <button type="button"
+              className={styles.clearButton}
               onClick={handleClear}>
                 <svg
                   className="accesibility-bar-btn-content"
