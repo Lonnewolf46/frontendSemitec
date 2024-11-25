@@ -84,18 +84,18 @@ export default function LeesonsScreen({
     const value = event.target.value;
 
     const isValid =
-      /^[a-zA-Z0-9]*$/.test(event.target.value) && value.length <= 7;
+      /^[a-zA-Z0-9]*$/.test(event.target.value) && value.length <= 32;
     if (isValid) {
       setLessonCode(value.toUpperCase());
       setError("");
     } else {
-      setError("Solo se permiten de 4 a 7 caracteres alfanuméricos.");
+      setError("Solo se permiten de 4 a 32 caracteres alfanuméricos.");
     }
   };
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    if (lessonCode.length >= 1 && lessonCode.length <= 7) {
+    if (lessonCode.length >= 1 && lessonCode.length <= 32) {
       fetchData(lessonCode);
       getLessons(currentPage, itemsPerPage, lessonCode);
     } else {
@@ -173,7 +173,7 @@ export default function LeesonsScreen({
         <form className={styles.searchForm}>
           <div className={styles.labelDiv}>
             <label htmlFor="search">
-              <strong>Buscar por código</strong>
+              <strong>Buscar por nombre</strong>
             </label>
           </div>
           <div className={styles.inputDiv}>
@@ -182,7 +182,7 @@ export default function LeesonsScreen({
               type="text"
               aria-invalid={!!error}
               aria-describedby={error ? "search-error" : ""}
-              placeholder="LEC140"
+              placeholder="Lección 1"
               value={lessonCode}
               onChange={handleCodeChange}
             />
