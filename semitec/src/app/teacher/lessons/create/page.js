@@ -53,6 +53,10 @@ export default function CreatLesson() {
           setMaxTime(data.max_time);
           setMaxMistakes(data.max_mistakes);
           setIterations(data.iterations);
+          setLevelID(data.level_id);
+          if(data.shared == '1'){
+            setPublicActivity(true);
+          }
         }
       }
       catch(error){
@@ -104,7 +108,7 @@ export default function CreatLesson() {
         level_id: item.level_id,
         name: item.name, }));
       setAvLevels(levelsData);
-      if (levelsData.length > 0 && !level_id) {
+      if (levelsData.length > 0) {
         setLevelID(levelsData[0].level_id);
       }
     } catch (error) {
@@ -155,11 +159,15 @@ export default function CreatLesson() {
   };
 
   useEffect(() => {
-    loadPreviousData();
-    setLoading(true);
-    getLexemes();
-    getLevels();
-    setLoading(false);
+    const fetchData = async () => {
+      setLoading(true);
+      await getLexemes();
+      await getLevels();
+      loadPreviousData();
+      setLoading(false);
+    };
+    
+    fetchData();
   },[]);
 
   const validateForms = () => {
@@ -296,9 +304,8 @@ export default function CreatLesson() {
             <select
               id="level_id"
               style={{width:'95%'}}
-              onChange={(e) => {
-                handleChangeLevel(e);
-              }}
+              value={level_id}
+              onChange={handleChangeLevel}
             >
               {available_levels.length === 0 ? (
                 <option disabled>Error obteniendo los niveles</option>
@@ -315,7 +322,7 @@ export default function CreatLesson() {
               <input
               style={{width: '4vh', height: '4vh', margin: '1vw'}}
               type="checkbox"
-              value={publicActivity}
+              checked={publicActivity}
               onChange={handleChangePublic}
               id="publicActivity"
               alt="Marque esta casilla si desea que la actividad sea pública y cualquier usuario pueda realizarla."
