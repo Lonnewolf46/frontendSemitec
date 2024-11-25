@@ -49,7 +49,7 @@ export default function LessonInfo({ lesson }) {
           <strong>{lesson.content}</strong> por {lesson.iterations} iteraciones.
         </p>
         <p>{lesson.description}</p>
-        <h2>Criterios de aprobción</h2>
+        <h2>Criterios de aprobación</h2>
         <p>Errores máximos {lesson.min_mistakes}</p>
         <p>Tiempo máximo {lesson.min_time} segundos</p>
         {!pathname.includes("teacher/lessons/assignment") && (
