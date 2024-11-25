@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import GroupsScreen from "@/app/components/view-groups";
 import styles from "@/app/_styles/CreateLesson.module.css";
 import buttonStyles from "@/app/_styles/Button.module.css";
-import UIDisplayInfo from "@/app/components/UIStateDisplay"
+import UIDisplayInfo from "@/app/components/UIStateDisplay";
+import Dialog from "@/app/components/modularPopup/modularpopup";
 import CryptoJS from 'crypto-js';
 import { useEffect } from "react";
 
@@ -15,6 +16,12 @@ export default function TeacherLessonAssign() {
   const router = useRouter();
   const [submiting, setSubmitting] = useState(false);
   const [validEntry, setValidEntry] = useState();
+
+  //DialogControl
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [modalTitle, setDialogTitle] = useState();
+  const [modalMessage, setDialogMessage] = useState();
+  const [opCompleteStatus, setOpCompleteStatus] = useState();//Used to change the modal dynamically depending on the response.
 
   const encryptData = (data) => {
     return CryptoJS.AES.encrypt(JSON.stringify(data), process.env.NEXT_PUBLIC_ENCRYPT_KEY).toString();
@@ -73,15 +80,20 @@ export default function TeacherLessonAssign() {
         if (data[0].successcode) {
           sessionStorage.removeItem('checkedStudents');
           sessionStorage.removeItem('lesson');
-          alert("Lección creada y asignada con éxito");
-          router.push("/teacher/home");
+          setDialogTitle("Éxito");
+          setDialogMessage("Lección creada y asignada con éxito");
+          setOpCompleteStatus(true);
+          setDialogVisible(true);
         }
         else{
-          alert("Algo ha salido mal al crear la lección, inténtelo de nuevo más tarde.");
+          setDialogTitle("Fallo");
+          setDialogMessage("Algo ha salido mal al crear la lección, inténtelo de nuevo más tarde.");
+          setDialogVisible(true);
         }
     } catch (error) {
-      console.log(error);
-      alert("Ha ocurrido un error al crear la lección, inténtelo de nuevo más tarde.")
+      setDialogTitle("Fallo de conexión");
+      setDialogMessage("Ha ocurrido un error al crear la lección, inténtelo de nuevo más tarde.");
+      setDialogVisible(true);
     }
   };
 
@@ -90,6 +102,7 @@ export default function TeacherLessonAssign() {
   //2- Try to extract the contents, if it fails; notify the user. Posibily due to user manipulation.
   //3- Check if there are students that were assigned and check for an existing lesson to assign them to.
   const createAssignLesson = async() =>{
+    setOpCompleteStatus(false);
     setSubmitting(true);
     const saved = sessionStorage.getItem('checkedStudents');
     const lessonContent = sessionStorage.getItem(LESSON_KEY);
@@ -106,7 +119,9 @@ export default function TeacherLessonAssign() {
             await createAssignLessonAPI(fullData);
             
           } else if(decryptedArray.length === 0) {
-            alert("Elija al menos a 1 estudiante para asignar una lección"); 
+            setDialogTitle("Aviso");
+            setDialogMessage("Elija al menos a 1 estudiante para asignar una lección.");
+            setDialogVisible(true);
           }
 
           //2
@@ -117,10 +132,9 @@ export default function TeacherLessonAssign() {
           router.push("/teacher/lessons/create");
         }
       }
-  }
-  else{
-    alert("No se puede crear una tarea sin estudiantes.");
-  }
+    }else{
+      alert("No se puede crear una tarea sin estudiantes.");
+    }
     setSubmitting(false);
   }
 
@@ -128,6 +142,16 @@ export default function TeacherLessonAssign() {
     sessionStorage.removeItem('checkedStudents');
     updateLessonExpiry();
     router.push("/teacher/lessons/create");
+  }
+
+  const handleDialogAccept = () =>{
+    if(opCompleteStatus){
+      setDialogVisible(false);
+      router.push("/teacher/home");
+    }
+    else{
+      setDialogVisible(false);
+    }
   }
 
   useEffect(()=>{
@@ -161,6 +185,13 @@ export default function TeacherLessonAssign() {
             Asignar
           </button>
       </div>
+      <Dialog
+        title={modalTitle}
+        message={modalMessage}
+        onConfirm={handleDialogAccept}
+        show={dialogVisible}
+        showCancel={false}
+      />
     </main>
   );
 }

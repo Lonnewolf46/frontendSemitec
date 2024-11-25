@@ -10,7 +10,6 @@ import ListCard from "./list-card";
 import LessonImg from "../ui/lesson-img.svg";
 import GroupInfo from "../teacher/groups/info/page";
 import UIDisplayInfo from "./UIStateDisplay"
-import { Button } from "bootstrap";
 
 
 export default function GroupsTable({usage}) {
@@ -116,7 +115,8 @@ export default function GroupsTable({usage}) {
   }
   
   const handleDeleteSuccess = () => { // Re-fetch groups when a deletion is successful
-    getGroups(currentPage,itemsPerPage); }
+    setCurrentPage(1);
+    getGroups(1,itemsPerPage); }
 
   //UI for loading data
   if (loading) {
