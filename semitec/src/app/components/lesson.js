@@ -34,8 +34,6 @@ export default function Lesson() {
       );
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
-
         distpatchLessonProps({
           type: "set_data",
           words: data.content,
@@ -87,8 +85,6 @@ export default function Lesson() {
   }, [lessonProps]);
 
   const checkResults = () => {
-    console.log("mistakes", metrics.mistakes, lessonProps.min_mistakes);
-    console.log("time", metrics.time_taken, lessonProps.min_time);
     if (
       metrics.mistakes <= lessonProps.min_mistakes &&
       metrics.time_taken <= lessonProps.min_time
@@ -98,7 +94,6 @@ export default function Lesson() {
   };
 
   const handleKeyDown = (event) => {
-    console.log(message);
     event.preventDefault(); // Prevent default behavior
     if (!start) setStart(true); // set start to true in order to start chronometer
     if (event.key === lessonProps.current) {
@@ -147,7 +142,6 @@ export default function Lesson() {
       );
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -156,9 +150,10 @@ export default function Lesson() {
   const handleContinue = () => {
     let lesson_id = parseInt(searchParams.get("lesson_id"));
     saveMetrics();
+    /*
     if (metrics.is_complete === 1) {
       lesson_id = lesson_id + 1;
-    }
+    }*/
     router.push(`${pathname}?lesson_id=${lesson_id}`);
     getLesson(lesson_id);
     setShowMetrics(false);
@@ -166,8 +161,9 @@ export default function Lesson() {
   };
 
   const handleBack = () => {
+    saveMetrics();
     const match = pathname.match(/^\/[^\/]+\/lessons/);
-    router.push(match[0]);
+    router.push(match[0]+"/default");
   };
   return (
     <div

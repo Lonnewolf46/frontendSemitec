@@ -70,7 +70,7 @@ export default function LessonResults({
           className={buttonStyles.primary}
           onClick={handleContinue}
         >
-          Siguiente lección
+          Repetir lección
         </button>
       </div>
     </dialog>
