@@ -72,3 +72,9 @@
     display: flex;
     gap: 20px;
 }
+
+.container-center-contents{
+    margin-top: "5px"l;
+    height: 35vh;
+    align-content: "center";
+}

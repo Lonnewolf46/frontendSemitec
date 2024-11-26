@@ -309,14 +309,14 @@ export default function StudentHome() {
           </div>
         </div>
         <div className={styles.halfScreenContainer}>
-          <section className={styles.halfScreenContainer}>
+          <section className={styles.container}>
             {
               metricsHistory.length!==0 ?
-              <div style={{ marginTop: "5px", height: "35vh", alignContent: "center" }}>
+              <div className="highcharts-container container-center-contents" >
                   <HighchartsReact highcharts={Highcharts} options={options} />
               </div>
               :<>
-              <div style={{ marginTop: "5px", height: "35vh", alignContent: "start" }}>
+              <div className="container-center-contents">
                 <h1 style={{
                   fontSize: "3vw"
                 }}>
@@ -329,9 +329,8 @@ export default function StudentHome() {
             }
           </section>
 
-
           <section className={styles.container}>
-            <h1 style={{marginTop: "5vh", marginBottom:"0"}}>Estadísticas</h1>
+            <h1 className="container-center-contents">Estadísticas</h1>
               <div style={{
                   display: "flex",
                   justifyContent: "space-around",
@@ -340,6 +339,7 @@ export default function StudentHome() {
                   <StatsCard value={`${medium_accuracy}%`} name={"Precisión"} />
               </div>
           </section>
+          
         </div>
       </div>
     </main>
