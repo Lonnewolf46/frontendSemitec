@@ -51,70 +51,94 @@ export default function StatsDetailed({lessonId, studentId}) {
           legendColor: '#ffee32',
         },
     };
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
     const currentTheme = themes[theme.theme] || themes.Predeterminado;
     const getChartData = () => {
-        switch(selectedDataType){
-            case "Pulsaciones por minuto":
-                return stats.map(stat => stat.pulsation_per_minute)
-            case "Errores":
-                return stats.map(stat => stat.mistakes);
-            case "Tiempo (segundos)":
-                return stats.map(stat => stat.time_taken);
-            case "Precisión (Porcentaje)":
-                return stats.map(stat => stat.accuracy_rate);
-        }   
-    }
-    const options = {
-        chart: {
-          backgroundColor: currentTheme.backgroundColor,
-          style: {
-            color: currentTheme.textColor,
-          }
-        },
-        title: {
-          text: "Estadísticas generales",
-          style: {
-            color: currentTheme.textColor,
-          }
-        },
-        xAxis: {
-            title: { text: 'Intento', // Label for the x-axis
-                style: { 
-                    color: currentTheme.textColor, 
-                } 
-            }, 
-            categories: stats.map(stat => stat.stats_id+1), // Assuming x-axis is based on stats_id
-            labels: {
-                style: { 
-                    color: currentTheme.textColor, 
-                } 
-            } 
-        },
-        yAxis: {
-          title: {
-            text: selectedDataType.charAt(0).toUpperCase() + selectedDataType.slice(1).replace('_', ' '),
-                style: {
-                    color: currentTheme.textColor,
+        return stats.map(stat => ({
+          y: (() => {
+            switch (selectedDataType) {
+              case "Pulsaciones por minuto":
+                return stat.pulsation_per_minute;
+              case "Errores":
+                return stat.mistakes;
+              case "Tiempo (segundos)":
+                return stat.time_taken;
+              case "Precisión (Porcentaje)":
+                return stat.accuracy_rate;
+              default:
+                return 0;
             }
-          },
-          labels: {
-            style: {
-              color: currentTheme.textColor,
-            }
-          }
-        },
-        legend: {
-          itemStyle: {
-            color: currentTheme.legendColor, // Set the color of the legend labels dynamically 
-          }
-        },
-        series: [
-          {
-            name: selectedDataType.charAt(0).toUpperCase() + selectedDataType.slice(1).replace('_', ' '),
-            data: getChartData(),
-          }
-        ],
+          })(),
+          completion_date: formatDate(stat.completion_date)
+        }));
       };
+      
+    const options = {
+    chart: {
+        backgroundColor: currentTheme.backgroundColor,
+        style: {
+        color: currentTheme.textColor,
+        }
+    },
+    title: {
+        text: "Estadísticas generales",
+        style: {
+        color: currentTheme.textColor,
+        }
+    },
+    xAxis: {
+        title: { 
+        text: 'Intento', 
+        style: { 
+            color: currentTheme.textColor, 
+        } 
+        }, 
+        categories: stats.map(stat => stat.stats_id + 1), 
+        labels: {
+        style: { 
+            color: currentTheme.textColor, 
+        } 
+        } 
+    },
+    yAxis: {
+        title: {
+        text: selectedDataType.charAt(0).toUpperCase() + selectedDataType.slice(1).replace('_', ' '),
+        style: {
+            color: currentTheme.textColor,
+        }
+        },
+        labels: {
+        style: {
+            color: currentTheme.textColor,
+        }
+        }
+    },
+    legend: {
+        itemStyle: {
+        color: currentTheme.legendColor, 
+        }
+    },
+    tooltip: {
+        formatter: function() {
+        const xAxisLabel = this.series.chart.xAxis[0].categories[this.point.index];
+        return `<b>Intento: #${xAxisLabel}</b><br/>
+                <b>${this.series.name}:</b> ${this.y}<br/>
+                <b>Fecha:</b> ${this.point.completion_date}`;
+        }
+    },
+    series: [
+        {
+        name: selectedDataType.charAt(0).toUpperCase() + selectedDataType.slice(1).replace('_', ' '),
+        data: getChartData(),
+        }
+    ],
+    };
+
 
     const getLessonMetrics = async() =>{
         try {
@@ -163,11 +187,6 @@ export default function StatsDetailed({lessonId, studentId}) {
           setLoadingData(false); // Set loading state to false after fetch is done
         }
     }
-
-    const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-    };
 
     const formatCompletion = (number) => {
         if(number === "1"){return "Completada"}
