@@ -41,14 +41,18 @@ export default function TeacherHome() {
         }
       );
       const data = await res.json();
-      if (res.ok) {
+      if (data.length > 0) {
         setRecentActivity(data);
-        console.log(data);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+};
 
   useEffect(() => {
     getUsername();
@@ -92,8 +96,8 @@ export default function TeacherHome() {
             )}
             {recentActivity.map((activity) => (
               <RecentActivityCard
-                title={activity.message}
-                subtitle={activity.date}
+                title={`${activity.student_name} ha ${activity.is_complete === "1" ? 'completado' : 'fallado'}: ${activity.lesson_name}`}
+                subtitle={formatDate(activity.completion_date)}
               />
             ))}
           </div>
