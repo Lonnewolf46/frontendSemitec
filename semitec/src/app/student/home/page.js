@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import accessibility from 'highcharts/modules/accessibility';
@@ -339,6 +340,17 @@ export default function StudentHome() {
                   <StatsCard value={`${medium_accuracy}%`} name={"Precisión"} />
               </div>
           </section>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+          }}>
+            <Link
+              href={'/student/stats'}
+              style={{color:('var(--foreground)'), fontSize: "2vw"}}>
+              Ver estadísticas detalladas
+            </Link>
+          </div>
           
         </div>
       </div>
