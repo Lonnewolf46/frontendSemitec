@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useReducer, useRef} from "react";
+import { useEffect, useState, useReducer, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Keyboard from "@/app/components/keyboard";
 import styles from "@/app/_styles/Lesson.module.css";
@@ -8,7 +8,6 @@ import { metricsReducer } from "@/app/_reducers/metrics-reducer";
 import LessonResults from "@/app/components/lesson-results";
 
 export default function Lesson() {
-  const [message, setMesaje] = useState("");
   const pathname = usePathname();
   const router = useRouter();
   const [start, setStart] = useState(false);
@@ -77,11 +76,13 @@ export default function Lesson() {
   };
 
   useEffect(() => {
-        if (isOnFocus) {
-          speak(`Pulsa ${
-              lessonProps.current === " " ? "espacio" : lessonProps.current
-            } `)
-        }
+    if (isOnFocus && lessonProps.current.length > 0) {
+      speak(
+        `Pulsa ${
+          lessonProps.current === " " ? "espacio" : lessonProps.current
+        } `
+      );
+    }
   }, [lessonProps]);
 
   const checkResults = () => {
@@ -96,10 +97,12 @@ export default function Lesson() {
   const handleKeyDown = (event) => {
     event.preventDefault(); // Prevent default behavior
     if (!start) setStart(true); // set start to true in order to start chronometer
+    console.log(event.key, lessonProps.current);
     if (event.key === lessonProps.current) {
       distpatchLessonProps({ type: "update_done" });
       dispatchMetrics({ type: "update_valid_keystrokes" });
     } else {
+      console.log("Mistake");
       distpatchLessonProps({ type: "update_done" });
       //distpatchLessonProps({ type: "update_mistake", mistake: event.key });
       dispatchMetrics({ type: "update_mistakes" });
@@ -111,11 +114,6 @@ export default function Lesson() {
       checkResults();
       setStart(false);
     }
-  };
-
-  const handleRepeat = () => {
-    distpatchLessonProps({ type: "restart" });
-    setShowMetrics(false);
   };
 
   const saveMetrics = async () => {
@@ -147,69 +145,61 @@ export default function Lesson() {
       console.log(error);
     }
   };
-  const handleContinue = () => {
+  const handleRepeat= () => {
     let lesson_id = parseInt(searchParams.get("lesson_id"));
     saveMetrics();
-    /*
-    if (metrics.is_complete === 1) {
-      lesson_id = lesson_id + 1;
-    }*/
     router.push(`${pathname}?lesson_id=${lesson_id}`);
     getLesson(lesson_id);
-    setShowMetrics(false);
     dispatchMetrics({ type: "restart" });
+    setShowMetrics(false);
   };
 
   const handleBack = () => {
     saveMetrics();
     const match = pathname.match(/^\/[^\/]+\/lessons/);
-    router.push(match[0]+"/default");
+    router.push(match[0] + "/default");
   };
   return (
-    <div
-      ref={focusRef}
-      tabIndex={0}
-      aria-label="Pantalla de lección" 
-      onKeyDown={handleKeyDown}
-      onFocus={() => setIsOnFocus(true)}
-      className={styles.container}
-    >
-      <div className={styles.text}>
-        <span aria-hidden="true" className={styles.done}>
-          {lessonProps.done.endsWith(" ") && <>&nbsp;</>}
-          {lessonProps.done}
-        </span>
-        <span
-          id="instrucction"
-          aria-live="assertive"
-          aria-relevant="all"
-          style={{ fontSize: "0px", width: "0px" }}
-        >
-          {/*message*/}
-        </span>
-        <span aria-hidden="true" className={styles.current}>
-          {lessonProps.current}
-        </span>
-        <span aria-hidden="true" className={styles.next}>
-          {lessonProps.next.startsWith(" ") && <>&nbsp;</>}
-          {lessonProps.next}
-        </span>
+    <div>
+      <div
+        role="application"
+        ref={focusRef}
+        tabIndex={0}
+        aria-label="Pantalla de lección"
+        onKeyDown={handleKeyDown}
+        onFocus={() => setIsOnFocus(true)}
+        className={styles.container}
+      >
+        <div className={styles.text}>
+          <span aria-hidden="true" className={styles.done}>
+            {lessonProps.done.endsWith(" ") && <>&nbsp;</>}
+            {lessonProps.done}
+          </span>
+          <span aria-hidden="true" className={styles.current}>
+            {lessonProps.current}
+          </span>
+          <span aria-hidden="true" className={styles.next}>
+            {lessonProps.next.startsWith(" ") && <>&nbsp;</>}
+            {lessonProps.next}
+          </span>
+        </div>
+
+        <div aria-hidden="true" className={styles.typingArea}>
+          <span className={styles.typed}>{lessonProps.typed}</span>
+          <span className={styles.mistake}>{lessonProps.mistake}</span>
+        </div>
+        <Keyboard />
       </div>
       <LessonResults
         metrics={metrics}
         showMetrics={showMetrics}
-        handleContinue={handleContinue}
+        handleContinue={handleRepeat}
         handleBack={handleBack}
         restrictions={{
           min_time: lessonProps.min_time,
           min_mistakes: lessonProps.min_mistakes,
         }}
       />
-      <div aria-hidden="true" className={styles.typingArea}>
-        <span className={styles.typed}>{lessonProps.typed}</span>
-        <span className={styles.mistake}>{lessonProps.mistake}</span>
-      </div>
-      <Keyboard />
     </div>
   );
 }
