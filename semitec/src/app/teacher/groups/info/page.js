@@ -134,6 +134,7 @@ export default function GroupInfo({pGroup, pTableType, onDeleteSuccess}) {
       <div>
         <div className={styles.header_container}>
           <div>
+            <h2>Información del grupo</h2>
             <p className={styles.compact} style={{ fontWeight: "bold", marginRight: "10%"}}>{groupInfo.group_name}</p>
             <p className={styles.compact}>Código: {groupInfo.group_code}</p>
           </div>
@@ -142,10 +143,10 @@ export default function GroupInfo({pGroup, pTableType, onDeleteSuccess}) {
           </div>
         </div>
         <section>
-          <h1 className={styles.heading}
+          <h3 className={styles.heading}
               style={{ fontSize: "1.5vw" }}>
             Estudiantes
-          </h1>
+          </h3>
           <StudentsTable group_id={groupInfo.group_id} actions={true} />
         </section>
       </div>
@@ -155,10 +156,10 @@ export default function GroupInfo({pGroup, pTableType, onDeleteSuccess}) {
     return (
       <div>
         <section>
-          <h1 className={styles.heading}
+          <h2 className={styles.heading}
               style={{ fontSize: "1.5vw" }}>
             Estudiantes
-          </h1>
+          </h2>
           <StudentsTableSelection group_id={groupInfo.group_id} />
         </section>
       </div>
@@ -170,6 +171,7 @@ export default function GroupInfo({pGroup, pTableType, onDeleteSuccess}) {
       <div>
         <div className={styles.header_container}>
           <div>
+            <h2 style={{margin:'0'}}>Información del grupo</h2>
             <p className={styles.compact} style={{ fontWeight: "bold", marginRight: "10%" }}>{groupInfo.group_name}</p>
             <p className={styles.compact}>Código: {groupInfo.group_code}</p>
           </div>
@@ -188,6 +190,7 @@ export default function GroupInfo({pGroup, pTableType, onDeleteSuccess}) {
                       className={buttonStyles.primary}
                       style={{ backgroundColor: 'var(--background)', color: 'var(--foreground)' }}
                       onClick={handleLeaveGroupClick}
+                      aria-label={`Salir del grupo ${groupInfo.group_name}`}
                     >
                       Salir
                     </button>
@@ -198,10 +201,10 @@ export default function GroupInfo({pGroup, pTableType, onDeleteSuccess}) {
           </div>
         </div>
         <section>
-          <h1 className={styles.heading}
+          <h3 className={styles.heading}
             style={{ fontSize: "1.5vw" }}>
             Estudiantes
-          </h1>
+          </h3>
           <StudentsTable group_id={groupInfo.group_id} actions={false} />
         </section>
       </div>

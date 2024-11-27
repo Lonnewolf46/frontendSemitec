@@ -82,14 +82,12 @@ export default function LeesonsScreen({
 
   const handleCodeChange = (event) => {
     const value = event.target.value;
-
-    const isValid =
-      /^[a-zA-Z0-9]*$/.test(event.target.value) && value.length <= 32;
+    const isValid = value.length <= 16;
     if (isValid) {
-      setLessonCode(value.toUpperCase());
+      setLessonCode(value);
       setError("");
     } else {
-      setError("Solo se permiten de 4 a 32 caracteres alfanuméricos.");
+      setError("Solo se permiten de 1 a 16 caracteres.");
     }
   };
 
@@ -99,7 +97,7 @@ export default function LeesonsScreen({
       fetchData(lessonCode);
       getLessons(currentPage, itemsPerPage, lessonCode);
     } else {
-      setError("El código debe tener de 4 a 7 caracteres.");
+      setError("Se requiere de 1 a 16 caracteres para buscar una lección.");
     }
   };
 
@@ -158,7 +156,7 @@ export default function LeesonsScreen({
 
   return (
     <main className={styles.mainWrapper}>
-      <section className={styles.halfScreenContainer}>
+      <section className={styles.halfScreenContainer} style={{overflowY:'auto'}}>
         <div className={styles.flexContainer}>
           <h1>{title}</h1>
           {pathname.includes("teacher/lessons/assignment") && (
@@ -187,9 +185,11 @@ export default function LeesonsScreen({
               onChange={handleCodeChange}
             />
             {lessonCode && (
-              <button type="button"
+              <button
+              type="button"
               className={styles.clearButton}
-              onClick={handleClear}>
+              onClick={handleClear}
+              aria-label="Eliminar búsqueda">
                 <svg
                   className="accesibility-bar-btn-content"
                   xmlns="http://www.w3.org/2000/svg"
@@ -202,8 +202,10 @@ export default function LeesonsScreen({
                 </svg>
               </button>
             )}
-            <button className={styles.searchButton}
-            onClick={handleSearch}>
+            <button
+            className={styles.searchButton}
+            onClick={handleSearch}
+            aria-label="Buscar lección">
               <svg
                 className="accessibility-bar-btn-content"
                 xmlns="http://www.w3.org/2000/svg"
@@ -259,6 +261,7 @@ export default function LeesonsScreen({
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               className={buttonStyles.primary}
+              aria-label="Actividades: página anterior"
             >
               Anterior
             </button>
@@ -269,6 +272,7 @@ export default function LeesonsScreen({
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
               className={buttonStyles.primary}
+              aria-label="Actividades: siguiente página"
             >
               Siguiente
             </button>

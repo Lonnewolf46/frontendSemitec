@@ -320,7 +320,7 @@ export default function GroupsTable({usage}) {
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
                 className={buttonStyles.primary}
-                aria-label="Grupos: anterior página"
+                aria-label="Grupos: página anterior"
               >
                 Anterior
               </button>
