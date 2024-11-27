@@ -30,7 +30,7 @@ const Overlay = ({ title, message, onConfirm, onCancel, show, showCancel }) => {
             {title &&
                 <h2 id="dialog-title" ref={headingRef} style={{margin:'0'}}>{title}</h2>
             }
-            <div id="dialog-message" ref={messageRef} role="status" aria-live="polite">
+            <div id="dialog-message" ref={messageRef} role="alert" aria-live="polite">
                 <p>{message}</p>
             </div>
             {showCancel ? (

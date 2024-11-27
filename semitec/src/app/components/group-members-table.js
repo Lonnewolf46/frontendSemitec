@@ -235,7 +235,7 @@ export default function StudentsTable({ group_id, actions }) {
       <table>
         <thead>
           <tr>
-            <th>#</th>
+            <th aria-hidden='true'>#</th>
             <th>Nombre completo</th>
             {actions === true ? <><th>Estadísticas</th><th>Perfil</th><th>Eliminar</th></> : <></>}
           </tr>
@@ -243,7 +243,7 @@ export default function StudentsTable({ group_id, actions }) {
         <tbody>
           {students.map((student, index) => (
             <tr key={index}>
-              <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
+              <td aria-hidden='true'>{(currentPage - 1) * itemsPerPage + index + 1}</td>
               <td>{student.student_name}</td>
               {actions === true ? (
                 <>

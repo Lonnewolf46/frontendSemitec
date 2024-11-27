@@ -1,18 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import containers from "@/app/_styles/Containers.module.css";
 import Profile from "@/app/components/profile-data";
 import ProgressCard from "@/app/components/progressCard";
 import StatsCard from "@/app/components/statsCard";
+import buttonStyles from "@/app/_styles/Button.module.css";
 export default function StudentInfo() {
-    const searchParams = useSearchParams()
-    const [profile, setProfile] = useState("");
-    const [stats, setStats] = useState({avg_time_taken: 0, avg_mistakes: 0, avg_accuracy_rate: 0, avg_pulsation_per_minute:0 });
-    const [medium_accuracy, setAccuracy] = useState(0);
-    const [medium_ppm, setPPM] = useState(0)
-    const [completedLessons, setCompletedLessons] = useState();
-    const [assignedLessons, setAssignedLessons] = useState();
+  const router = useRouter();
+  const searchParams = useSearchParams()
+  const [profile, setProfile] = useState("");
+  const [stats, setStats] = useState({avg_time_taken: 0, avg_mistakes: 0, avg_accuracy_rate: 0, avg_pulsation_per_minute:0 });
+  const [medium_accuracy, setAccuracy] = useState(0);
+  const [medium_ppm, setPPM] = useState(0)
+  const [completedLessons, setCompletedLessons] = useState();
+  const [assignedLessons, setAssignedLessons] = useState();
 
   const getData = async () => {
     let studentId = Number(searchParams.get("student_id"))
@@ -91,13 +94,17 @@ export default function StudentInfo() {
                   student_id: studentId,
                 })
           });
-          const data = await response.json()
-          setAssignedLessons(data[0].assigned_lessons_count)
-          setCompletedLessons(data[0].unique_metrics_count)
+          const data = await response.json();
+          setAssignedLessons(data[0].assigned_lessons_count - data[0].unique_metrics_count);
+          setCompletedLessons(data[0].unique_metrics_count);
     } catch (error) {
         console.log(error)
     }
   }}
+
+  const handleOnExitClick = () => {
+    router.push(`/teacher/groups`);
+  }
 
   useEffect(() => {
     getData();
@@ -181,6 +188,11 @@ export default function StudentInfo() {
           </section>
         </div>
       </div>
+      <div className={containers.buttonContainer} style={{marginBottom:'0.25vw'}}>
+            <button className={buttonStyles.secondary} onClick={handleOnExitClick}>
+              Regresar
+            </button>
+        </div>
     </main>
   );
 }
