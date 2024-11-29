@@ -159,7 +159,7 @@ export default function StatsTable({student_ID, student_Name}) {
   }
 
   const handleOnExitClick = () => {
-    router.push(`/${userType}/groups`);
+    router.push(`/${userType}/home`);
   }
 
   //UI for loading data
