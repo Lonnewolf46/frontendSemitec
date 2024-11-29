@@ -52,6 +52,7 @@ export default function StudentHome() {
   const [nextLessonId, setNextLessonId] = useState();
   const [assignedLessons, setAssignedLessons] = useState();
   const [nextAssignedLessonId, setNextAssignedLessonId] = useState();
+  const [maxLessons, setMaxLessons] = useState();
   const router = useRouter();
 
   const currentTheme = themes[theme.theme] || themes.Predeterminado;
@@ -236,18 +237,13 @@ export default function StudentHome() {
   const getAssignedLessons = async () => {
     {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/count-pending`, {
-            method: 'POST',
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/get-pending-lessons-count`, {
             headers: {
               "auth-token": localStorage.getItem("auth-token"),
-            },
-            body: JSON.stringify
-                ({
-                  teacher_id: ""//id del prof en teoria es opc?
-                })
+            }
           });
           const data = await response.json()
-          setAssignedLessons(data[0].assigned_lessons_count)
+          setAssignedLessons(data[0].total_assigned_lessons - data[0].completed_lessons)
 
     } catch (error){
         console.log(error)
@@ -262,14 +258,14 @@ export default function StudentHome() {
           }
         })
         const data = await response.json()
-        setNextLessonId(data[0].get_last_lesson)
+        setNextLessonId(data[0].lesson_id)
 
   } catch (error) {
       console.log(error)
   }}
 
   const handleStartLesson = () => {
-    router.push(`/student/lessons/lesson?lesson_id=${nextLessonId + 1}`);
+    router.push(`/student/lessons/lesson?lesson_id=${nextLessonId}`);
   }
 
   const handleStartAssignedLesson = () => {
@@ -304,7 +300,7 @@ export default function StudentHome() {
               <h1 className={styles.headerText}>¿Qué haremos hoy?</h1>
               <div className={styles.cardWrapper}>
               <AssignedLesssonsCard handleStartAssignedLesson={handleStartAssignedLesson} quantity= {assignedLessons} assignedLesson_id = {nextAssignedLessonId}/>
-              <NextLessonCard handleStartLesson={handleStartLesson} lesson_id={nextLessonId + 1}/>
+              <NextLessonCard handleStartLesson={handleStartLesson} lesson_id={nextLessonId}/>
               </div>
             </section>
           </div>
