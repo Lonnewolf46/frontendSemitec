@@ -7,6 +7,8 @@ import info from "@/app/ui/info-circle.svg";
 import buttonStyles from "@/app/_styles/Button.module.css";
 import UIDisplayInfo from "@/app/components/UIStateDisplay";
 import CryptoJS from 'crypto-js';
+import UILoading from "@/app/components/misc/loading"
+
 export default function CreatLesson() {
   const LESSON_KEY = "lesson";
   const EXPIRY_TIME = 20 * 1000;
@@ -189,11 +191,10 @@ export default function CreatLesson() {
     }
   };
 
-  if(loading){
-    return(
-      <UIDisplayInfo
-        title="Cargando...">
-      </UIDisplayInfo>
+  if (loading) {
+    return (
+      <UILoading
+      />
     )
   }
 

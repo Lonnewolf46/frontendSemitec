@@ -10,7 +10,7 @@ import ListCard from "./list-card";
 import LessonImg from "../ui/lesson-img.svg";
 import GroupInfo from "../teacher/groups/info/page";
 import UIDisplayInfo from "./UIStateDisplay"
-
+import UILoading from "./misc/loading"
 
 export default function GroupsTable({usage}) {
   const router = useRouter();
@@ -121,8 +121,7 @@ export default function GroupsTable({usage}) {
   //UI for loading data
   if (loading) {
     return (
-      <UIDisplayInfo
-        title="Cargando..."
+      <UILoading
       />
     )
   }

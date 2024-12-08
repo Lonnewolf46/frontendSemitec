@@ -15,7 +15,7 @@ export function AccessibilityBar() {
   const { theme, setTheme } = useTheme();
   const [themesMenuStatus, setThemesMenuStatus] = useState(false);
 
-  const themes = ["Predeterminado", "Amanecer", "Ceniza", "Grafito", "Noche"];
+  const themes = ["Predeterminado", "Amanecer", "Anochecer", "Ceniza", "Grafito", "Noche"];
   const openThemesMenu = (event) => {
     if (event.key === 'Enter'){
       event.preventDefault();
@@ -103,13 +103,14 @@ export function AccessibilityBar() {
           </g>
         </svg>
       </button>
-      <Menu
+      {themesMenuStatus &&(
+        <Menu
         accessible={true}
         isOpen={themesMenuStatus}
         menuList={themes}
         handleClick={handleThemeChange}
       />
-
+      )}   
       <div id="message" aria-live="polite" aria-atomic="true" className={styles.sronly}> 
       </div>
     </div>

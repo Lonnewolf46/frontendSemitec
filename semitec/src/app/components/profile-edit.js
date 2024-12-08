@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import buttonStyles from "@/app/_styles/Button.module.css";
 import InfoComponent from "@/app/components/UIStateDisplay";
 import Dialog from "./modularPopup/modularpopup";
+import UILoading from "./misc/loading"
 
 export default function ProfileEdit({
     inUsername,
@@ -446,19 +447,12 @@ export default function ProfileEdit({
     }
     }, [selectedCanton])
 
-    if(loading){
-        return(
-            <div className={styles.parent}>
-            <div className={styles.container}>
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                <div className={styles.midContainer}>
-                    <InfoComponent title={"Cargando..."} ></InfoComponent>
-                    </div>
-                </div>
-                </div>
-            </div>
+    if (loading) {
+        return (
+          <UILoading
+          />
         )
-    }
+      }
     if(loadError){
         return(
             <div className={styles.parent}>

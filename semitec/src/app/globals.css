@@ -131,6 +131,36 @@
   --card-container-bg: #000000;
 }
 
+[data-theme="Anochecer"]{
+  --background: #ffffff;
+  --foreground: black;
+  --text: black;
+  --link: white;
+  --selected-text: blue;
+  --button-color: #594ae2;
+  --button-text: white;
+  --button-border: 0px;
+  --buttonAlt-color: transparent;
+  --buttonAlt-text: #000000;
+  --buttonAlt-border: 2px solid #ff4081;
+  --buttonAlt-hover: #ff6699;
+  --buttonAlt-active: #ff1f69;
+  --navbar-background: #776be7;
+  --navbar-border: 0px;
+  --link-color: white;
+  --logo-color: white;
+  --avatar-stroke: #594ae2;
+
+  /* Accessibility bar */
+  --accesibility-bar-bg: #594ae2;
+  --accesibility-bar-btn-color: white;
+  --accesibility-bar-btn-border: 2px solid white;
+  --accesibility-bar-border: 0px;
+
+  /* Card container */
+  --card-container-bg: #d3d3d3d3;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
