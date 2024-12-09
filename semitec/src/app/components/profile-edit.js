@@ -483,6 +483,7 @@ export default function ProfileEdit({
                             <input
                                 required
                                 value={name}
+                                className={styles.formsInput}
                                 placeholder="Ingrese su nombre"
                                 minLength={1}
                                 maxLength={64}
@@ -494,6 +495,7 @@ export default function ProfileEdit({
                             <input
                                 required
                                 value={email}
+                                className={styles.formsInput}
                                 placeholder="Ingrese su correo electrónico"
                                 minLength={1}
                                 maxLength={31}
@@ -504,6 +506,7 @@ export default function ProfileEdit({
                             <label htmlFor="password" className={styles.formsLabel}>Contraseña (Opcional)</label>
                             <input
                                 value={password}
+                                className={styles.formsInput}
                                 placeholder="Ingrese la nueva contraseña."
                                 minLength={0}
                                 maxLength={30}
@@ -521,6 +524,7 @@ export default function ProfileEdit({
                                 type="date"
                                 id="date"
                                 value={dateOfBirth}
+                                className={styles.formsInput}
                                 onChange={handleChangeDoB}
                                 name="date"
                                 min="1930-01-01"
@@ -537,6 +541,7 @@ export default function ProfileEdit({
                         <select
                             id="country"
                             value={selectedCountry}
+                            className={styles.formsInput}
                             onChange={(e) => {
                                 console.log("EVENT!");
                                 handleChangeCountry(e);
@@ -559,6 +564,7 @@ export default function ProfileEdit({
                         <select
                             id="province"
                             value={selectedProvince}
+                            className={styles.formsInput}
                             onChange={(e) => {
                                 handleChangeProvince(e);
                             }}
@@ -580,6 +586,7 @@ export default function ProfileEdit({
                         <select
                             id="canton"
                             value={selectedCanton}
+                            className={styles.formsInput}
                             onChange={(e) => {
                                 handleChangeCanton(e);
                             }}
@@ -601,6 +608,7 @@ export default function ProfileEdit({
                         <select
                             id="district"
                             value={selectedDistrict}
+                            className={styles.formsInput}
                             onChange={(e) => {
                                 handleChangeDistrict(e);
                             }}
@@ -621,6 +629,7 @@ export default function ProfileEdit({
                             <input
                             required
                             value={otherSigns}
+                            className={styles.formsInput}
                             placeholder="Ingrese otras señas"
                             minLength={1}
                             maxLength={120}
@@ -638,6 +647,7 @@ export default function ProfileEdit({
                         <select
                             id="institution"
                             value={selectedInstitution}
+                            className={styles.formsInput}
                             onChange={(e) => {
                                 handleChangeInstitution(e);
                             }}
@@ -660,6 +670,7 @@ export default function ProfileEdit({
                         <select
                             id="edLevel"
                             value={selectedEducationLevel}
+                            className={styles.formsInput}
                             onChange={(e) => { handleChageEdLevel(e); }} > {
                                 educationLevels && Array.isArray(educationLevels) ? 
                                 educationLevels.map(edLevel => ( 

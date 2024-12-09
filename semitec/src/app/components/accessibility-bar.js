@@ -82,6 +82,7 @@ export function AccessibilityBar() {
       <button
         aria-label="Selecionar tema de contraste"
         style={{ marginRight: "16px" }}
+        className={styles.buttonBar}
         onClick={() => setThemesMenuStatus((prevState) => !prevState)}
         onKeyDown={openThemesMenu}
         aria-expanded = {themesMenuStatus}

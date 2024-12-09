@@ -6,7 +6,7 @@
   background-color: var(--accesibility-bar-bg);
 }
 
-.bar button {
+.buttonBar {
   font-size: 1vw;
   font-weight: bold;
   width: 1.6vw;
@@ -27,8 +27,4 @@
   clip: rect(0,0,0,0);
   border: 0;
 }
-button img {
-  vertical-align: middle;
-  height: 100%;
-  width: 100%;
-}
+
