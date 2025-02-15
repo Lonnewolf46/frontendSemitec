@@ -12,9 +12,9 @@ export default function AssignedLesssonsCard({ //cambiar handleStart por la func
             <div className={styles.title}>Siguiente tarea</div>
             {
               quantity !== 1?
-                <div className={styles.info}>Tenés {quantity} tareas asignadas.</div>
+                <div className={styles.info}>Tenés {quantity} tareas pendientes.</div>
               :
-                <div className={styles.info}>Tenés {quantity} tarea asignada.</div>
+                <div className={styles.info}>Tenés {quantity} tarea pendiente.</div>
             }
             
           </div>
