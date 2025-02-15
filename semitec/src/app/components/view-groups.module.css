@@ -104,3 +104,8 @@
     margin-bottom: 10px;
     font-weight: bold;
 }
+.buttonIcon {
+    vertical-align: middle;
+    height: 100%;
+    width: 100%;
+  }

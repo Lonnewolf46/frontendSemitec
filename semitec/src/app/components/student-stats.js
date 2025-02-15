@@ -8,6 +8,7 @@ import ListCard from "./list-card";
 import LessonImg from "../ui/lesson-img.svg";
 import UIDisplayInfo from "./UIStateDisplay";
 import LessonStats from "./lesson-stats"
+import UILoading from "./misc/loading"
 
 export default function StatsTable({student_ID, student_Name}) {
   const router = useRouter();
@@ -159,14 +160,13 @@ export default function StatsTable({student_ID, student_Name}) {
   }
 
   const handleOnExitClick = () => {
-    router.push(`/${userType}/groups`);
+    router.push(`/${userType}/home`);
   }
 
   //UI for loading data
   if (loading) {
     return (
-      <UIDisplayInfo
-        title="Cargando..."
+      <UILoading
       />
     )
   }
