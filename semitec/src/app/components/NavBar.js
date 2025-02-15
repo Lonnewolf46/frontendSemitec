@@ -341,7 +341,7 @@ export default function NavBar({ menuList }) {
                     <ul className={styles.options}>
                       {
                       options.map((option, index)=>
-                        <li className={styles.optionsText} 
+                        <li key={index} className={styles.optionsText} 
                         aria-label={option} 
                         tabIndex="0" 
                         role="menuitem" 

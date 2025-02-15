@@ -93,13 +93,13 @@
     font-size: 1.2vw;
 }
 
-fieldset {
+.fieldsetCustom {
     border: none;
     padding: 0;
     margin: 0;
 }
 
-legend {
+.legendCustom {
     font-size: 1.2vw;
     margin-bottom: 10px;
     font-weight: bold;

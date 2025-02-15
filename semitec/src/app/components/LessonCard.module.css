@@ -30,11 +30,25 @@
 }
 
 .medium, .middle {
+    font-size: 1.3vw;
     height: 40%;
 }
 
 .details {
+    font-size: 1.3vw;
     font-weight:600;
     display: flex;
     direction: rtl;
+}
+
+.imgCustom {
+    vertical-align: middle;
+    height: 80%;
+    width: 80%;
+    margin: 0 0 0 0;
+}
+
+.icon {
+    height: 3vh;
+    width: 3vw;
 }

@@ -430,7 +430,7 @@ export default function SignUp() {
 
                               userTypes.map( 
                                 (user_type) => {
-                                  return <option value={user_type.user_type_id}>
+                                  return <option key={user_type.user_type_id} value={user_type.user_type_id}>
                                     {user_type.user_type_name}
                                     </option>}
                               )
@@ -488,7 +488,7 @@ export default function SignUp() {
 
                             countries.map( 
                               (country) => {
-                                return <option value={country.country_id}>
+                                return <option key={country.country_id} value={country.country_id}>
                                   {country.name}
                                   </option>}
                             )
@@ -515,7 +515,7 @@ export default function SignUp() {
                             provinces && Array.isArray(provinces)? 
                                 provinces.map( 
                                   (province) => {
-                                    return <option value={province.province_id}>
+                                    return <option key={province.province_id} value={province.province_id}>
                                       {province.name}
                                       </option>}
                                 )
@@ -547,7 +547,7 @@ export default function SignUp() {
                             cantons && Array.isArray(cantons)? 
                                 cantons.map( 
                                   (canton) => {
-                                    return <option value={canton.canton_id}>
+                                    return <option key={canton.canton_id} value={canton.canton_id}>
                                       {canton.name}
                                       </option>}
                                 )
@@ -576,7 +576,7 @@ export default function SignUp() {
                             districts && Array.isArray(districts)? 
                                 districts.map( 
                                   (district) => {
-                                    return <option value={district.district_id}>
+                                    return <option key={district.district_id} value={district.district_id}>
                                       {district.name}
                                       </option>}
                                 )
@@ -637,7 +637,7 @@ export default function SignUp() {
                             educationLevels && Array.isArray(educationLevels)? 
                                 educationLevels.map( 
                                   (education_level) => {
-                                    return <option value={education_level.education_level_id}>
+                                    return <option key={education_level.education_level_id} value={education_level.education_level_id}>
                                       {education_level.name}
                                       </option>}
                                 )
@@ -656,7 +656,7 @@ export default function SignUp() {
                             institutions && Array.isArray(institutions)? 
                                 institutions.map( 
                                   (institution) => {
-                                    return <option value={institution.institution_id}>
+                                    return <option key={institution.institution_id} value={institution.institution_id}>
                                       {institution.name}
                                       </option>}
                                 )

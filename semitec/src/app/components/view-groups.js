@@ -200,7 +200,7 @@ export default function GroupsTable({usage}) {
             aria-expanded={orderVisible}
             onClick={() => setOrderVisible(!orderVisible)}>
             <div style={{display: 'flex', alignItems:'center', justifyItems:'center'}}>
-              <Image src={sortIcon} style={{maxHeight:'3vh'}} alt=""></Image>
+              <Image src={sortIcon} style={{maxHeight:'3vh', maxWidth:'3vw'}} alt=""></Image>
               <span>Ordenar</span>
             </div>
           </button>
@@ -208,8 +208,8 @@ export default function GroupsTable({usage}) {
             <div className={styles.popup}>
               <div style={{display: 'flex'}}>
               <div className={styles.column}>
-                <fieldset>
-                <legend>Ordenar por</legend>
+                <fieldset className={styles.fieldsetCustom}>
+                <legend className={styles.legendCustom}>Ordenar por</legend>
                 <div className={styles.radioGroup}>
                   <label>
                     <input
@@ -233,7 +233,7 @@ export default function GroupsTable({usage}) {
               </div>
             <div className={styles.separator} />
             <div className={styles.column}>
-              <fieldset>
+              <fieldset className={styles.fieldsetCustom}>
                 <legend>Orden</legend>
                 <div className={styles.radioGroup}>
                   <label>

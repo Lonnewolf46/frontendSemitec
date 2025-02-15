@@ -96,6 +96,7 @@ export default function TeacherHome() {
             )}
             {recentActivity.map((activity) => (
               <RecentActivityCard
+                key={activity.id} // Unique key prop
                 title={`${activity.student_name} ha ${activity.is_complete === "1" ? 'completado' : 'fallado'}: ${activity.lesson_name}`}
                 subtitle={formatDate(activity.completion_date)}
               />
