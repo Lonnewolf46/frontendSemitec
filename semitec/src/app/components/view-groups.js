@@ -2,14 +2,15 @@
 
 import styles from "./view-groups.module.css";
 import buttonStyles from "@/app/_styles/Button.module.css";
-import { act, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
+import sortIcon from "@/app/ui/sort-icon.svg"
 import ListCard from "./list-card";
 import LessonImg from "../ui/lesson-img.svg";
 import GroupInfo from "../teacher/groups/info/page";
 import UIDisplayInfo from "./UIStateDisplay"
-import { Button } from "bootstrap";
-
+import UILoading from "./misc/loading"
 
 export default function GroupsTable({usage}) {
   const router = useRouter();
@@ -23,6 +24,9 @@ export default function GroupsTable({usage}) {
   const [loading, setLoadingData] = useState(true); 
   const [pageChangeActive, setPageChangeActive] = useState(false);
   const [errorLoading, setErrorLoad] = useState(false);
+  const [orderVisible, setOrderVisible] = useState(false);
+  const [orderBy, setOrderBy] = useState('name');
+  const [orderDir, setOrderDir] = useState('asc');
   const itemsPerPage = 4;
 
   const getGroupCount = async () => {
@@ -51,6 +55,7 @@ export default function GroupsTable({usage}) {
     }
   };
   const getGroups = async (var_page_number,var_page_size) => {
+    console.log("Trying----------------")
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${userType}/groups`,{
         method: "POST",
@@ -59,11 +64,16 @@ export default function GroupsTable({usage}) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          var_group_by: orderBy,
+          var_group_dir: orderDir,
           var_page_number: var_page_number,
           var_page_size: var_page_size
       }),
       });
       const data = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error('Unexpected data format');
+      }
       setGroups(data);
       setActiveIndex(0);
       setErrorLoad(false);
@@ -99,11 +109,19 @@ export default function GroupsTable({usage}) {
     getGroups(currentPage,itemsPerPage);
   }
 
+  const handleChangeOrder = () => {
+    setOrderVisible(false);
+    getGroups(currentPage,itemsPerPage);
+  }
+  
+  const handleDeleteSuccess = () => { // Re-fetch groups when a deletion is successful
+    setCurrentPage(1);
+    getGroups(1,itemsPerPage); }
+
   //UI for loading data
   if (loading) {
     return (
-      <UIDisplayInfo
-        title="Cargando..."
+      <UILoading
       />
     )
   }
@@ -160,7 +178,7 @@ export default function GroupsTable({usage}) {
                 router.push(`/student/groups/join`)
               }}
             >
-            Unirme a grupo
+            Unirse a grupo
             </button>
             </div>
         </>
@@ -173,8 +191,84 @@ export default function GroupsTable({usage}) {
   return (
     <div className={styles.groupsMainContainer}>
       <div className={styles.leftContainer}>
+      <h1 style={{fontSize: "2.1vw"}}>Grupos</h1>
         <div style={{display: 'flex', justifyContent: 'space-between', marginBottom:'2vw'}}>
-          <h1 style={{fontSize: "2.1vw", margin: '0'}}>Grupos</h1>
+        <div className={styles.buttonPopupcontainer}>
+          <button
+            className={buttonStyles.primaryALT}
+            aria-expanded={orderVisible}
+            onClick={() => setOrderVisible(!orderVisible)}>
+            <div style={{display: 'flex', alignItems:'center', justifyItems:'center'}}>
+              <Image src={sortIcon} style={{maxHeight:'3vh'}} alt="" className={styles.buttonIcon}></Image>
+              <span>Ordenar</span>
+            </div>
+          </button>
+          {orderVisible && (
+            <div className={styles.popup}>
+              <div style={{display: 'flex'}}>
+              <div className={styles.column}>
+                <fieldset className={styles.fieldsetStyle}>
+                <legend className={styles.legendStyle}>Ordenar por</legend>
+                <div className={styles.radioGroup}>
+                  <label>
+                    <input
+                      type="radio"
+                      value="name"
+                      checked={orderBy === 'name'}
+                      onChange={() => setOrderBy('name')} />
+                      Nombre 
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      value="group_id"
+                      checked={orderBy === 'group_id'}
+                      onChange={() => setOrderBy('group_id')}
+                    />
+                      Fecha de creación 
+                    </label>
+                </div>
+                </fieldset>
+              </div>
+            <div className={styles.separator} />
+            <div className={styles.column}>
+              <fieldset className={styles.fieldsetStyle}>
+                <legend className={styles.legendStyle}>Orden</legend>
+                <div className={styles.radioGroup}>
+                  <label>
+                    <input
+                      type="radio"
+                      value="asc"
+                      checked={orderDir === 'asc'}
+                      onChange={() => setOrderDir('asc')}
+                    />
+                      Ascendente
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="desc"
+                        checked={orderDir === 'desc'}
+                        onChange={() => setOrderDir('desc')}
+                      />
+                        Decendente
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+            </div>
+            <div className={styles.buttonContainer} style={{marginBottom:'0.5vw'}}>
+              <button
+                className={buttonStyles.primary}
+                aria-label="Aplicar ordenación"
+                onClick={handleChangeOrder}
+              >
+                Aplicar
+              </button>
+            </div>
+          </div>
+          )}
+        </div>
           {pagePurpose === "Regular" && userType === "teacher" &&(
             <button
               className={buttonStyles.primary}
@@ -197,7 +291,8 @@ export default function GroupsTable({usage}) {
           )}
         </div>
         {!pageChangeActive && (
-        <><div className={styles.groupListContainer}>
+        <>
+        <div className={styles.groupListContainer}>
             <ul className={styles.groupList}>
               {groups.map((group, index) => (
                 <li
@@ -218,12 +313,13 @@ export default function GroupsTable({usage}) {
                 </li>
               ))}
             </ul>
-          </div><div className={styles.buttonContainer}>
+          </div>
+          <div className={styles.buttonContainer}>
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
                 className={buttonStyles.primary}
-                aria-label="Grupos: anterior página"
+                aria-label="Grupos: página anterior"
               >
                 Anterior
               </button>
@@ -243,7 +339,7 @@ export default function GroupsTable({usage}) {
       </div>
 
       <div className={styles.rightContainer}>
-        <GroupInfo pGroup={groups[activeIndex]} pTableType={pagePurpose}/>
+        <GroupInfo pGroup={groups[activeIndex]} pTableType={pagePurpose} onDeleteSuccess={handleDeleteSuccess}/>
       </div>
     </div>
   );

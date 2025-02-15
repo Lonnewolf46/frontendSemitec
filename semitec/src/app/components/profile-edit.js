@@ -3,7 +3,9 @@ import styles from "./profile-edit.module.css";
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import buttonStyles from "@/app/_styles/Button.module.css";
-import InfoComponent from "@/app/components/UIStateDisplay"
+import InfoComponent from "@/app/components/UIStateDisplay";
+import Dialog from "./modularPopup/modularpopup";
+import UILoading from "./misc/loading"
 
 export default function ProfileEdit({
     inUsername,
@@ -44,6 +46,11 @@ export default function ProfileEdit({
     const [loading, setLoadingStatus] = useState(false);
     const [loadError, setLoadError] = useState(false);
     const [minorError, setMinorError] = useState(false);
+
+    //Dialog
+    const [showOverlay, setShowOverlay] = useState(false);
+    const [modalTitle, setModalTitle] = useState();
+    const [modalMessage, setModalMessage] = useState();
 
     const firstLoad = async() => {
         setLoadingStatus(true);
@@ -207,15 +214,19 @@ export default function ProfileEdit({
             );
             const data = await response.json();
             if(data.update_teacher){
-                alert("Información actualizada con éxito");
+                setModalTitle("Éxito");
+                setModalMessage("Información actualizada con éxito");
+                setShowOverlay(true);
             }
             else{
-                console.log(data);
-                alert("Ha ocurrido un error al intentar actualizar la información.");
+                setModalTitle("Fallo");
+                setModalMessage("Ha ocurrido un error al intentar actualizar la información.");
+                setShowOverlay(true);
             }
         }catch(error){
-            console.log(data);
-            alert("Ha ocurrido un error al intentar actualizar la información.");
+            setModalTitle("Fallo");
+            setModalMessage("Ha ocurrido un error al intentar actualizar la información.");
+            setShowOverlay(true);
         }
     }
 
@@ -248,15 +259,19 @@ export default function ProfileEdit({
             );
             const data = await response.json();
             if(data.update_student){
-                alert("Información actualizada con éxito");
+                setModalTitle("Éxito");
+                setModalMessage("Información actualizada con éxito");
+                setShowOverlay(true);
             }
             else{
-                console.log(data);
-                alert("Ha ocurrido un error al intentar actualizar la información.");
+                setModalTitle("Fallo");
+                setModalMessage("Ha ocurrido un error al intentar actualizar la información.");
+                setShowOverlay(true);
             }
         }catch(error){
-            console.log(data);
-            alert("Ha ocurrido un error al intentar actualizar la información.");
+            setModalTitle("Fallo");
+            setModalMessage("Ha ocurrido un error al intentar actualizar la información.");
+            setShowOverlay(true);
         }
     }
 
@@ -363,6 +378,10 @@ export default function ProfileEdit({
         setSelectedEducationLevel(event.target.value);
     }
 
+    const handleOverlayAccept = () => {
+        setShowOverlay(false);
+    }
+
     //Initializing
     useEffect(() => {
         setLoadingStatus(true);
@@ -372,14 +391,19 @@ export default function ProfileEdit({
         firstLoad();
     }, [])
 
-    /*//TEMP
-    useEffect(() => { if (selectedCountry) { console.log(`Selected Country ID: ${selectedCountry}`); } }, [selectedCountry]);
-    useEffect(() => { if (selectedProvince) { console.log(`Selected Province ID: ${selectedProvince}`); } }, [selectedProvince]);
-    useEffect(() => { if (selectedCanton) { console.log(`Selected Canton ID: ${selectedCanton}`); } }, [selectedCanton]);
-    useEffect(() => { if (selectedDistrict) { console.log(`Selected District ID: ${selectedDistrict}`); } }, [selectedDistrict]);
-    useEffect(() => { if (selectedEducationLevel) { console.log(`Selected EDLEVEL ID: ${selectedEducationLevel}`); } }, [selectedEducationLevel]);
-    //TEMP END
-    */
+    //Watch for the event of escape key when the dialog is opened, then remove the listener.
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+        if (event.key === 'Escape') {
+            setShowOverlay(false);
+        }
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+        document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+    
     useEffect(() => {
     if (userInteraction && selectedCountry){
         getProvinces(selectedCountry)
@@ -423,19 +447,12 @@ export default function ProfileEdit({
     }
     }, [selectedCanton])
 
-    if(loading){
-        return(
-            <div className={styles.parent}>
-            <div className={styles.container}>
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                <div className={styles.midContainer}>
-                    <InfoComponent title={"Cargando..."} ></InfoComponent>
-                    </div>
-                </div>
-                </div>
-            </div>
+    if (loading) {
+        return (
+          <UILoading
+          />
         )
-    }
+      }
     if(loadError){
         return(
             <div className={styles.parent}>
@@ -466,6 +483,7 @@ export default function ProfileEdit({
                             <input
                                 required
                                 value={name}
+                                className={styles.formsInput}
                                 placeholder="Ingrese su nombre"
                                 minLength={1}
                                 maxLength={64}
@@ -477,6 +495,7 @@ export default function ProfileEdit({
                             <input
                                 required
                                 value={email}
+                                className={styles.formsInput}
                                 placeholder="Ingrese su correo electrónico"
                                 minLength={1}
                                 maxLength={31}
@@ -487,6 +506,7 @@ export default function ProfileEdit({
                             <label htmlFor="password" className={styles.formsLabel}>Contraseña (Opcional)</label>
                             <input
                                 value={password}
+                                className={styles.formsInput}
                                 placeholder="Ingrese la nueva contraseña."
                                 minLength={0}
                                 maxLength={30}
@@ -504,6 +524,7 @@ export default function ProfileEdit({
                                 type="date"
                                 id="date"
                                 value={dateOfBirth}
+                                className={styles.formsInput}
                                 onChange={handleChangeDoB}
                                 name="date"
                                 min="1930-01-01"
@@ -520,6 +541,7 @@ export default function ProfileEdit({
                         <select
                             id="country"
                             value={selectedCountry}
+                            className={styles.formsInput}
                             onChange={(e) => {
                                 console.log("EVENT!");
                                 handleChangeCountry(e);
@@ -542,6 +564,7 @@ export default function ProfileEdit({
                         <select
                             id="province"
                             value={selectedProvince}
+                            className={styles.formsInput}
                             onChange={(e) => {
                                 handleChangeProvince(e);
                             }}
@@ -563,6 +586,7 @@ export default function ProfileEdit({
                         <select
                             id="canton"
                             value={selectedCanton}
+                            className={styles.formsInput}
                             onChange={(e) => {
                                 handleChangeCanton(e);
                             }}
@@ -584,6 +608,7 @@ export default function ProfileEdit({
                         <select
                             id="district"
                             value={selectedDistrict}
+                            className={styles.formsInput}
                             onChange={(e) => {
                                 handleChangeDistrict(e);
                             }}
@@ -604,6 +629,7 @@ export default function ProfileEdit({
                             <input
                             required
                             value={otherSigns}
+                            className={styles.formsInput}
                             placeholder="Ingrese otras señas"
                             minLength={1}
                             maxLength={120}
@@ -621,6 +647,7 @@ export default function ProfileEdit({
                         <select
                             id="institution"
                             value={selectedInstitution}
+                            className={styles.formsInput}
                             onChange={(e) => {
                                 handleChangeInstitution(e);
                             }}
@@ -643,6 +670,7 @@ export default function ProfileEdit({
                         <select
                             id="edLevel"
                             value={selectedEducationLevel}
+                            className={styles.formsInput}
                             onChange={(e) => { handleChageEdLevel(e); }} > {
                                 educationLevels && Array.isArray(educationLevels) ? 
                                 educationLevels.map(edLevel => ( 
@@ -665,13 +693,20 @@ export default function ProfileEdit({
                 )}
                 <div className={styles.buttonContainer}>
                     <button className={buttonStyles.secondary} onClick={handleCancel}>
-                        Cancelar
+                        Regresar
                     </button>
                     <button id="validate-button" className={buttonStyles.primary} onClick={validateForms} disabled={minorError}>
                         Guardar cambios
                     </button>
                 </div>
             </div>
+        <Dialog
+          title={modalTitle}
+          message={modalMessage}
+          onConfirm={handleOverlayAccept}
+          show={showOverlay}
+          showCancel={false}
+        />
         </div>
     );
 }

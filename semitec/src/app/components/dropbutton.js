@@ -26,6 +26,8 @@ function DropdownButton({ text, items }) {
              className={`${styles.navDropButton} ${styles.navItem}`}
              onClick={() => setIsOpen((prevState) => !prevState)}
              onKeyDown={handleKeyDown}
+             aria-label={'Actividades'}
+             aria-expanded={isOpen}
             >
               <div className={styles.buttonContent}>
               <span>{text}</span>
@@ -38,7 +40,7 @@ function DropdownButton({ text, items }) {
             <Link
               key={index}
               className={styles.navItem}
-              style={{ padding: '0.5vw', color: 'var(--text)' }} 
+              style={{ padding: '0.5vw', color: 'var(--foreground)' }} 
               href={item.href}
               onClick={() => setIsOpen((prevState) => !prevState)}
              >

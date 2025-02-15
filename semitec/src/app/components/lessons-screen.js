@@ -23,32 +23,37 @@ export default function LeesonsScreen({
   const [error, setError] = useState("");
   const itemsPerPage = 4;
 
-  const fetchData = async () => {
+  const fetchData = async (var_name) => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_HOST}${lessonCountRoute}`,
         {
+          method: "POST",
           headers: {
             "auth-token": localStorage.getItem("auth-token"),
+            "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            var_name: var_name,
+          }),
         }
       );
 
       const data = await response.json();
       if (response.ok) {
-        const totalLessons = data.get_lessons_public_count;
+        const totalLessons = Object.values(data)[0];
         const calculatedTotalPages = Math.ceil(totalLessons / itemsPerPage);
         console.log(calculatedTotalPages);
         setTotalPages(calculatedTotalPages);
       } else {
-        console.error("Error al obtener el total de lecciones:", data.message);
+        console.error("Error al obtener el total de lecciones:", data);
       }
     } catch (error) {
       console.error("Error al llamar al endpoint:", error);
     }
   };
 
-  const getLessons = async (var_page_number, var_page_size) => {
+  const getLessons = async (var_page_number, var_page_size, var_name) => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_HOST}${pagedLessonsRoute}`,
@@ -61,6 +66,7 @@ export default function LeesonsScreen({
           body: JSON.stringify({
             var_page_number: var_page_number,
             var_page_size: var_page_size,
+            var_name: var_name,
           }),
         }
       );
@@ -76,25 +82,33 @@ export default function LeesonsScreen({
 
   const handleCodeChange = (event) => {
     const value = event.target.value;
-
-    const isValid =
-      /^[a-zA-Z0-9]*$/.test(event.target.value) && value.length <= 7;
+    const isValid = value.length <= 16;
     if (isValid) {
       setLessonCode(value);
       setError("");
     } else {
-      setError("Solo se permiten de 4 a 7 caracteres alfanuméricos.");
+      setError("Solo se permiten de 1 a 16 caracteres.");
     }
   };
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    if (lessonCode.length >= 4 && lessonCode.length <= 7) {
-      getLessonsByCode(lessonCode);
+    if (lessonCode.length >= 1 && lessonCode.length <= 32) {
+      fetchData(lessonCode);
+      getLessons(currentPage, itemsPerPage, lessonCode);
     } else {
-      setError("El código debe tener de 4 a 7 caracteres.");
+      setError("Se requiere de 1 a 16 caracteres para buscar una lección.");
     }
   };
+
+  const handleClear = (event) => {
+    console.log("clearing");
+    event.preventDefault();
+    setLessonCode("");
+    setCurrentPage(1);
+    fetchData();
+    getLessons(1, itemsPerPage, "");
+  }
 
   const getLessonsByCode = async (lessonCode) => {
     try {
@@ -121,22 +135,28 @@ export default function LeesonsScreen({
   };
 
   useEffect(() => {
-    getLessons(currentPage, itemsPerPage);
+    getLessons(currentPage, itemsPerPage, lessonCode);
   }, [currentPage]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (lessonCode.length === 0){
+
+    console.log(lessonCode);
+      fetchData("");
+      getLessons(1, itemsPerPage, "");
+    }
+  }, [lessonCode]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
+      setActiveIndex(0);
     }
   };
 
   return (
     <main className={styles.mainWrapper}>
-      <section className={styles.halfScreenContainer}>
+      <section className={styles.halfScreenContainer} style={{overflowY:'auto'}}>
         <div className={styles.flexContainer}>
           <h1>{title}</h1>
           {pathname.includes("teacher/lessons/assignment") && (
@@ -151,7 +171,7 @@ export default function LeesonsScreen({
         <form className={styles.searchForm}>
           <div className={styles.labelDiv}>
             <label htmlFor="search">
-              <strong>Buscar por código</strong>
+              <strong>Buscar por nombre</strong>
             </label>
           </div>
           <div className={styles.inputDiv}>
@@ -160,11 +180,32 @@ export default function LeesonsScreen({
               type="text"
               aria-invalid={!!error}
               aria-describedby={error ? "search-error" : ""}
-              placeholder="LEC140"
+              placeholder="Lección 1"
               value={lessonCode}
               onChange={handleCodeChange}
             />
-            <button onClick={handleSearch}>
+            {lessonCode && (
+              <button
+              type="button"
+              className={styles.clearButton}
+              onClick={handleClear}
+              aria-label="Eliminar búsqueda">
+                <svg
+                  className="accesibility-bar-btn-content"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="100%"
+                  viewBox="0 -960 960 960"
+                  width="2vw"
+                  fill="gray"
+                >
+                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                </svg>
+              </button>
+            )}
+            <button
+            className={styles.searchButton}
+            onClick={handleSearch}
+            aria-label="Buscar lección">
               <svg
                 className="accessibility-bar-btn-content"
                 xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +236,7 @@ export default function LeesonsScreen({
           <ul className={styles.lessonList}>
             {lessons.map((lesson, index) => (
               <li
-                tabIndex={index}
+                tabIndex={0}
                 key={index}
                 onClick={() => {
                   setActiveIndex(index);
@@ -220,6 +261,7 @@ export default function LeesonsScreen({
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               className={buttonStyles.primary}
+              aria-label="Actividades: página anterior"
             >
               Anterior
             </button>
@@ -230,6 +272,7 @@ export default function LeesonsScreen({
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
               className={buttonStyles.primary}
+              aria-label="Actividades: siguiente página"
             >
               Siguiente
             </button>

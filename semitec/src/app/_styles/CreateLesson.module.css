@@ -33,11 +33,11 @@
 
 .formsLabel{
     font-size: 1.3vw;
-    color: #212529;
+    color: var(--foreground);
     text-align: left;
 }
 
-.container input, select, textarea {
+.formsInput {
     width: 90%;
     font-size: 1.3vw;
     border-radius: 4px;
@@ -55,7 +55,7 @@
 .tooltip .tooltipText {
     visibility: hidden;
     width: 200px;
-    background-color: #ffffff;
+    background-color: var(--background);
     border: solid 1px #CED4DA;
     text-align: center;
     border-radius: 6px;
@@ -109,6 +109,7 @@
     min-height: 80%;
 }
 .buttnedText:focus {
+    color: black;
     outline: 2px solid #CED4DA;
 }
 .buttnedText:hover {

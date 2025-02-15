@@ -3,21 +3,28 @@
   justify-content: flex-end;
   align-items: center;
   height: 2.9vw;
+  background-color: var(--accesibility-bar-bg);
 }
 
-.bar button {
+.buttonBar {
   font-size: 1vw;
   font-weight: bold;
   width: 1.6vw;
   height: 74%;
-  margin-right: 5px;
+  margin-right: 0.5vw;
   padding: 0px;
   background-color: transparent;
   border-radius: 3px;
+  cursor: pointer;
+}
+.sronly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
 }
 
-button img {
-  vertical-align: middle;
-  height: 100%;
-  width: 100%;
-}

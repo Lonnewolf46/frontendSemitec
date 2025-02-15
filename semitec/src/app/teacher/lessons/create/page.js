@@ -5,18 +5,18 @@ import Image from "next/image";
 import styles from "@/app/_styles/CreateLesson.module.css";
 import info from "@/app/ui/info-circle.svg";
 import buttonStyles from "@/app/_styles/Button.module.css";
+import UIDisplayInfo from "@/app/components/UIStateDisplay";
 import CryptoJS from 'crypto-js';
-import { Content } from "next/font/google";
-export default function CreatLesson() {
-  const router = useRouter();
+import UILoading from "@/app/components/misc/loading"
 
-  const encryptData = (data) => {
-    return CryptoJS.AES.encrypt(JSON.stringify(data), process.env.NEXT_PUBLIC_ENCRYPT_KEY).toString();
-  };
-  
+export default function CreatLesson() {
+  const LESSON_KEY = "lesson";
+  const EXPIRY_TIME = 20 * 1000;
+
+  const router = useRouter();
   const [name, setName] = useState("");
   const [level_id, setLevelID] = useState();
-  const [words, setVarWords] = useState("");
+  const [content, setContent] = useState("");
   const [description, setDescription] = useState("");
   const [max_time, setMaxTime] = useState("");
   const [max_mistakes, setMaxMistakes] = useState("");
@@ -24,25 +24,67 @@ export default function CreatLesson() {
   const [publicActivity, setPublicActivity] = useState(false);
   const [available_lexemes, setLexemes] = useState([]);
   const [available_levels, setAvLevels] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleCancel = () => {
-    router.push('/teacher/home');
+  const encryptData = (data) => {
+    return CryptoJS.AES.encrypt(JSON.stringify(data), process.env.NEXT_PUBLIC_ENCRYPT_KEY).toString();
   };
 
+  const decryptData = (cipherText) => {
+    const bytes = CryptoJS.AES.decrypt(cipherText, process.env.NEXT_PUBLIC_ENCRYPT_KEY);
+    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  };
+
+  //Checks if the lesson in sessionStorage has expired.
+  //If it's still valid, then loads the data back into the UI. Otherwise, nothing.
+  const loadPreviousData = () => {
+    const lessonContent = sessionStorage.getItem(LESSON_KEY);
+    if(lessonContent){
+      const now = new Date().getTime();
+      //Try to manipulate the data. Catch any errors.
+      try{
+        const data = JSON.parse(decryptData(lessonContent));
+        if (now > data.expiry) {
+          sessionStorage.removeItem(LESSON_KEY);
+          return false;
+        }
+        else{
+          setName(data.name);
+          setDescription(data.description);
+          setContent(data.content);
+          setMaxTime(data.max_time);
+          setMaxMistakes(data.max_mistakes);
+          setIterations(data.iterations);
+          setLevelID(data.level_id);
+          if(data.shared == '1'){
+            setPublicActivity(true);
+          }
+        }
+      }
+      catch(error){
+        //Catch errors trying to parse the encrypted data.
+        sessionStorage.removeItem(LESSON_KEY);
+        return false;
+      }
+    }
+  }
+
   const assignLesson = () => {
+    const now = new Date().getTime();
     var sharedvalue = 0;
     if(publicActivity){sharedvalue = 1}
-    sessionStorage.setItem('lesson',
+    sessionStorage.setItem(LESSON_KEY,
       encryptData(
       JSON.stringify({
         level_id: level_id,
-        content: words,
+        content: content,
         iterations: iterations,
         max_time: max_time,
         max_mistakes: max_mistakes,
         name: name,
         description: description,
-        shared: sharedvalue
+        shared: sharedvalue,
+        expiry: now + EXPIRY_TIME
       })
     ));
     sessionStorage.removeItem('checkedStudents');
@@ -68,7 +110,7 @@ export default function CreatLesson() {
         level_id: item.level_id,
         name: item.name, }));
       setAvLevels(levelsData);
-      if (levelsData.length > 0 && !level_id) {
+      if (levelsData.length > 0) {
         setLevelID(levelsData[0].level_id);
       }
     } catch (error) {
@@ -80,7 +122,7 @@ export default function CreatLesson() {
     setName(event.target.value);
   };
   const handleChangeWords = (event) => {
-    setVarWords(event.target.value);
+    setContent(event.target.value);
   };
   const handleChangeDescription = (event) => {
     setDescription(event.target.value);
@@ -105,17 +147,29 @@ export default function CreatLesson() {
   }
 
   const handleClickLex = (lexeme) => {
-    if(words.length!=0){
-      setVarWords(words + ' ' + lexeme);
+    if(content.length!=0){
+      setContent(content + ' ' + lexeme);
     }
     else{
-      setVarWords(lexeme);
+      setContent(lexeme);
     }
   };
 
+  const handleCancel = () => {
+    sessionStorage.removeItem(LESSON_KEY);
+    router.push('/teacher/home');
+  };
+
   useEffect(() => {
-      getLexemes();
-      getLevels();
+    const fetchData = async () => {
+      setLoading(true);
+      await getLexemes();
+      await getLevels();
+      loadPreviousData();
+      setLoading(false);
+    };
+    
+    fetchData();
   },[]);
 
   const validateForms = () => {
@@ -135,7 +189,14 @@ export default function CreatLesson() {
           alert('Verifique que todos los campos estén llenos.'); 
         } 
     }
-    };
+  };
+
+  if (loading) {
+    return (
+      <UILoading
+      />
+    )
+  }
 
   return (
     <div className={styles.parent}>
@@ -151,6 +212,7 @@ export default function CreatLesson() {
             <input
               required
               value={name}
+              className={styles.formsInput}
               placeholder="Ingrese el nombre de la actividad"
               minLength={1}
               maxLength={16}
@@ -162,6 +224,7 @@ export default function CreatLesson() {
             <textarea
               required
               value={description}
+              className={styles.formsInput}
               placeholder="Ingrese la descripción de la actividad"
               rows="5"
               minLength={1}
@@ -173,7 +236,8 @@ export default function CreatLesson() {
             <label htmlFor="words" className={styles.formsLabel}>Contenido de la Lección</label>
             <textarea
               required
-              value={words}
+              value={content}
+              className={styles.formsInput}
               placeholder="Ingrese el contenido de la actividad"
               rows="5"
               minLength={1}
@@ -195,9 +259,10 @@ export default function CreatLesson() {
                 available_lexemes.map((lexeme, index) => (
                   <button
                     className={styles.buttnedText}
+                    style={{background:"var(--background)"}}
                     key={index}
                     onClick={() => handleClickLex(lexeme)}> 
-                    <p className={styles.formsLabel} style={{margin:'0'}}>{lexeme}</p>
+                    <p style={{color:"var(--foreground)", margin:'0'}}>{lexeme}</p>
                   </button>
                 ))
               )}
@@ -211,6 +276,7 @@ export default function CreatLesson() {
             <input
               required
               value={max_time}
+              className={styles.formsInput}
               placeholder="Ingrese el tiempo máximo"
               minLength={1}
               maxLength={4}
@@ -222,6 +288,7 @@ export default function CreatLesson() {
             <input
               required
               value={max_mistakes}
+              className={styles.formsInput}
               placeholder="Ingrese el máximo de errores permitidos"
               minLength={1}
               onChange={handleChangeMaxMistakes}
@@ -234,6 +301,7 @@ export default function CreatLesson() {
               required
               placeholder="Ingrese las iteraciones del contenido"
               value={iterations}
+              className={styles.formsInput}
               minLength={0}
               onChange={handleChangeIterations}
               type="number"
@@ -243,9 +311,9 @@ export default function CreatLesson() {
             <select
               id="level_id"
               style={{width:'95%'}}
-              onChange={(e) => {
-                handleChangeLevel(e);
-              }}
+              className={styles.formsInput}
+              value={level_id}
+              onChange={handleChangeLevel}
             >
               {available_levels.length === 0 ? (
                 <option disabled>Error obteniendo los niveles</option>
@@ -262,7 +330,8 @@ export default function CreatLesson() {
               <input
               style={{width: '4vh', height: '4vh', margin: '1vw'}}
               type="checkbox"
-              value={publicActivity}
+              checked={publicActivity}
+              className={styles.formsInput}
               onChange={handleChangePublic}
               id="publicActivity"
               alt="Marque esta casilla si desea que la actividad sea pública y cualquier usuario pueda realizarla."

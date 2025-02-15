@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import accessibility from 'highcharts/modules/accessibility';
@@ -51,6 +52,7 @@ export default function StudentHome() {
   const [nextLessonId, setNextLessonId] = useState();
   const [assignedLessons, setAssignedLessons] = useState();
   const [nextAssignedLessonId, setNextAssignedLessonId] = useState();
+  const [maxLessons, setMaxLessons] = useState();
   const router = useRouter();
 
   const currentTheme = themes[theme.theme] || themes.Predeterminado;
@@ -129,7 +131,6 @@ export default function StudentHome() {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
         setUsername(data.username.split(" ")[0]);
       }
     } catch (error) {
@@ -146,8 +147,6 @@ export default function StudentHome() {
       });
       const data = await res.json();
       if (res.ok && data.avg_accuracy_rate !== null) {
-        console.log(data);
-        console.log("recolected stats--------------------------------------------------------")
         setStats(data)
       }
     } catch (error) {
@@ -165,7 +164,8 @@ export default function StudentHome() {
             }
           })
           const data = await response.json()
-          setNextAssignedLessonId(data[0].lesson_id)
+          if (data.length!==0)
+            setNextAssignedLessonId(data[0].lesson_id)
 
     } catch (error){
         console.log(error)
@@ -182,7 +182,6 @@ export default function StudentHome() {
       });
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
         setAccuracyHistory(data)
       }
     } catch (error) {
@@ -201,22 +200,34 @@ export default function StudentHome() {
           })
           
           const data = await response.json()
-          console.log(data)
-          const initialValue = 0;
-          let sum_ppm = data.reduce(
-            (accumulator, currentValue) => accumulator + currentValue.pulsation_per_minute,
-            initialValue,
-          );
+          {
+            if (data.length !== 0)
+              {
+                const initialValue = 0;
+                let sum_ppm = data.reduce(
+                  (accumulator, currentValue) => accumulator + currentValue.pulsation_per_minute,
+                  initialValue,
+                );
 
-          let sum_accuracy = data.reduce(
-            (accumulator, currentValue) => accumulator + currentValue.accuracy_rate,
-            initialValue,
-          );
+                let sum_accuracy = data.reduce(
+                  (accumulator, currentValue) => accumulator + currentValue.accuracy_rate,
+                  initialValue,
+                );
+
+                sum_accuracy /= data.length
+                sum_ppm /= data.length
+                setPPM(sum_ppm.toFixed(0))
+                setAccuracy(sum_accuracy.toFixed(0))
+              }
+            else
+            {
+              setPPM(0)
+              setAccuracy(0)
+            }
+          }
           
-          sum_accuracy /= data.length
-          sum_ppm /= data.length
-          setPPM(sum_ppm.toFixed(0))
-          setAccuracy(sum_accuracy.toFixed(0))
+          
+          
     } catch (error){
         console.log(error)
     }
@@ -226,18 +237,13 @@ export default function StudentHome() {
   const getAssignedLessons = async () => {
     {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/count-pending`, {
-            method: 'POST',
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/get-pending-lessons-count`, {
             headers: {
               "auth-token": localStorage.getItem("auth-token"),
-            },
-            body: JSON.stringify
-                ({
-                  teacher_id: ""//id del prof en teoria es opc?
-                })
+            }
           });
           const data = await response.json()
-          setAssignedLessons(data[0].assigned_lessons_count)
+          setAssignedLessons(data[0].total_assigned_lessons - data[0].completed_lessons)
 
     } catch (error){
         console.log(error)
@@ -252,14 +258,14 @@ export default function StudentHome() {
           }
         })
         const data = await response.json()
-        setNextLessonId(data[0].get_last_lesson)
+        setNextLessonId(data[0].lesson_id)
 
   } catch (error) {
       console.log(error)
   }}
 
   const handleStartLesson = () => {
-    router.push(`/student/lessons/lesson?lesson_id=${nextLessonId + 1}`);
+    router.push(`/student/lessons/lesson?lesson_id=${nextLessonId}`);
   }
 
   const handleStartAssignedLesson = () => {
@@ -274,14 +280,12 @@ export default function StudentHome() {
     getAssignedLessons();
     getNextAssignedLesson();
     accessibility(Highcharts);
-    console.log(`${medium_accuracy}%`)
-    console.log(medium_ppm)
   }, []);
 
   return (
     <main>
     <div className={styles.main_container}>
-        <div className={styles.left_section}>
+        <div className={styles.halfScreenContainer}>
           <WelcomeCard username={username} />
           <section
             style={{
@@ -296,21 +300,34 @@ export default function StudentHome() {
               <h1 className={styles.headerText}>¿Qué haremos hoy?</h1>
               <div className={styles.cardWrapper}>
               <AssignedLesssonsCard handleStartAssignedLesson={handleStartAssignedLesson} quantity= {assignedLessons} assignedLesson_id = {nextAssignedLessonId}/>
-              <NextLessonCard handleStartLesson={handleStartLesson} lesson_id={nextLessonId + 1}/>
+              <NextLessonCard handleStartLesson={handleStartLesson} lesson_id={nextLessonId}/>
               </div>
             </section>
-            
-          
           </div>
         </div>
-        <div className={styles.right_section}>
+        <div className={styles.halfScreenContainer}>
           <section className={styles.container}>
-            <div style={{ marginTop: "5px", height: "35vh", alignContent: "center" }}>
-                <HighchartsReact highcharts={Highcharts} options={options} />
-            </div>
+            {
+              metricsHistory.length!==0 ?
+              <div className="highcharts-container container-center-contents" >
+                  <HighchartsReact highcharts={Highcharts} options={options} />
+              </div>
+              :<>
+              <div className="container-center-contents">
+                <h1 style={{
+                  fontSize: "3vw"
+                }}>
+              Estadísticas últimas 10 lecciones</h1>
+                <h2 style={{
+                  fontWeight: 150
+                }}>Empezá a practicar para visualizar aquí las estadísticas de tus últimas 10 lecciones.</h2>
+              </div>
+              </>
+            }
           </section>
+
           <section className={styles.container}>
-            <h1 style={{marginTop: "5vh", marginBottom:"0"}}>Estadísticas</h1>
+            <h1 className="container-center-contents">Estadísticas</h1>
               <div style={{
                   display: "flex",
                   justifyContent: "space-around",
@@ -319,6 +336,18 @@ export default function StudentHome() {
                   <StatsCard value={`${medium_accuracy}%`} name={"Precisión"} />
               </div>
           </section>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+          }}>
+            <Link
+              href={'/student/stats'}
+              style={{color:('var(--foreground)'), fontSize: "2vw"}}>
+              Ver estadísticas detalladas
+            </Link>
+          </div>
+          
         </div>
       </div>
     </main>

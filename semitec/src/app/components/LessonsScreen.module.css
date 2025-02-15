@@ -7,8 +7,9 @@
 
 .halfScreenContainer {
   padding: 0 20px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   width: 45vw;
+  height: 70vh;
   border-radius: 10px;
   border: solid 1px #e6e6e6;
 }
@@ -39,20 +40,31 @@
 .inputDiv input {
     padding: 10px;
     border: 1px solid grey;
+    border-right: none;
     border-radius: 5px 0 0 5px;
     flex-grow: 1;
     font-size: 1.2vw;
 }
 
-.inputDiv button {
+.inputDiv:focus-within input {
+    outline: none;
+}
+
+.searchButton {
     border-radius: 0 5px 5px 0;
+}
+
+.clearButton {
+    border: solid 1px gray;
+    border-left: none;
+    border-radius: 0 0 0 0;
+    background-color:white;
 }
 
 
 .lessonListContainer {
     flex-direction: column;
-    gap: 20px;
-    max-height: 85%;
+    max-height: 60%;
     overflow-y: auto;
 }
 
@@ -75,7 +87,7 @@
 }
 
 .buttonContainer {
-    margin-top: 2vw;
+    margin-top: 2vh;
     width: 100%;
     display: flex;
     text-align: center;

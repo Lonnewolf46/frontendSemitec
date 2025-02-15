@@ -1,7 +1,8 @@
+import FAQs from "@/app/components/faqs";
 export default function StudentFAQs() {
   return (
     <main>
-      <h1>Student FAQs</h1>
+      <FAQs></FAQs>
     </main>
   );
 }

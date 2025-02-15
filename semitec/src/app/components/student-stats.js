@@ -8,12 +8,14 @@ import ListCard from "./list-card";
 import LessonImg from "../ui/lesson-img.svg";
 import UIDisplayInfo from "./UIStateDisplay";
 import LessonStats from "./lesson-stats"
+import UILoading from "./misc/loading"
 
-export default function StatsTable({student_ID}) {
+export default function StatsTable({student_ID, student_Name}) {
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname('');
   const [userID, setUserID] = useState(student_ID);
-  const [userType, setUserType] = useState(pathname === "/student/groups" ? "student" : "teacher");
+  const [userName, setUserName] = useState(student_Name);
+  const [userType, setUserType] = useState('');
   const [lessons, setLessons] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1); 
@@ -22,23 +24,35 @@ export default function StatsTable({student_ID}) {
   const [pageChangeActive, setPageChangeActive] = useState(false);
   const [errorLoading, setErrorLoad] = useState(false);
   const itemsPerPage = 4;
-  
 
+  //This function is here to help against the asyncronous update of States on userType setting.
+  const getUserType = () =>{
+    if (pathname.startsWith('/student')) {
+      return('Student'); 
+    } else if (pathname.startsWith('/teacher')) {
+      return('Teacher');
+    } else { return('unknown');
+    }
+  }
+  
   const getLessonsHistoryCount = async () => {
+    const localUserType = getUserType();
     try {
         //If the user is a teacher, then the student_ID must come from another screen.
-        //If the user is a student, then the student_ID is provided on the header.
+        //If the user is a student, then the student_ID is provided on the header and NOT in the parameters.
         let response;
-        if(userType === "teacher"){
-            response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${userType}/lessons/history/total?user_id=${userID}`,{
+        //Teacher
+        if(localUserType === "Teacher"){
+            response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/lessons/history/total?user_id=${userID}`,{
                 method: "GET",
                 headers: {
                 "auth-token": localStorage.getItem("auth-token"),
                 },
             });
         }
+        //Student
         else{
-            response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${userType}/lessons/history/total`,{
+            response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/history/total`,{
                 method: "GET",
                 headers: {
                 "auth-token": localStorage.getItem("auth-token"),
@@ -55,17 +69,20 @@ export default function StatsTable({student_ID}) {
             console.error("Error al obtener el historial de lecciones", data.message);
         }
         } catch (error) {
+          console.log(error);
             setErrorLoad(true);
         }
   };
 
   const getLessonsHistory = async (var_page_number,var_page_size) => {
+    const localUserType = getUserType();
     try {
         //If the user is a teacher, then the student_ID must come from another screen.
         //If the user is a student, then the student_ID is provided on the header.
         let response;
-    if(userType === "teacher"){
-        response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${userType}/lessons/history?user_id=${userID}`,{
+    //Teacher
+    if(localUserType === "Teacher"){
+        response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/teacher/lessons/history?user_id=${userID}`,{
             method: "POST",
             headers: {
                 "auth-token": localStorage.getItem("auth-token"),
@@ -77,8 +94,9 @@ export default function StatsTable({student_ID}) {
           })
           });
     }
+    //Student
     else{
-        response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/${userType}/lessons/history`,{
+        response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/student/lessons/history`,{
             method: "POST",
             headers: {
                 "auth-token": localStorage.getItem("auth-token"),
@@ -112,6 +130,15 @@ export default function StatsTable({student_ID}) {
   }, [currentPage]);
 
   useEffect(() => {
+    if (pathname.startsWith('/student')) {
+      setUserType('student');
+    } else if (pathname.startsWith('/teacher')) {
+      setUserType('teacher');
+    } else { setUserType('unknown');
+    }
+  }, [pathname]);
+
+  useEffect(() => {
     setUserID(student_ID);
     setLoadingData(true);
     setErrorLoad(false);
@@ -133,14 +160,13 @@ export default function StatsTable({student_ID}) {
   }
 
   const handleOnExitClick = () => {
-    router.push(`/${userType}/groups`);
+    router.push(`/${userType}/home`);
   }
 
   //UI for loading data
   if (loading) {
     return (
-      <UIDisplayInfo
-        title="Cargando..."
+      <UILoading
       />
     )
   }
@@ -180,7 +206,7 @@ export default function StatsTable({student_ID}) {
       {userType === "student" && (
         <>
           <UIDisplayInfo
-            title="Historial y métrica"
+            title="Historial y métricas"
             message="No hay métricas que mostrar. Cuando hagas una práctica, la información se mostrará aquí."
           />
           <div className={styles.buttonContainer} style={{marginBottom:'0.25vw'}}>
@@ -199,7 +225,7 @@ export default function StatsTable({student_ID}) {
     <><div className={styles.groupsMainContainer}>
           <div className={styles.leftContainer}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2vw' }}>
-                  <h1 style={{ fontSize: "2.1vw", margin: '0' }}>Lecciones realizadas</h1>
+                  <h1 style={{ fontSize: "2.1vw", margin: '0' }}>Lecciones realizadas{userName}</h1>
               </div>
               {!pageChangeActive && (
                   <><div className={styles.groupListContainer}>

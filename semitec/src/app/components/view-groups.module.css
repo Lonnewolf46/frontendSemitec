@@ -22,7 +22,7 @@
 }
 
 .groupListContainer {
-    max-height: 75%;
+    max-height: 60%;
     overflow-y: auto;
 }
 
@@ -53,3 +53,59 @@
     align-items: center;
     justify-content: space-around;
 }
+
+.buttonPopupcontainer {
+    position: relative;
+}
+
+.popup {
+    flex: 1;
+    padding: 0 0 0 0;
+    top: 100%; /* Position the popup below the button */
+    left: 0;
+    margin-top: 10px;
+    border: 1px solid var(--foreground);
+    border-radius: 8px;
+    width: 60vh;
+    background-color: var(--background);
+    position: absolute;
+    box-shadow: 0 1px 3px var(--foreground);
+  }
+  
+.column {
+    flex: 1;
+    padding: 10px;
+}
+
+.separator {
+    width: 1px;
+    background-color: #ccc;
+    margin: 3vh;
+}
+
+.radioGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.radioGroup label {
+    margin-bottom: 10px;
+    font-size: 1.2vw;
+}
+
+.fieldsetStyle {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.legendStyle {
+    font-size: 1.2vw;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.buttonIcon {
+    vertical-align: middle;
+    height: 100%;
+    width: 100%;
+  }

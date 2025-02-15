@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import styles from "@/app/_styles/LessonResults.module.css";
 import buttonStyles from "@/app/_styles/Button.module.css";
@@ -70,7 +71,7 @@ export default function LessonResults({
           className={buttonStyles.primary}
           onClick={handleContinue}
         >
-          Siguiente lección
+          Repetir lección
         </button>
       </div>
     </dialog>
