@@ -340,9 +340,8 @@ export default function NavBar({ menuList }) {
                   <div onBlur={onBlurOptionsMenu}>
                     <ul className={styles.options}>
                       {
-                      options.map((option)=>
-                        <li className={styles.optionsText} 
-                        key={option.index}
+                      options.map((option, index)=>
+                        <li key={index} className={styles.optionsText} 
                         aria-label={option.nombre} 
                         tabIndex="0" 
                         role="menuitem" 

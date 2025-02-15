@@ -4,7 +4,7 @@ import Profile from "@/app/components/profile-data"
 import ProfileEdit from "@/app/components/profile-edit";
 import buttonStyles from "@/app/_styles/Button.module.css"
 
-export default function profile_teacher() {
+export default function ProfileTeacher() {
   const [username, setUsername] = useState("");
   const [institution, setInstitution] = useState("");
   const [canton, setCanton] = useState("");

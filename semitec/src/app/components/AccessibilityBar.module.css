@@ -17,7 +17,14 @@
   border-radius: 3px;
   cursor: pointer;
 }
-.sronly {
+
+.buttonCustom {
+  vertical-align: middle;
+  height: 100%;
+  width: 100%;
+}
+
+.sronly{
   position: absolute;
   width: 1px;
   height: 1px;

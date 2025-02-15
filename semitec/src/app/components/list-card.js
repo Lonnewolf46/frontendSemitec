@@ -12,14 +12,14 @@ export default function ListCard({
     <div
       className={`${styles.lessonCardContainer} ${active ? styles.active : ""}`}
     >
-      <Image src={imagePath} alt="" priority={true} />
+      <Image src={imagePath} alt="" priority={true} className={styles.imgCustom}/>
       <div className={styles.itemInfo}>
         <div className={styles.medium}>{lessonName}</div>
         {middleInfo && middleInfo != "" &&(
           <div className={styles.middle}>Código {middleInfo}</div>
         )}
         <div aria-hidden="true" className={`${styles.details}`}>
-          <Image src={details} alt="" />
+          <Image src={details} alt="" className={styles.icon}/>
           <div style={{ marginRight: "10px" }}>Detalles</div>
         </div>
       </div>

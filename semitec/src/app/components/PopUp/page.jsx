@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Popup } from './Popup';
 
 const ejemplo = () => {
-
+/*
     const [show, setShow] = useState(false)
     //Aca estoy usando un ejemplo con un boton
     //Pero si quieren pueden setear wl valor de show en codigo directamente, en una funcion, un if, lo que sea
@@ -14,6 +14,6 @@ const ejemplo = () => {
         <button onClick={() => setShow(true)}>
             Open Popup
         </button>
-    </div>
+    </div>*/
 }
 export default ejemplo

@@ -4,12 +4,12 @@ import stylesTable from "@/app/_styles/GroupsTable.module.css";
 import "./add-student-screen.module.css";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import buttonStyles from "@/app/_styles/Button.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import UIDisplayInfo from "./UIStateDisplay"
 import { useSearchParams } from "next/navigation";
 import Dialog from "@/app/components/modularPopup/modularpopup";
 
-export default function LeesonsScreen() {
+function AddStudentsScreen() {
   const [studentsDB, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -539,3 +539,10 @@ useEffect(() => {
   );
 };
 
+export default function StudentAdd() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <AddStudentsScreen />
+    </Suspense>
+  );
+}
